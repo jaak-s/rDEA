@@ -1,0 +1,62 @@
+#! /bin/sh
+## For the time being, this is a simple shell script ...
+
+## Test whether a complete GLPK library environment is available,
+## e.g. ftp://ftp.gnu.org/gnu/glpk/
+
+## Find the R home directory.
+: ${R_HOME=`R RHOME`}
+if test -z "${R_HOME}"; then
+  echo "Could not determine R_HOME."
+  exit 1
+fi
+
+R="${R_HOME}/bin/R"
+
+GLPK_LIBS="-lglpk"
+
+## Test whether we can compile and link a minimal program.
+rm -f conftest.*
+
+cat > conftest.cc <<EOF
+#include <glpk.h>
+int main ()
+{
+   glp_prob *lp;
+   lp = glp_create_prob();
+   glp_delete_prob(lp);
+   return 0;
+}
+EOF
+
+_R_SHLIB_BUILD_OBJECTS_SYMBOL_TABLES_=false \
+  "${R}" CMD SHLIB conftest.cc ${GLPK_LIBS} >/dev/null 2>&1 \
+  && "$R" --slave --vanilla -e 'dyn.load("conftest.so")'
+status=${?}
+if test ${status} -ne 0; then
+  rm -f conftest.*o
+  GLPK_LIBS="-lglpk -lgmp -lm"
+  _R_SHLIB_BUILD_OBJECTS_SYMBOL_TABLES_=false \
+    "${R}" CMD SHLIB conftest.cc ${GLPK_LIBS} >/dev/null 2>&1 \
+    && "$R" --slave --vanilla -e 'dyn.load("conftest.so")'
+  status=${?}
+fi
+
+rm -f conftest.*
+
+if test ${status} -eq 0; then
+  GLPK_INCLUDE_PATH=
+  GLPK_LIB_PATH=
+  GLPK_TS=
+else    
+  GLPK_INCLUDE_PATH="-IGLPK"
+  GLPK_LIB_PATH="-LGLPK"
+  GLPK_LIBS="-lglpk"
+  GLPK_TS="GLPK.ts"
+fi
+
+sed -e "s|@GLPK_INCLUDE_PATH@|${GLPK_INCLUDE_PATH}|" \
+    -e "s|@GLPK_LIB_PATH@|${GLPK_LIB_PATH}|" \
+    -e "s|@GLPK_LIBS@|${GLPK_LIBS}|" \
+    -e "s|@GLPK_TS@|${GLPK_TS}|" \
+    src/Makevars.in > src/Makevars

@@ -1,0 +1,11 @@
+PKG_CPPFLAGS = @GLPK_INCLUDE_PATH@
+PKG_LIBS = @GLPK_LIB_PATH@ @GLPK_LIBS@
+
+.PHONY: all @GLPK_TS@
+
+all: $(SHLIB)
+$(OBJECTS): @GLPK_TS@ 
+
+GLPK.ts:
+	@(cd GLPK && make)
+	touch $@
