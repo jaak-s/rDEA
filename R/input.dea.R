@@ -1,9 +1,9 @@
-library('Rglpk')
+#library('Rglpk')
 
 ######## input minimization with rescaling ######
-input.dea.rescaling <- function(XREF, YREF, X, Y, RTS, rescaling=1) {
+dea.input.rescaling <- function(XREF, YREF, X, Y, RTS, rescaling=1) {
   XREF.rescaled = XREF * rescaling
-  result = input.dea(XREF=XREF.rescaled, YREF=YREF, X=X, Y=Y, RTS=RTS)
+  result = dea.input(XREF=XREF.rescaled, YREF=YREF, X=X, Y=Y, RTS=RTS)
   return(result$thetaOpt)
 }
 
@@ -19,7 +19,7 @@ input.dea.rescaling <- function(XREF, YREF, X, Y, RTS, rescaling=1) {
 ### out$lambda   = lambda
 ### out$feasible = feasible
 ### out$lambda_sum = rowSums(lambda)
-input.dea <- function(XREF, YREF, X, Y, RTS="variable") {
+dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
   if ( ! is.matrix(XREF)) { XREF = as.matrix(XREF) }
   if ( ! is.matrix(YREF)) { YREF = as.matrix(YREF) }
   if ( ! is.matrix(X)) { X = as.matrix(X) }
