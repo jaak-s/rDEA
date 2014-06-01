@@ -67,7 +67,10 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
                           is_integer,
                           integers, binaries,
                           direction_of_optimization, bounds[, 1L],
-                          bounds[, 2L], bounds[, 3L], verb)
+                          bounds[, 2L], bounds[, 3L], verb,
+                          1, 
+                          0, c(0), c(0), ## constraints
+                          0, c(0), c(0)) ## rhs
 
   solution <- x$lp_objective_vars_values
   ## are integer variables really integers? better round values
@@ -91,7 +94,14 @@ function(lp_objective_coefficients, lp_n_of_objective_vars,
          lp_objective_var_is_integer, lp_objective_var_is_binary,
          lp_direction_of_optimization,
          lp_bounds_type, lp_bounds_lower, lp_bounds_upper,
-         verbose)
+         verbose,
+         multi_number_of_problems,
+         multi_number_of_constraint_values,
+         multi_constraint_index, 
+         multi_constraint_values,
+         multi_rhs_number_of_values,
+         multi_rhs_index,
+         multi_rhs_values ) 
 {
   out <- .C("R_glp_solve",
             lp_direction_of_optimization= as.integer(lp_direction_of_optimization),
@@ -112,10 +122,17 @@ function(lp_objective_coefficients, lp_n_of_objective_vars,
             ## lp_n_of_bounds_l            = as.integer(length(lp_lower_bounds_i)),
             lp_bounds_upper             = as.double(lp_bounds_upper),
             ## lp_n_of_bounds_u            = as.integer(length(lp_upper_bounds_i)),
-            lp_optimum                  = double(1),
-            lp_objective_vars_values    = double(lp_n_of_objective_vars),
+            lp_optimum                  = double(multi_number_of_problems),
+            lp_objective_vars_values    = double(lp_n_of_objective_vars * multi_number_of_problems),
             lp_verbosity                = as.integer(verbose),
             lp_status                   = integer(1),
+            multi_number_of_problems    = as.integer(multi_number_of_problems),
+            multi_number_of_constraint_values = as.integer(multi_number_of_constraint_values),
+            multi_constraint_index      = as.integer(multi_constraint_index),
+            multi_constraint_values     = as.double(multi_constraint_values),
+            multi_rhs_number_of_values  = as.integer(multi_rhs_number_of_values),
+            multi_rhs_index             = as.integer(multi_rhs_index),
+            multi_rhs_values            = as.double(multi_rhs_values),
             NAOK = TRUE, PACKAGE = "rDEA")
   out
 }
