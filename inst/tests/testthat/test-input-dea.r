@@ -1,7 +1,7 @@
 
 context("Input DEA")
 
-data("dea_hospitals")
+data("dea_hospitals", package="rDEA")
 
 H12 = subset(dea_hospitals, year == 12)
 H12[is.na(H12)] = 0
