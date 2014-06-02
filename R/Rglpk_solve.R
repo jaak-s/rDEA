@@ -3,12 +3,21 @@
 
 Rglpk_solve_LP <-
 function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
-          control = list(), ...)
+          control = list(), mrhs_i = NULL, mrhs_val = NULL,
+          ...)
 {
   ## validate direction of optimization
   if(!identical( max, TRUE ) && !identical( max, FALSE ))
     stop("'Argument 'max' must be either TRUE or FALSE.")
   direction_of_optimization <- as.integer(max)
+
+  ## validate multi problem RHS
+  if(! is.null(mrhs_i) ) {
+    if (is.null(mrhs_val)) stop("If 'mrhs_i' is specified please also specify 'mrhs_val'.")
+    if (!is.matrix(mrhs_val)) stop("Argument 'mrhs_val' has to be a matrix.")
+    if (length(mrhs_i) != nrow(mrhs_val)) stop(sprintf("Length of mrhs_i (%d) has to equal nrows of mrhs_val (%d).", length(mrhs_i), nrow(mrhs_val)) )
+    if (any(mrhs_i < 0 || mrhs_i >= length(rhs))) stop("Argument 'mrhs_i' must be a vector of integers between 0 and length(rhs)-1, inclusive.")
+  }
 
   ## validate control list
   dots <- list(...)
@@ -69,8 +78,8 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
                           direction_of_optimization, bounds[, 1L],
                           bounds[, 2L], bounds[, 3L], verb,
                           1, 
-                          0, c(0), c(0), ## constraints
-                          0, c(0), c(0)) ## rhs
+                          c(), c(0), ## constraints
+                          mrhs_i, mrhs_val) ## rhs
 
   solution <- x$lp_objective_vars_values
   ## are integer variables really integers? better round values
@@ -96,10 +105,8 @@ function(lp_objective_coefficients, lp_n_of_objective_vars,
          lp_bounds_type, lp_bounds_lower, lp_bounds_upper,
          verbose,
          multi_number_of_problems,
-         multi_number_of_constraint_values,
          multi_constraint_index, 
          multi_constraint_values,
-         multi_rhs_number_of_values,
          multi_rhs_index,
          multi_rhs_values ) 
 {
@@ -127,10 +134,10 @@ function(lp_objective_coefficients, lp_n_of_objective_vars,
             lp_verbosity                = as.integer(verbose),
             lp_status                   = integer(1),
             multi_number_of_problems    = as.integer(multi_number_of_problems),
-            multi_number_of_constraint_values = as.integer(multi_number_of_constraint_values),
+            multi_number_of_constraint_values = 0, #length(multi_constraint_index),
             multi_constraint_index      = as.integer(multi_constraint_index),
             multi_constraint_values     = as.double(multi_constraint_values),
-            multi_rhs_number_of_values  = as.integer(multi_rhs_number_of_values),
+            multi_rhs_number_of_values  = 0, #length(multi_rhs_index),
             multi_rhs_index             = as.integer(multi_rhs_index),
             multi_rhs_values            = as.double(multi_rhs_values),
             NAOK = TRUE, PACKAGE = "rDEA")
