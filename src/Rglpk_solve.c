@@ -4,6 +4,26 @@
 #include "Rglpk.h"
 #include <stdio.h>
 
+void set_rhs (glp_prob *lp, int i, int direction, int rhs) {
+    switch(direction){
+    case 1: 
+      glp_set_row_bnds(lp, i+1, GLP_UP, 0.0, rhs);
+      break;
+    case 2: 
+      glp_set_row_bnds(lp, i+1, GLP_UP, 0.0, rhs);
+      break;
+    case 3: 
+      glp_set_row_bnds(lp, i+1, GLP_LO, rhs, 0.0);
+      break;
+    case 4: 
+      glp_set_row_bnds(lp, i+1, GLP_LO, rhs, 0.0);
+      break;
+    case 5: 
+      glp_set_row_bnds(lp, i+1, GLP_FX, rhs, rhs);
+      break;
+    }
+}
+
 // this is the solve function called from R
 void R_glp_solve (int *lp_direction, int *lp_number_of_constraints,
           int *lp_direction_of_constraints, double *lp_right_hand_side,
@@ -51,24 +71,7 @@ void R_glp_solve (int *lp_direction, int *lp_number_of_constraints,
   // add rows to the problem object
   glp_add_rows(lp, *lp_number_of_constraints);
   for(i = 0; i < *lp_number_of_constraints; i++)
-    switch(lp_direction_of_constraints[i]){
-    case 1: 
-      glp_set_row_bnds(lp, i+1, GLP_UP, 0.0, lp_right_hand_side[i]);
-      break;
-    case 2: 
-      glp_set_row_bnds(lp, i+1, GLP_UP, 0.0, lp_right_hand_side[i]);
-      break;
-    case 3: 
-      glp_set_row_bnds(lp, i+1, GLP_LO, lp_right_hand_side[i], 0.0);
-      break;
-    case 4: 
-      glp_set_row_bnds(lp, i+1, GLP_LO, lp_right_hand_side[i], 0.0);
-      break;
-    case 5: 
-      glp_set_row_bnds(lp, i+1, GLP_FX, lp_right_hand_side[i],
-		       lp_right_hand_side[i]);
-      break;
-    }
+    set_rhs(lp, i, lp_direction_of_constraints[i], lp_right_hand_side[i]);
   
   // add columns to the problem object
   glp_add_cols(lp, *lp_number_of_objective_vars);
