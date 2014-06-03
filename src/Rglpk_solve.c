@@ -4,7 +4,7 @@
 #include "Rglpk.h"
 #include <stdio.h>
 
-void set_rhs (glp_prob *lp, int i, int direction, int rhs) {
+void set_rhs (glp_prob *lp, int i, int direction, double rhs) {
     switch(direction){
     case 1: 
       glp_set_row_bnds(lp, i+1, GLP_UP, 0.0, rhs);
