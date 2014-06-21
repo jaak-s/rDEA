@@ -76,7 +76,7 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
     ## constant returns to scale, no constraint needed.
   }
   
-  # output matrix for Xopt
+  ## using multi optimization to solve M linear programs
   outlp = multi_glpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b,
                               mrhs_i   = 1:Doutput,
                               mrhs_val = t(Y),
