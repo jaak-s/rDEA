@@ -132,9 +132,9 @@ void R_glp_solve (int *lp_direction, int *lp_number_of_constraints,
       glp_simplex(lp, NULL);
 
       // retrieve status of optimization
-      *lp_status = glp_get_status(lp);
+      lp_status[p] = glp_get_status(lp);
       // retrieve optimum
-      *lp_optimum = glp_get_obj_val(lp);
+      lp_optimum[p] = glp_get_obj_val(lp);
       // retrieve values of objective vars
       int iplus = p * (*lp_number_of_objective_vars);
       for(i = 0; i < *lp_number_of_objective_vars; i++) {

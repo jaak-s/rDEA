@@ -77,7 +77,7 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
                           integers, binaries,
                           direction_of_optimization, bounds[, 1L],
                           bounds[, 2L], bounds[, 3L], verb,
-                          1, 
+                          1,         ## number of problems (at least 1)
                           c(), c(0), ## constraints
                           mrhs_i, mrhs_val) ## rhs
 
@@ -104,7 +104,7 @@ function(lp_objective_coefficients, lp_n_of_objective_vars,
          lp_direction_of_optimization,
          lp_bounds_type, lp_bounds_lower, lp_bounds_upper,
          verbose,
-         multi_number_of_problems,
+         multi_number_of_problems, ## has to be at least 1
          multi_constraint_index, 
          multi_constraint_values,
          multi_rhs_index,
@@ -132,7 +132,7 @@ function(lp_objective_coefficients, lp_n_of_objective_vars,
             lp_optimum                  = double(multi_number_of_problems),
             lp_objective_vars_values    = double(lp_n_of_objective_vars * multi_number_of_problems),
             lp_verbosity                = as.integer(verbose),
-            lp_status                   = integer(1),
+            lp_status                   = integer(multi_number_of_problems),
             multi_number_of_problems    = as.integer(multi_number_of_problems),
             multi_number_of_constraint_values = 0, #length(multi_constraint_index),
             multi_constraint_index      = as.integer(multi_constraint_index),
