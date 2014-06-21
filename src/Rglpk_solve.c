@@ -40,13 +40,13 @@ void R_glp_solve (int *lp_direction, int *lp_number_of_constraints,
           double *lp_optimum,
           double *lp_objective_vars_values,
           int *lp_verbosity, int *lp_status,
-          int *multi_number_of_problems,
-          int *multi_number_of_constraint_values,
-          int *multi_constraint_index,  // specifies constraint indices to be changed
-          double *multi_constraint_values,
-          int *multi_rhs_number_of_values,
-          int *multi_rhs_index,
-          double *multi_rhs_values ) {
+          int *multi_number_of_problems,          // number of problems (0 for standard solve)
+          int *multi_number_of_constraint_values, // number of constraints (size of next vector)
+          int *multi_constraint_index,     // constraint indices to be changed
+          double *multi_constraint_values, // vector of constraint values [constraint_index, problem]
+          int *multi_rhs_number_of_values, // number of RHS to be changed (size of next vector)
+          int *multi_rhs_index,            // RHS indices to be changed
+          double *multi_rhs_values ) {     // vector of RHS values [rhs_index, problem]
 
   glp_prob *lp;
   int i, kl, ku, p;
