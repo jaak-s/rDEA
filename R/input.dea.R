@@ -77,24 +77,16 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
   }
   
   # output matrix for Xopt
-  thetaOpt = matrix(0.0, M, 1)
-  lambda   = matrix(0.0, M, N)
-  feasible = matrix(0, M, 1)
-  for (m in 1:M) {
-    # firm specific outputs:
-    b[1:Doutput] = Y[m,]
-    # firm specific inputs:
-    C[(Doutput+1):(Doutput+Dinput), (N+1)] = X[m,]
-    
-    outlp=multi_glpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b)
-    
-    feasible[m,1] = (outlp$status==0)
-    
-    # taking optimal theta and lambda from the LP solution:
-    thetaOpt[m,] = outlp$solution[N+1]
-    lambda[m,]   = outlp$solution[1:N]
-  }
-  
+  outlp = multi_glpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b,
+                              mrhs_i   = 1:Doutput,
+                              mrhs_val = t(Y),
+                              mmat_i   = cbind( (Doutput+1):(Doutput+Dinput), N+1 ),
+                              mmat_val = t(X))
+
+  feasible = matrix(outlp$status==0)
+  thetaOpt = matrix(outlp$solution[N+1,])
+  lambda   = t(outlp$solution[1:N, ])
+
   # output:
   out = list()
   out$thetaOpt = thetaOpt
