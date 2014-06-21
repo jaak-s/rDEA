@@ -3,7 +3,9 @@
 
 Rglpk_solve_LP <-
 function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
-          control = list(), mrhs_i = NULL, mrhs_val = NULL,
+          control = list(),
+          mmat_i = NULL, mmat_val = NULL,
+          mrhs_i = NULL, mrhs_val = NULL,
           ...)
 {
   ## validate direction of optimization
@@ -12,11 +14,30 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
   direction_of_optimization <- as.integer(max)
 
   ## validate multi problem RHS
+  n_multi_prob = 0
   if(! is.null(mrhs_i) ) {
     if (is.null(mrhs_val)) stop("If 'mrhs_i' is specified please also specify 'mrhs_val'.")
     if (!is.matrix(mrhs_val)) stop("Argument 'mrhs_val' has to be a matrix.")
     if (length(mrhs_i) != nrow(mrhs_val)) stop(sprintf("Length of mrhs_i (%d) has to equal nrows of mrhs_val (%d).", length(mrhs_i), nrow(mrhs_val)) )
     if (any(mrhs_i < 0 || mrhs_i >= length(rhs))) stop("Argument 'mrhs_i' must be a vector of integers between 0 and length(rhs)-1, inclusive.")
+    n_multi_prob = ncol(mrhs_val)
+  }
+  ## validate multi problem constraint matrix values
+  if (! is.null(mmat_i) ) {
+    if (is.null(mmat_val)) stop("If 'mmat_i' is specified please also specify 'mmat_val'.")
+    if (!is.matrix(mmat_val)) stop("Argument 'mmat_val' has to be a matrix.")
+    if (!is.matrix(mmat_i))   stop("Argument 'mmat_i' has to be a matrix.")
+    if (nrow(mmat_i) != nrow(mmat_val)) stop(sprintf("nrow(mmat_i) (%d) has to equal nrow(mmat_val) (%d).", nrow(mmat_i), nrow(mmat_val)) )
+    if (ncol(mmat_i) != 2) stop("mmat_i needs to have 2 columns (specifying rows and cols).")
+    if (n_multi_prob == 0) {
+      n_multi_prob = ncol(mmat_val)
+    } else {
+      if (n_multi_prob != ncol(mmat_val)) stop("ncol(mrhs_val) (%d) has to equal ncol(mmat_val) (%d). Each column represents one optimization task.", ncol(mrhs_val), ncol(mmat_val))
+    }
+  }
+  ## making sure n_multi_prob is not 0
+  if (n_multi_prob == 0) {
+    n_multi_prob = 1
   }
 
   ## validate control list
@@ -77,9 +98,9 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
                           integers, binaries,
                           direction_of_optimization, bounds[, 1L],
                           bounds[, 2L], bounds[, 3L], verb,
-                          1,         ## number of problems (at least 1)
-                          c(), c(0), ## constraints
-                          mrhs_i, mrhs_val) ## rhs
+                          n_multi_prob,     ## number of problems (at least 1)
+                          c(), c(),         ## constraints indices and values
+                          mrhs_i, mrhs_val) ## rhs indices and values
 
   solution <- x$lp_objective_vars_values
   ## are integer variables really integers? better round values
