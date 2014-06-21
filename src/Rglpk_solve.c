@@ -93,7 +93,7 @@ void R_glp_solve (int *lp_direction, int *lp_number_of_constraints,
   // solving several problems at the same time:
   // lpx_std_basis(lp);
 
-  if (*multi_number_of_constraint_values <= 0) {
+  if (*multi_number_of_problems <= 0) {
     glp_load_matrix(lp, *lp_number_of_values_in_constraint_matrix,
         &lp_constraint_matrix_i[-1],
                     &lp_constraint_matrix_j[-1], &lp_constraint_matrix_values[-1]);

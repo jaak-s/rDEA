@@ -19,8 +19,9 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
     if (is.null(mrhs_val)) stop("If 'mrhs_i' is specified please also specify 'mrhs_val'.")
     if (!is.matrix(mrhs_val)) stop("Argument 'mrhs_val' has to be a matrix.")
     if (length(mrhs_i) != nrow(mrhs_val)) stop(sprintf("Length of mrhs_i (%d) has to equal nrows of mrhs_val (%d).", length(mrhs_i), nrow(mrhs_val)) )
-    if (any(mrhs_i < 0 || mrhs_i >= length(rhs))) stop("Argument 'mrhs_i' must be a vector of integers between 0 and length(rhs)-1, inclusive.")
+    if (any(mrhs_i <= 0 | mrhs_i > length(rhs))) stop("Argument 'mrhs_i' must be a vector of integers between 1 and length(rhs), inclusive, denoting the constraint index.")
     n_multi_prob = ncol(mrhs_val)
+    mrhs_i = mrhs_i - as.integer(1)
   }
   ## validate multi problem constraint matrix values
   if (! is.null(mmat_i) ) {
@@ -102,17 +103,17 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
                           c(), c(),         ## constraints indices and values
                           mrhs_i, mrhs_val) ## rhs indices and values
 
-  solution <- x$lp_objective_vars_values
+  solution <- matrix(x$lp_objective_vars_values, ncol = n_multi_prob)
   ## are integer variables really integers? better round values
-  solution[integers | binaries] <-
-    round( solution[integers | binaries])
+  solution[integers | binaries, ] <-
+    round( solution[integers | binaries, ])
   ## match status of solution
   status <- as.integer(x$lp_status)
   if(control$canonicalize_status){
       ## 0 -> optimal solution (5 in GLPK) else 1
       status <- as.integer(status != 5L)
   }
-  list(optimum = sum(solution * obj), solution = solution, status = status)
+  list(optimum = as.vector(t(solution) %*% obj), solution = solution, status = status)
 }
 
 ## this function calls the C interface
@@ -155,10 +156,10 @@ function(lp_objective_coefficients, lp_n_of_objective_vars,
             lp_verbosity                = as.integer(verbose),
             lp_status                   = integer(multi_number_of_problems),
             multi_number_of_problems    = as.integer(multi_number_of_problems),
-            multi_number_of_constraint_values = 0, #length(multi_constraint_index),
+            multi_number_of_constraint_values = length(multi_constraint_index),
             multi_constraint_index      = as.integer(multi_constraint_index),
             multi_constraint_values     = as.double(multi_constraint_values),
-            multi_rhs_number_of_values  = 0, #length(multi_rhs_index),
+            multi_rhs_number_of_values  = length(multi_rhs_index),
             multi_rhs_index             = as.integer(multi_rhs_index),
             multi_rhs_values            = as.double(multi_rhs_values),
             NAOK = TRUE, PACKAGE = "rDEA")
