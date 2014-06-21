@@ -115,7 +115,7 @@ void R_glp_solve (int *lp_direction, int *lp_number_of_constraints,
       // setup rhs
       for(i = 0; i < *multi_rhs_number_of_values; i++) {
         int rhs_var = multi_rhs_index[i];
-        int rhs_value = multi_rhs_values[ i + p * (*multi_rhs_number_of_values) ];
+        double rhs_value = multi_rhs_values[ i + p * (*multi_rhs_number_of_values) ];
         set_rhs(lp, rhs_var, lp_direction_of_constraints[rhs_var], rhs_value);
       }
       
