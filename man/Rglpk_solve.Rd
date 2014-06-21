@@ -1,13 +1,15 @@
-\name{Rglpk_solve_LP}
-\alias{Rglpk_solve_LP}
+\name{multi_glpk_solve_LP}
+\alias{multi_glpk_solve_LP}
 \title{Linear and Mixed Integer Programming Solver Using GLPK}
 \description{
   High level R interface to the GNU Linear Programming Kit (GLPK) for solving
   linear as well as mixed integer linear programming (MILP) problems.
 }
 \usage{
-Rglpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
-               control = list(), \ldots)
+multi_glpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
+               control = list(), mmat_i = NULL, mmat_val = NULL,
+               mrhs_i = NULL, mrhs_val = NULL,
+               \ldots)
 }
 \arguments{
   \item{obj}{a numeric vector representing the objective coefficients.}
@@ -32,6 +34,18 @@ Rglpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
     solver output; \code{canonicalize_status}, a logical indicating
     whether to canonicalize GLPK status codes or not. Defaults:
     \code{FALSE}; \code{TRUE}.}
+  \item{mmat_i}{a matrix of coordinates of \code{mat} matrix. Each row
+    specifies a constraint cell (its row and column). That cell will 
+    be assigned different values from the same row of matrix mmat_val.
+    Defaults: \code{NULL}.}
+  \item{mmat_val}{a matrix of values for multiple optimization. Each
+    column specifies for one optimization task the constraints values
+    for cells specified by mmat_i.
+    Defaults: \code{NULL}.}
+  \item{mrhs_i}{a vector of RHS constraint numbers that will get different values.
+    Defaults: \code{NULL}.}
+  \item{mrhs_val}{a matrix of RHS values. Each column specifies for one
+    optimization task its RHS values for mrhs_i rows.}
   \item{\ldots}{a list of control parameters (overruling those specified in
           \code{control}).}
 }
@@ -82,7 +96,7 @@ dir <- c("<=", "<=", "<=")
 rhs <- c(60, 40, 80)
 max <- TRUE
 
-Rglpk_solve_LP(obj, mat, dir, rhs, max = max)
+multi_glpk_solve_LP(obj, mat, dir, rhs, max = max)
 
 ## Simple mixed integer linear program.
 ## maximize:    3 x_1 + 1 x_2 + 3 x_3
@@ -99,7 +113,7 @@ rhs <- c(4, 2, 3)
 types <- c("I", "C", "I")
 max <- TRUE
 
-Rglpk_solve_LP(obj, mat, dir, rhs, types = types, max = max)
+multi_glpk_solve_LP(obj, mat, dir, rhs, types = types, max = max)
 
 ## Same as before but with bounds replaced by
 ## -Inf <  x_1 <= 4
@@ -108,7 +122,7 @@ Rglpk_solve_LP(obj, mat, dir, rhs, types = types, max = max)
 
 bounds <- list(lower = list(ind = c(1L, 3L), val = c(-Inf, 2)),
                upper = list(ind = c(1L, 2L), val = c(4, 100)))
-Rglpk_solve_LP(obj, mat, dir, rhs, bounds, types, max)
+multi_glpk_solve_LP(obj, mat, dir, rhs, bounds, types, max)
 
 ## Examples from the GLPK manual
 ## Solver output enabled
@@ -126,7 +140,7 @@ dir <- c("<=", "<=", "<=")
 rhs <- c(100, 600, 300)
 max <- TRUE
 
-Rglpk_solve_LP(obj, mat, dir, rhs, max = max, control = list("verbose" =
+multi_glpk_solve_LP(obj, mat, dir, rhs, max = max, control = list("verbose" =
 TRUE, "canonicalize_status" = FALSE))
 
 }

@@ -1,6 +1,6 @@
 useDynLib("rDEA")
 import("slam")
 
-export("Rglpk_solve_LP")
+export("multi_glpk_solve_LP")
 export("dea.input")
 

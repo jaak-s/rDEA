@@ -1,7 +1,7 @@
 ## the R-ported GNU Linear Programming kit
 ## solve function --- C Interface
 
-Rglpk_solve_LP <-
+multi_glpk_solve_LP <-
 function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
           control = list(),
           mmat_i = NULL, mmat_val = NULL,
@@ -151,7 +151,7 @@ function(lp_objective_coefficients, lp_n_of_objective_vars,
          multi_rhs_index,
          multi_rhs_values ) 
 {
-  out <- .C("R_glp_solve",
+  out <- .C("multi_glp_solve",
             lp_direction_of_optimization= as.integer(lp_direction_of_optimization),
             lp_n_of_constraints         = as.integer(lp_n_of_constraints),
             lp_direction_of_constraints = as.integer(lp_direction_of_constraints),

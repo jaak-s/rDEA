@@ -25,7 +25,7 @@ void set_rhs (glp_prob *lp, int i, int direction, double rhs) {
 }
 
 // this is the solve function called from R
-void R_glp_solve (int *lp_direction, int *lp_number_of_constraints,
+void multi_glp_solve (int *lp_direction, int *lp_number_of_constraints,
           int *lp_direction_of_constraints, double *lp_right_hand_side,
           int *lp_number_of_objective_vars,
           double *lp_objective_coefficients,

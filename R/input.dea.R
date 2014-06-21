@@ -1,4 +1,3 @@
-#library('Rglpk')
 
 ######## input minimization with rescaling ######
 dea.input.rescaling <- function(XREF, YREF, X, Y, RTS, rescaling=1) {
@@ -87,7 +86,7 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
     # firm specific inputs:
     C[(Doutput+1):(Doutput+Dinput), (N+1)] = X[m,]
     
-    outlp=Rglpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b)
+    outlp=multi_glpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b)
     
     feasible[m,1] = (outlp$status==0)
     
