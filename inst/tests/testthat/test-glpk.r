@@ -89,3 +89,22 @@ test_that("multi problem gives correct answer for 3 problems", {
   expect_equal( s1$solution, cbind(c(0, 10.2, 9.9), c(0, 13.8875, 2.5250), c(6.6, 16.8, 0)), tolerance=1e-5 )
   expect_equal( s1$status, c(0, 0, 0) )
 })
+
+context("Full multi optimization")
+
+test_that("rhs and constraint changing works for 3 problems", {
+  obj <- c(2, 4, 3)
+  mat <- matrix(c(2, 2, 1, 4, 1, 3, 2, 2, 9), nrow = 3)
+  dir <- c("<=", "<=", "<=")
+  rhs <- c(0, 30, 0)
+  max <- TRUE
+  mmat_i   <- matrix(c(3, 2, 1, 1), ncol = 2, byrow=T)
+  mmat_val <- cbind(c(2, 3), c(9, 6), c(4.5, 3))
+  mrhs_i   <- c(1, 3)
+  mrhs_val <- matrix(c(60.6, 60.6, 55.5, 58.5, 55.5, 57), nrow = 2)
+
+  s1 = Rglpk_solve_LP(obj, mat, dir, rhs, max = max, mrhs_i = mrhs_i, mrhs_val = mrhs_val, mmat_i = mmat_i, mmat_val = mmat_val)
+  expect_equal( s1$optimum, c(64.3875, 34.26, 53.21053), tolerance=1e-5 )
+  expect_equal( s1$solution, cbind(c(0.0, 13.25625, 3.78750), c(5.31, 5.91, 0.00), c(2.289474, 12.157895, 0.0)), tolerance=1e-5 )
+  expect_equal( s1$status, c(0, 0, 0) )
+})
