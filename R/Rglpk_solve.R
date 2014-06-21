@@ -35,6 +35,9 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
     } else {
       if (n_multi_prob != ncol(mmat_val)) stop("ncol(mrhs_val) (%d) has to equal ncol(mmat_val) (%d). Each column represents one optimization task.", ncol(mrhs_val), ncol(mmat_val))
     }
+    ## check if mmat_i is within bounds
+    if ( any(mmat_i[,1] <=0 | mmat_i[,1] > length(rhs)) ) stop("Values in the first column of 'mmat_i' must be integers between 1 and length(rhs), inclusive.")
+    if ( any(mmat_i[,2] <=0 | mmat_i[,2] > length(obj)) ) stop("Values in the second column of 'mmat_i' must be integers between 1 and length(obj), inclusive.")
   }
   ## making sure n_multi_prob is not 0
   if (n_multi_prob == 0) {
