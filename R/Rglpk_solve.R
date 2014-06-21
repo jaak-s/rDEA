@@ -23,7 +23,7 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
     n_multi_prob = ncol(mrhs_val)
     mrhs_i = mrhs_i - as.integer(1)
   }
-  ## validate multi problem constraint matrix values
+  ## validate values of multi problem constraint matrix
   if (! is.null(mmat_i) ) {
     if (is.null(mmat_val)) stop("If 'mmat_i' is specified please also specify 'mmat_val'.")
     if (!is.matrix(mmat_val)) stop("Argument 'mmat_val' has to be a matrix.")
@@ -62,7 +62,22 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
   obj <- as.numeric(obj)
   n_of_objective_vars <- length( obj )
 
-  constraint_matrix <- as.simple_triplet_matrix(mat)
+  ## removing multi constraints from mat and adding them manually to the end
+  if ( ! is.null(mmat_i) ) {
+    mat[ mmat_i ] = 0
+    constraint_matrix <- as.simple_triplet_matrix(mat)
+    n   <- length(constraint_matrix$i)
+    ind <- (n+1) : (n+nrow(mmat_i))
+    constraint_matrix$i[ind] <- mmat_i[,1]
+    constraint_matrix$j[ind] <- mmat_i[,2]
+    constraint_matrix$v[ind] <- 0
+    multi_constraint_index   <- ind - 1
+    multi_constraint_values  <- mmat_val
+  } else {
+    constraint_matrix <- as.simple_triplet_matrix(mat)
+    multi_constraint_index  <- NULL
+    multi_constraint_values <- NULL
+  }
 
   ## types of objective coefficients
   ## Default: "C"
@@ -100,7 +115,8 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
                           direction_of_optimization, bounds[, 1L],
                           bounds[, 2L], bounds[, 3L], verb,
                           n_multi_prob,     ## number of problems (at least 1)
-                          c(), c(),         ## constraints indices and values
+                          multi_constraint_index,  ## constraint indices
+                          multi_constraint_values, ## constraint values
                           mrhs_i, mrhs_val) ## rhs indices and values
 
   solution <- matrix(x$lp_objective_vars_values, ncol = n_multi_prob)
