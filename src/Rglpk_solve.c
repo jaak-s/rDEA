@@ -1,7 +1,7 @@
 /* This is the GLPK C Interface
  */
 
-#include "Rglpk.h"
+#include "rDEA.h"
 #include <stdio.h>
 
 void set_rhs (glp_prob *lp, int i, int direction, double rhs) {

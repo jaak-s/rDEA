@@ -50,12 +50,10 @@ multi_glpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE
           \code{control}).}
 }
 \details{
-  GLPK is open source. The current version can be found at
-  \url{http://www.gnu.org/software/glpk/glpk.html}.  Package \pkg{Rglpk}
-  provides a high level solver function using the low level C interface
-  of the GLPK solver. R interface packages which port all low level C routines
-  of the GLPK API to R are also available. Consult the \sQuote{See Also}
-  Section for references.
+  Package \pkg{rDEA} provides method for Data Envelopment Analysis (DEA),
+  including standard input, output and cost-minimization DEA estimation
+  and also robust DEA solvers. The latter can be with or without
+  additional environmental variables.
 }
 \value{
   A list containing the optimal solution, with the following components.
@@ -70,11 +68,8 @@ multi_glpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE
 \references{
   GNU Linear Programming Kit
   (\url{http://www.gnu.org/software/glpk/glpk.html}).
-  
-  GLPK Interface to R 
-  (\url{http://cran.R-project.org/package=Rglpk}).
 }
-\author{Stefan Theussl and Kurt Hornik}
+\author{Jaak Simm and Galina Besstremyannaya}
 \seealso{
   \pkg{glpk} and \pkg{glpkAPI} for C API bindings;
   \code{\link[lpSolve]{lp}} in package \pkg{lpSolve};

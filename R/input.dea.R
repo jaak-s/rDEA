@@ -7,7 +7,7 @@ dea.input.rescaling <- function(XREF, YREF, X, Y, RTS, rescaling=1) {
 }
 
 
-######## cost minimization with LP using Rglpk ########
+######## cost minimization with LP using GLPK ########
 ### XREF - N x Dinput matrix for ref. inputs (possibly multiplied by prices), N is the number of firms
 ### YREF - N x Doutput matrix for ref. outputs
 ### X - M x Dinput matrix of inputs (only for calculating cost efficiency)
@@ -44,7 +44,7 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
   # objective function:
   obj = c(rep(0, N), 1)
   
-  # constraints in Rglpk by default set variables to [0, Inf), see bounds in Rglpk
+  # constraints in GLPK by default set variables to [0, Inf), see bounds in GLPK
   # constraint matrix C, RHS, constraint type:
   # we have a constriant for each output and for each input.
   C  = matrix(0.0, Doutput+Dinput, N+1 )
@@ -59,7 +59,7 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
   C[(Doutput+1):(Doutput+Dinput), 1:N ]  = -t(XREF)  ## -X' * lambda
   #C[(Doutput+1):(Doutput+Dinput), (N+1)] will be changed for each firm in the loop
   
-  # positivity constrant on lambdas (unnecessary, they are bounded below from 0 in Rglpk):
+  # positivity constrant on lambdas (unnecessary, they are bounded below from 0 in GLPK):
   
   # variable returns to scale constraint:
   if (RTS=="variable") {
