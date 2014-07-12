@@ -6,6 +6,19 @@ dea.input.rescaling <- function(XREF, YREF, X, Y, RTS, rescaling=1) {
   return(result$thetaOpt)
 }
 
+dea <- function(XREF, YREF, X, Y, W=NULL, model, RTS="variable") {
+  if (missing(model) || ! model %in% c("input", "output", "costmin") ) {
+    stop("Parameter model has to be either 'input', 'output' or 'costmin'.")
+  }
+  if (model == "input") {
+    return( dea.input(XREF=XREF, YREF=YREF, X=X, Y=Y, RTS) )
+  } else if (model == "output") {
+    stop("unimplemented")
+  } else if (model == "costmin") {
+    stop("unimplemented")
+  }
+  
+}
 
 ######## cost minimization with LP using GLPK ########
 ### XREF - N x Dinput matrix for ref. inputs (possibly multiplied by prices), N is the number of firms
