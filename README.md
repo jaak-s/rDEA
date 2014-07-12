@@ -11,7 +11,14 @@ The package will be soon published in the official R CRAN.
 Installation from git
 --------------------
 
-If your system has compiler tools (gcc etc) setup, you can use following lines to install our software
+Using **devtools** package our package can be installed by
+```R
+library(devtools)
+install_github("jaak-s/rDEA")
+```
+
+In Linux another option is to use command line (make sure you have **slam** package
+installed)
 ```bash
 git clone https://github.com/jaak-s/rDEA.git
 R CMD build rDEA/
