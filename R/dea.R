@@ -17,12 +17,16 @@ dea <- function(XREF, YREF, X, Y, W=NULL, model, RTS="variable") {
   if (missing(model) || ! model %in% c("input", "output", "costmin") ) {
     stop("Parameter 'model' has to be either 'input', 'output' or 'costmin'.")
   }
+  if (missing(XREF)) stop("XREF is missing.")
+  if (missing(YREF)) stop("YREF is missing.")
+  if (missing(X))    stop("X is missing.")
+  if (missing(Y))    stop("Y is missing.")
   if (model == "input") {
-    return( dea.input(XREF=XREF, YREF=YREF, X=X, Y=Y, RTS) )
+    return( dea.input(XREF=XREF, YREF=YREF, X=X, Y=Y, RTS=RTS) )
   } else if (model == "output") {
-    return( dea.output(XREF=XREF, YREF=YREF, X=X, Y=Y, RTS) )
-  } else {
-    stop("unimplemented")
+    return( dea.output(XREF=XREF, YREF=YREF, X=X, Y=Y, RTS=RTS) )
+  } else { ## costmin
+    return( dea.costmin(XREF=XREF, YREF=YREF, X=X, Y=Y, W=W, RTS=RTS) )
   }
   
 }
@@ -121,7 +125,7 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
 }
 
 
-######## output DEA with LP using Rglpk ########
+######## output DEA with GLPK ########
 ### XREF - N x Dinput matrix for ref. inputs (possibly multiplied by prices), N is the number of firms
 ### YREF - N x Doutput matrix for ref. outputs
 ### X - M x Dinput matrix of inputs (only for calculating cost efficiency)
@@ -163,7 +167,7 @@ dea.output <- function(XREF, YREF, X, Y, RTS="variable") {
   # objective function:
   obj = c(rep(0, N), 1)
   
-  # constraints in Rglpk by default set variables to [0, Inf), see bounds in Rglpk
+  # constraints in Rglpk by default set variables to [0, Inf)
   # constraint matrix C, RHS, constraint type:
   # we have a constriant for each output and for each input.
   C  = matrix(0.0, Doutput+Dinput+Drts, N+1 )
@@ -211,6 +215,105 @@ dea.output <- function(XREF, YREF, X, Y, RTS="variable") {
   # necessary for VRS case, all rows should be equal to 1:
   out$lambda_sum = rowSums(out$lambda)
   out$lp = outlp
+  
+  return(out)
+}
+
+
+######## cost minimization with LP using GLPK ########
+### XREF - N x Dinput matrix for ref. inputs (possibly multiplied by prices), N is the number of firms
+### YREF - N x Doutput matrix for ref. outputs
+### X    - M x Dinput matrix of inputs (only for calculating cost efficiency)
+### Y    - M x Doutput matrix of outputs
+### W    - M x Dinput matrix of input prices (ones for Tone version), M is number of investigated firms
+### RTS  - returns to scale, "variable" (default), "constant" and "non-increasing"
+dea.costmin <- function(XREF, YREF, X, Y, W, RTS="variable") {
+  if ( ! is.matrix(XREF)) { XREF = as.matrix(XREF) }
+  if ( ! is.matrix(YREF)) { YREF = as.matrix(YREF) }
+  if ( ! is.matrix(X)) { X = as.matrix(X) }
+  if ( ! is.matrix(Y)) { Y = as.matrix(Y) }
+  if ( ! is.matrix(W)) { W = as.matrix(W) }
+  
+  if ( ! is.numeric(XREF)) { stop("XREF has to be numeric matrix or data.frame.") }
+  if ( ! is.numeric(YREF)) { stop("YREF has to be numeric matrix or data.frame.") }
+  if ( ! is.numeric(X)) { stop("X has to be numeric matrix or data.frame.") }
+  if ( ! is.numeric(Y)) { stop("Y has to be numeric matrix or data.frame.") }
+  if ( ! is.numeric(W)) { stop("W has to be numeric matrix or data.frame.") }
+  
+  if (nrow(XREF) != nrow(YREF)) { stop( sprintf("Number of rows in XREF (%d) does not equal the number of rows in YREF (%d)", nrow(XREF), nrow(YREF)) ) }
+  if (nrow(X)    != nrow(Y)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in Y (%d)", nrow(X), nrow(Y)) ) }
+  if (ncol(XREF) != ncol(X)) { stop( sprintf("Number of columns in XREF (%d) does not equal the number of columns in X (%d)", ncol(XREF), ncol(X)) ) }
+  if (ncol(YREF) != ncol(Y)) { stop( sprintf("Number of columns in YREF (%d) does not equal the number of columns in Y (%d)", ncol(YREF), ncol(Y)) ) }
+  if (nrow(X)    != nrow(W)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in W (%d)", nrow(X), nrow(W)) ) }
+  if (ncol(X)    != ncol(W)) { stop( sprintf("Number of columns in X (%d) does not equal the number of columns in W (%d)", ncol(X), ncol(W)) ) }
+  
+  N = nrow(XREF)
+  M = nrow(W)
+  Dinput  = ncol(XREF)
+  Doutput = ncol(YREF)
+  
+  # variables = c(lambdas(N), x(Dinput) )
+  
+  # objective function:
+  #obj = c(rep(0.0, N), W)
+  
+  # constraints in GLPK by default set variables to [0, Inf), see bounds in GLPK
+  # constraint matrix, RHS, constraint type:
+  C  = matrix(0.0, Doutput+Dinput, N+Dinput )
+  b  = rep(0.0,    Doutput+Dinput)
+  cd = rep(">=",   Doutput+Dinput)
+  
+  # constraints on outputs:
+  C[1:Doutput, 1:N] = t(YREF)
+  #b[1:Doutput] = Y
+  
+  # constraints on inputs:
+  C[(Doutput+1):(Doutput+Dinput), 1:N ]             = -t(XREF)
+  C[(Doutput+1):(Doutput+Dinput), (N+1):(N+Dinput)] = diag(Dinput)
+  
+  # constrant on lambdas (unnecessary, they are bounded below from 0 in Rglpk):
+  #n = Doutput+Dinput
+  #C[(n+1):(n+N), 1:N] = diag(N)
+  
+  # variable returns to scale constraint:
+  if (RTS=="variable") {
+    C = rbind(C, c(rep(1.0,N), rep(0.0,Dinput) ) )
+    b = c(b, 1.0)
+    cd2 = c(cd, "<")
+    cd = c(cd, "==")
+  }
+  
+  # output matrix for Xopt
+  Xopt = matrix(0.0, M, Dinput)
+  lambda = matrix(0.0, M, N)
+  feasible = matrix(0, M, 1)
+  for (m in 1:M) {
+    # firm specific objective function (prices):
+    obj = c(rep(0.0, N), W[m,])
+    # firm specific outputs:
+    b[1:Doutput] = Y[m,]
+    
+    #outlp=lp(objective.in=obj, const.mat=C, const.dir=cd, const.rhs=b)
+    outlp = multi_glpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b)
+    
+    feasible[m,1] = (outlp$status==0)
+    
+    # taking optimal inputs from the LP solution:
+    Xopt[m,]   = outlp$solution[(N+1):(N+Dinput)]
+    lambda[m,] = outlp$solution[1:N]
+  }
+  # calculating cost efficiency:
+  CE = rowSums(Xopt*W) / rowSums(X*W)
+  
+  
+  # output:
+  out = list()
+  out$Xopt = Xopt
+  out$CE   = unname(CE)
+  out$lambda = lambda
+  out$feasible = feasible
+  # necessary for VRS case, all rows should be equal to 1:
+  out$lambda_sum = rowSums(lambda)
   
   return(out)
 }
