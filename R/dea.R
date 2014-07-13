@@ -15,7 +15,7 @@ dea.output.rescaling <- function(XREF, YREF, X, Y, RTS, rescaling=1) {
 
 dea <- function(XREF, YREF, X, Y, W=NULL, model, RTS="variable") {
   if (missing(model) || ! model %in% c("input", "output", "costmin") ) {
-    stop("Parameter model has to be either 'input', 'output' or 'costmin'.")
+    stop("Parameter 'model' has to be either 'input', 'output' or 'costmin'.")
   }
   if (model == "input") {
     return( dea.input(XREF=XREF, YREF=YREF, X=X, Y=Y, RTS) )
