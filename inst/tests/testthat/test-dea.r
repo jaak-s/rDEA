@@ -16,7 +16,7 @@ test_that("input DEA with variable RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="input", RTS="variable" )
   expect_equal( length(dea$thetaOpt), length(firms) )
   correct_thetaOpt =  c(0.8318892, 0.4166437, 1.0000000, 0.9838584, 0.7870153, 0.8918320, 0.7517825, 0.6274347, 0.6044336, 0.4562620)
-  expect_equal( dea$thetaOpt, matrix(correct_thetaOpt), tolerance=1e-5 )
+  expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, rep.int(1, length(firms)) )
 })
 
@@ -25,7 +25,7 @@ test_that("input DEA with constant RTS works", {
   expect_equal( length(dea$thetaOpt), length(firms) )
   correct_thetaOpt   = c(0.7984635, 0.4115119, 0.7819155, 0.8509834, 0.7589849, 0.8830402, 0.7391885, 0.6272689, 0.5663417, 0.4539587)
   correct_lambda_sum = c(1.7552852, 0.6940001, 4.2301076, 3.1562303, 1.4035927, 0.9229464, 1.0757771, 1.0615420, 0.5565966, 1.4986582)
-  expect_equal( dea$thetaOpt, matrix(correct_thetaOpt), tolerance=1e-5 )
+  expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
 })
 
@@ -34,7 +34,7 @@ test_that("input DEA with non-increasing RTS works", {
   expect_equal( length(dea$thetaOpt), length(firms) )
   correct_thetaOpt   = c(0.8318892, 0.4115119, 1.0000000, 0.9838584, 0.7870153, 0.8830402, 0.7517825, 0.6274347, 0.5663417, 0.4562620)
   correct_lambda_sum = c(1.0000000, 0.6940001, 1.0000000, 1.0000000, 1.0000000, 0.9229464, 1.0000000, 1.0000000, 0.5565966, 1.0000000)
-  expect_equal( dea$thetaOpt, matrix(correct_thetaOpt), tolerance=1e-5 )
+  expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
 })
 
@@ -46,7 +46,7 @@ test_that("output DEA with variable RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="output", RTS="variable" )
   expect_equal( length(dea$thetaOpt), length(firms) )
   correct_thetaOpt = c(0.8566956, 0.4361563, 1.0000000, 0.9891156, 0.8286440, 0.8861781, 0.8187128, 0.6896913, 0.5670282, 0.5973477)
-  expect_equal( dea$thetaOpt, matrix(correct_thetaOpt), tolerance=1e-5 )
+  expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, rep.int(1, length(firms)) )
 })
 
@@ -55,7 +55,7 @@ test_that("output DEA with constant RTS works", {
   expect_equal( length(dea$thetaOpt), length(firms) )
   correct_thetaOpt   = c(0.79846352180596, 0.41151186321040, 0.78191547262234, 0.8509833968360, 0.75898489453937, 0.88304017442415, 0.73918850524128, 0.62726889495695, 0.56634171983981, 0.453958669575282)
   correct_lambda_sum = c(2.19832863850184, 1.68646435238622, 5.40992955742233, 3.7089211795534, 1.84930261291768, 1.04519180267609, 1.45534877696086, 1.69232373208077, 0.982792779422565, 3.30130988353909)
-  expect_equal( dea$thetaOpt, matrix(correct_thetaOpt), tolerance=1e-5 )
+  expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
 })
 
@@ -64,7 +64,7 @@ test_that("output DEA with non-increasing RTS works", {
   expect_equal( length(dea$thetaOpt), length(firms) )
   correct_thetaOpt   = c(0.856695552478634, 0.436156271306031, 1, 0.989115625730642, 0.828644020200666, 0.886178140787594, 0.818712783530984, 0.689691319915979, 0.56634171983981, 0.597347713436698)
   correct_lambda_sum = c(1, 1, 1, 1, 1, 1, 1, 1, 0.982792779422565, 1)
-  expect_equal( dea$thetaOpt, matrix(correct_thetaOpt), tolerance=1e-5 )
+  expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
 })
 

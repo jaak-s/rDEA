@@ -109,18 +109,13 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
                               mrhs_val = t(Y),
                               mmat_i   = cbind( (Doutput+1):(Doutput+Dinput), N+1 ),
                               mmat_val = t(X))
-
-  feasible = matrix(outlp$status==0)
-  thetaOpt = matrix(outlp$solution[N+1,])
-  lambda   = t(outlp$solution[1:N, ])
-
   # output:
   out = list()
-  out$thetaOpt = thetaOpt
-  out$lambda   = lambda
-  out$feasible = feasible
+  out$feasible = outlp$status==0
+  out$thetaOpt = outlp$solution[N+1,]
+  out$lambda   = t(outlp$solution[1:N, ])
   # necessary for VRS case, all rows should be equal to 1:
-  out$lambda_sum = rowSums(lambda)
+  out$lambda_sum = rowSums(out$lambda)
   
   return(out)
 }
@@ -210,8 +205,8 @@ dea.output <- function(XREF, YREF, X, Y, RTS="variable") {
                               max=TRUE )
   # output:
   out = list()
-  out$feasible = matrix(outlp$status==0)
-  out$thetaOpt = matrix(1 / outlp$solution[N+1,])
+  out$feasible = outlp$status==0
+  out$thetaOpt = 1 / outlp$solution[N+1,]
   out$lambda   = t(outlp$solution[1:N, ])
   # necessary for VRS case, all rows should be equal to 1:
   out$lambda_sum = rowSums(out$lambda)
