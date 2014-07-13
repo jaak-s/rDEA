@@ -50,7 +50,9 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
   if ( ! is.numeric(Y)) { stop("Y has to be numeric matrix or data.frame.") }
   
   if (nrow(XREF) != nrow(YREF)) { stop( sprintf("Number of rows in XREF (%d) does not equal the number of rows in YREF (%d)", nrow(XREF), nrow(YREF)) ) }
-  if (nrow(X) != nrow(Y)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in Y (%d)", nrow(X), nrow(Y)) ) }
+  if (nrow(X)    != nrow(Y)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in Y (%d)", nrow(X), nrow(Y)) ) }
+  if (ncol(XREF) != ncol(X)) { stop( sprintf("Number of columns in XREF (%d) does not equal the number of columns in X (%d)", ncol(XREF), ncol(X)) ) }
+  if (ncol(YREF) != ncol(Y)) { stop( sprintf("Number of columns in YREF (%d) does not equal the number of columns in Y (%d)", ncol(YREF), ncol(Y)) ) }
   
   ## N is the number of firms in reference
   N = nrow(XREF)
@@ -147,7 +149,9 @@ dea.output <- function(XREF, YREF, X, Y, RTS="variable") {
   if ( ! is.numeric(Y)) { stop("Y has to be numeric matrix or data.frame.") }
   
   if (nrow(XREF) != nrow(YREF)) { stop( sprintf("Number of rows in XREF (%d) does not equal the number of rows in YREF (%d)", nrow(XREF), nrow(YREF)) ) }
-  if (nrow(X) != nrow(Y)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in Y (%d)", nrow(X), nrow(Y)) ) }
+  if (nrow(X)    != nrow(Y)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in Y (%d)", nrow(X), nrow(Y)) ) }
+  if (ncol(XREF) != ncol(X)) { stop( sprintf("Number of columns in XREF (%d) does not equal the number of columns in X (%d)", ncol(XREF), ncol(X)) ) }
+  if (ncol(YREF) != ncol(Y)) { stop( sprintf("Number of columns in YREF (%d) does not equal the number of columns in Y (%d)", ncol(YREF), ncol(Y)) ) }
   
   ## N is the number of firms in reference
   N = nrow(XREF)
@@ -197,34 +201,21 @@ dea.output <- function(XREF, YREF, X, Y, RTS="variable") {
   } else {
     ## constant returns to scale, no constraint needed.
   }
-  
-  # output matrix for Xopt
-  thetaOpt = matrix(0.0, M, 1)
-  lambda   = matrix(0.0, M, N)
-  feasible = matrix(TRUE, M, 1)
-  for (m in 1:M) {
-    # firm specific outputs:
-    C[1:Doutput, N+1] = -Y[m,]
-    # firm specific inputs:
-    b[(Doutput+1):(Doutput+Dinput)] = -X[m,]
-    
-    outlp=multi_glpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b, max=TRUE)
-    
-    feasible[m,1] = (outlp$status==0)
-    
-    # taking optimal theta (we get delta and take its reciprocal)
-    thetaOpt[m,] = 1 / outlp$solution[N+1]
-    # lambda from the LP solution:
-    lambda[m,]   = outlp$solution[1:N]
-  }
-  
+
+  outlp = multi_glpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b,
+                              mrhs_i   = (Doutput+1):(Doutput+Dinput),
+                              mrhs_val = t(-X),
+                              mmat_i   = cbind(1:Doutput, N+1),
+                              mmat_val = t(-Y),
+                              max=TRUE )
   # output:
   out = list()
-  out$thetaOpt = thetaOpt
-  out$lambda   = lambda
-  out$feasible = feasible
+  out$feasible = matrix(outlp$status==0)
+  out$thetaOpt = matrix(1 / outlp$solution[N+1,])
+  out$lambda   = t(outlp$solution[1:N, ])
   # necessary for VRS case, all rows should be equal to 1:
-  out$lambda_sum = rowSums(lambda)
+  out$lambda_sum = rowSums(out$lambda)
+  out$lp = outlp
   
   return(out)
 }
