@@ -59,6 +59,9 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
   Dinput  = ncol(XREF)
   Doutput = ncol(YREF)
   
+  ## adding 1 constraint if RTS is "variable" or "non-increasing"
+  Drts = RTS %in% c("variable", "non-increasing")
+  
   # variables = c(lambdas(N), theta(1) )
   
   # objective function:
@@ -67,9 +70,9 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
   # constraints in GLPK by default set variables to [0, Inf), see bounds in GLPK
   # constraint matrix C, RHS, constraint type:
   # we have a constriant for each output and for each input.
-  C  = matrix(0.0, Doutput+Dinput, N+1 )
-  b  = rep(0.0,    Doutput+Dinput)
-  cd = rep(">=",   Doutput+Dinput)
+  C  = matrix(0.0, Doutput+Dinput+Drts, N+1 )
+  b  = rep(0.0,    Doutput+Dinput+Drts)
+  cd = rep(">=",   Doutput+Dinput+Drts)
   
   # constraints on outputs:
   C[1:Doutput, 1:N] = t(YREF)
@@ -84,14 +87,16 @@ dea.input <- function(XREF, YREF, X, Y, RTS="variable") {
   # variable returns to scale constraint:
   if (RTS=="variable") {
     ## adding constraint sum(lambda) == 1
-    C  = rbind(C, c(rep(1.0,N), 0.0) )
-    b  = c(b, 1.0)
-    cd = c(cd, "==")
+    i = Doutput + Dinput + 1
+    C[i,] = c(rep(1.0,N), 0.0)
+    b[i]  = 1.0
+    cd[i] = "=="
   } else if (RTS=="non-increasing") {
     ## adding constraint sum(lambda) < 1
-    C  = rbind(C, c(rep(1.0,N), 0.0) )
-    b  = c(b, 1.0)
-    cd = c(cd, "<")
+    i = Doutput + Dinput + 1
+    C[i,] = c(rep(1.0,N), 0.0)
+    b[i]  = 1.0
+    cd[i] = "<"
   } else {
     ## constant returns to scale, no constraint needed.
   }
@@ -151,6 +156,9 @@ dea.output <- function(XREF, YREF, X, Y, RTS="variable") {
   Dinput  = ncol(XREF)
   Doutput = ncol(YREF)
   
+  ## adding 1 constraint if RTS is "variable" or "non-increasing"
+  Drts = RTS %in% c("variable", "non-increasing")
+  
   # variables = c(lambdas(N), theta(1) )
   
   # objective function:
@@ -159,9 +167,9 @@ dea.output <- function(XREF, YREF, X, Y, RTS="variable") {
   # constraints in Rglpk by default set variables to [0, Inf), see bounds in Rglpk
   # constraint matrix C, RHS, constraint type:
   # we have a constriant for each output and for each input.
-  C  = matrix(0.0, Doutput+Dinput, N+1 )
-  b  = rep(0.0,    Doutput+Dinput)
-  cd = rep(">=",   Doutput+Dinput)
+  C  = matrix(0.0, Doutput+Dinput+Drts, N+1 )
+  b  = rep(0.0,    Doutput+Dinput+Drts)
+  cd = rep(">=",   Doutput+Dinput+Drts)
   
   # constraints on outputs: Y'*lambda - theta*y >= 0
   C[1:Doutput, 1:N] = t(YREF)
@@ -176,14 +184,16 @@ dea.output <- function(XREF, YREF, X, Y, RTS="variable") {
   # variable returns to scale constraint:
   if (RTS=="variable") {
     ## adding constraint sum(lambda) == 1
-    C  = rbind(C, c(rep(1.0,N), 0.0) )
-    b  = c(b, 1.0)
-    cd = c(cd, "==")
+    i = Doutput + Dinput + 1
+    C[i,] = c(rep(1.0,N), 0.0)
+    b[i]  = 1.0
+    cd[i] = "=="
   } else if (RTS=="non-increasing") {
     ## adding constraint sum(lambda) < 1
-    C  = rbind(C, c(rep(1.0,N), 0.0) )
-    b  = c(b, 1.0)
-    cd = c(cd, "<")
+    i = Doutput + Dinput + 1
+    C[i,] = c(rep(1.0,N), 0.0)
+    b[i]  = 1.0
+    cd[i] = "<"
   } else {
     ## constant returns to scale, no constraint needed.
   }
