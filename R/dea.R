@@ -301,7 +301,6 @@ dea.costmin <- function(XREF, YREF, X, Y, W, RTS="variable") {
     # firm specific outputs:
     b[1:Doutput] = Y[m,]
     
-    #outlp=lp(objective.in=obj, const.mat=C, const.dir=cd, const.rhs=b)
     outlp = multi_glpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b)
     
     feasible[m,1] = (outlp$status==0)
@@ -310,7 +309,6 @@ dea.costmin <- function(XREF, YREF, X, Y, W, RTS="variable") {
     Xopt[m,]   = outlp$solution[(N+1):(N+Dinput)]
     lambda[m,] = outlp$solution[1:N]
   }
-  # calculating cost efficiency:
   
   # output:
   out = list()
