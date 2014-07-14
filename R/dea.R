@@ -251,6 +251,9 @@ dea.costmin <- function(XREF, YREF, X, Y, W, RTS="variable") {
   M = nrow(W)
   Dinput  = ncol(XREF)
   Doutput = ncol(YREF)
+
+  ## adding 1 constraint if RTS is "variable" or "non-increasing"
+  Drts = RTS %in% c("variable", "non-increasing")
   
   # variables = c(lambdas(N), x(Dinput) )
   
@@ -259,9 +262,9 @@ dea.costmin <- function(XREF, YREF, X, Y, W, RTS="variable") {
   
   # constraints in GLPK by default set variables to [0, Inf), see bounds in GLPK
   # constraint matrix, RHS, constraint type:
-  C  = matrix(0.0, Doutput+Dinput, N+Dinput )
-  b  = rep(0.0,    Doutput+Dinput)
-  cd = rep(">=",   Doutput+Dinput)
+  C  = matrix(0.0, Doutput+Dinput+Drts, N+Dinput )
+  b  = rep(0.0,    Doutput+Dinput+Drts)
+  cd = rep(">=",   Doutput+Dinput+Drts)
   
   # constraints on outputs:
   C[1:Doutput, 1:N] = t(YREF)
@@ -277,10 +280,15 @@ dea.costmin <- function(XREF, YREF, X, Y, W, RTS="variable") {
   
   # variable returns to scale constraint:
   if (RTS=="variable") {
-    C = rbind(C, c(rep(1.0,N), rep(0.0,Dinput) ) )
-    b = c(b, 1.0)
-    cd2 = c(cd, "<")
-    cd = c(cd, "==")
+    i = Doutput + Dinput + 1
+    C[i,] = rep.int(c(1.0, 0.0), c(N, Dinput))
+    b[i]  = 1.0
+    cd[i] = "=="
+  } else if (RTS=="non-increasing") {
+    i = Doutput + Dinput + 1
+    C[i,] = rep.int(c(1.0, 0.0), c(N, Dinput))
+    b[i]  = 1.0
+    cd[i] = "<"
   }
   
   # output matrix for Xopt

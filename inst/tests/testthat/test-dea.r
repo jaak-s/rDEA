@@ -98,11 +98,15 @@ test_that("costmin DEA with constant RTS works", {
   expect_equal( dea$Xopt[2,], correct_Xopt2, tolerance=1e-5 )
 })
 
-# test_that("costmin DEA with non-increasing RTS works", {
-#   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], W=W[firms,], model="costmin", RTS="non-increasing" )
-#   expect_equal( length(dea$CE), length(firms) )
-#   correct_thetaOpt   = c(0.856695552478634, 0.436156271306031, 1, 0.989115625730642, 0.828644020200666, 0.886178140787594, 0.818712783530984, 0.689691319915979, 0.56634171983981, 0.597347713436698)
-#   correct_lambda_sum = c(1, 1, 1, 1, 1, 1, 1, 1, 0.982792779422565, 1)
-#   expect_equal( dea$thetaOpt, matrix(correct_thetaOpt), tolerance=1e-5 )
-#   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
-# })
+test_that("costmin DEA with non-increasing RTS works", {
+  dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], W=W[firms,], model="costmin", RTS="non-increasing" )
+  expect_equal( length(dea$gammaOpt), length(firms) )
+  correct_gammaOpt = c(0.721704757187399, 0.37133012890203, 0.917664981395069, 0.918876231481052, 0.76653075695613, 0.859271996008044, 0.731855668245487, 0.612411985153844, 0.534736076414802, 0.38960407018854)
+  correct_Xopt1 = c(7.34931598903593, 44.5179518848677, 18.0279496271356, 115.568236618212)
+  correct_Xopt2 = c(3.84886621337591, 21.8723831972231, 12.7463743064303, 83.0588953728056)
+  correct_lambda_sum = c(1, 0.786311797430082, 1, 1, 1, 1, 1, 1, 0.723959624673555, 1)
+  expect_equal( dea$gammaOpt, correct_gammaOpt, tolerance=1e-5 )
+  expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
+  expect_equal( dea$Xopt[1,], correct_Xopt1, tolerance=1e-5 )
+  expect_equal( dea$Xopt[2,], correct_Xopt2, tolerance=1e-5 )
+})
