@@ -303,14 +303,12 @@ dea.costmin <- function(XREF, YREF, X, Y, W, RTS="variable") {
     lambda[m,] = outlp$solution[1:N]
   }
   # calculating cost efficiency:
-  CE = rowSums(Xopt*W) / rowSums(X*W)
-  
   
   # output:
   out = list()
   out$Xopt = Xopt
-  out$CE   = unname(CE)
-  out$lambda = lambda
+  out$gammaOpt = unname( rowSums(Xopt*W) / rowSums(X*W) )
+  out$lambda   = lambda
   out$feasible = feasible
   # necessary for VRS case, all rows should be equal to 1:
   out$lambda_sum = rowSums(lambda)
