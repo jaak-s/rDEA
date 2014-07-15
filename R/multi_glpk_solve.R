@@ -149,7 +149,9 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
       ## 0 -> optimal solution (5 in GLPK) else 1
       status <- as.integer(status != 5L)
   }
-  list(optimum = as.vector(t(solution) %*% obj), solution = solution, status = status)
+  ## get optimum values
+  optimum <- as.vector(x$lp_optimum)
+  list(optimum = optimum, solution = solution, status = status)
 }
 
 ## this function calls the C interface
