@@ -46,7 +46,11 @@ void multi_glp_solve (int *lp_direction, int *lp_number_of_constraints,
           double *multi_constraint_values, // vector of constraint values [constraint_index, problem]
           int *multi_rhs_number_of_values, // number of RHS to be changed (size of next vector)
           int *multi_rhs_index,            // RHS indices to be changed
-          double *multi_rhs_values ) {     // vector of RHS values [rhs_index, problem]
+          double *multi_rhs_values,        // vector of RHS values [rhs_index, problem]
+          int *multi_obj_number_of_values, // number of obj to be changed (size of next (index) vector)
+          int *multi_obj_index,            // obj indices to be changed
+          double *multi_obj_values         // vector of obj values [obj_index, problem]
+          ) {
 
   glp_prob *lp;
   int i, kl, ku, p;
@@ -117,6 +121,13 @@ void multi_glp_solve (int *lp_direction, int *lp_number_of_constraints,
         int rhs_var = multi_rhs_index[i];
         double rhs_value = multi_rhs_values[ i + p * (*multi_rhs_number_of_values) ];
         set_rhs(lp, rhs_var, lp_direction_of_constraints[rhs_var], rhs_value);
+      }
+      
+      // setup obj
+      for(i = 0; i < *multi_obj_number_of_values; i++) {
+        int obj_var = multi_obj_index[i];
+        double obj_value = multi_obj_values[ i + p * (*multi_obj_number_of_values) ];
+        glp_set_obj_coef(lp, obj_var, obj_value);
       }
       
       // setup variables values to lp_constraint_matrix_value

@@ -4,6 +4,7 @@
 multi_glpk_solve_LP <-
 function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
           control = list(),
+          mobj_i = NULL, mobj_val = NULL,
           mmat_i = NULL, mmat_val = NULL,
           mrhs_i = NULL, mrhs_val = NULL,
           ...)
@@ -38,6 +39,18 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
     ## check if mmat_i is within bounds
     if ( any(mmat_i[,1] <=0 | mmat_i[,1] > length(rhs)) ) stop("Values in the first column of 'mmat_i' must be integers between 1 and length(rhs), inclusive.")
     if ( any(mmat_i[,2] <=0 | mmat_i[,2] > length(obj)) ) stop("Values in the second column of 'mmat_i' must be integers between 1 and length(obj), inclusive.")
+  }
+  ## validate values of multi problem objectives
+  if (! is.null(mobj_i)) {
+    if (is.null(mobj_val)) stop("If 'mobj_i' is specified please also specify 'mobj_val'.")
+    if (!is.matrix(mobj_val)) stop("Argument 'mobj_val' has to be a matrix.")
+    if (length(mobj_i) != nrow(mobj_val)) stop(sprintf("Length of mobj_i (%d) has to equal nrows of mobj_val (%d).", length(mobj_i), nrow(mobj_val)) )
+    if (any(mobj_i <= 0 | mobj_i > length(obj))) stop("Argument 'mobj_i' must be a vector of integers between 1 and length(obj), inclusive, denoting the objective indices.")
+    if (n_multi_prob == 0) {
+      n_multi_prob = ncol(mobj_val)
+    } else {
+      if (n_multi_prob != ncol(mobj_val)) stop("ncol(mobj_val) (%d) has to equal ncol(mmat_val) (%d) or ncol(mrhs_val) (%d). Each column represents one optimization task.", ncol(mobj_val), ncol(mmat_val), ncol(mrhs_val))
+    }
   }
   ## making sure n_multi_prob is not 0
   if (n_multi_prob == 0) {
@@ -120,7 +133,11 @@ function(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
                           n_multi_prob,     ## number of problems (at least 1)
                           multi_constraint_index,  ## constraint indices
                           multi_constraint_values, ## constraint values
-                          mrhs_i, mrhs_val) ## rhs indices and values
+                          mrhs_i,     ## rhs indices
+                          mrhs_val,   ## rhs values
+                          mobj_i,     ## obj indices
+                          mobj_val    ## obj values
+  )
 
   solution <- matrix(x$lp_objective_vars_values, ncol = n_multi_prob)
   ## are integer variables really integers? better round values
@@ -149,7 +166,9 @@ function(lp_objective_coefficients, lp_n_of_objective_vars,
          multi_constraint_index, 
          multi_constraint_values,
          multi_rhs_index,
-         multi_rhs_values ) 
+         multi_rhs_values,
+         multi_obj_index,
+         multi_obj_values) 
 {
   out <- .C("multi_glp_solve",
             lp_direction_of_optimization= as.integer(lp_direction_of_optimization),
@@ -181,6 +200,9 @@ function(lp_objective_coefficients, lp_n_of_objective_vars,
             multi_rhs_number_of_values  = length(multi_rhs_index),
             multi_rhs_index             = as.integer(multi_rhs_index),
             multi_rhs_values            = as.double(multi_rhs_values),
+            multi_obj_number_of_values  = length(multi_obj_index),
+            multi_obj_index             = as.integer(multi_obj_index),
+            multi_obj_values            = as.double(multi_obj_values),
             NAOK = TRUE, PACKAGE = "rDEA")
   out
 }
