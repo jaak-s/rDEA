@@ -1,5 +1,5 @@
 Package: rDEA
-Version: 0.1-1
+Version: 0.1-2
 Title: Robust Data Evelopment Analysis (DEA) for R
 Description: Data Evelopment Analysis for R (GLPK version 4.52.1 is shipped with the source package).
   Uses GLPK for optimization.
