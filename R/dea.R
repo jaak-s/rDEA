@@ -214,7 +214,6 @@ dea.output <- function(XREF, YREF, X, Y, RTS="variable") {
   out$lambda   = t(outlp$solution[1:N, ])
   # necessary for VRS case, all rows should be equal to 1:
   out$lambda_sum = rowSums(out$lambda)
-  out$lp = outlp
   
   return(out)
 }
@@ -258,7 +257,7 @@ dea.costmin <- function(XREF, YREF, X, Y, W, RTS="variable") {
   # variables = c(lambdas(N), x(Dinput) )
   
   # objective function:
-  #obj = c(rep(0.0, N), W)
+  obj = rep.int(0.0, N + Dinput)
   
   # constraints in GLPK by default set variables to [0, Inf), see bounds in GLPK
   # constraint matrix, RHS, constraint type:
@@ -291,33 +290,20 @@ dea.costmin <- function(XREF, YREF, X, Y, W, RTS="variable") {
     cd[i] = "<"
   }
   
-  # output matrix for Xopt
-  Xopt = matrix(0.0, M, Dinput)
-  lambda = matrix(0.0, M, N)
-  feasible = matrix(0, M, 1)
-  for (m in 1:M) {
-    # firm specific objective function (prices):
-    obj = c(rep(0.0, N), W[m,])
-    # firm specific outputs:
-    b[1:Doutput] = Y[m,]
-    
-    outlp = multi_glpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b)
-    
-    feasible[m,1] = (outlp$status==0)
-    
-    # taking optimal inputs from the LP solution:
-    Xopt[m,]   = outlp$solution[(N+1):(N+Dinput)]
-    lambda[m,] = outlp$solution[1:N]
-  }
-  
-  # output:
+  outlp = multi_glpk_solve_LP(obj=obj, mat=C, dir=cd, rhs=b,
+                              mobj_i   = (N+1):(N+Dinput),
+                              mobj_val = t(W),
+                              mrhs_i   = 1:Doutput,
+                              mrhs_val = t(Y))
+  # output
   out = list()
-  out$Xopt = Xopt
-  out$gammaOpt = unname( rowSums(Xopt*W) / rowSums(X*W) )
-  out$lambda   = lambda
-  out$feasible = feasible
+  out$Xopt     = t(outlp$solution[(N+1):(N+Dinput), ])
+  out$gammaOpt = unname( rowSums(out$Xopt*W) / rowSums(X*W) )
+  out$feasible = outlp$status==0
+  out$lambda   = t(outlp$solution[1:N, ])
+  
   # necessary for VRS case, all rows should be equal to 1:
-  out$lambda_sum = rowSums(lambda)
+  out$lambda_sum = rowSums(out$lambda)
   
   return(out)
 }
