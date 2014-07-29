@@ -6,13 +6,13 @@ Description: Data Evelopment Analysis for R (GLPK version 4.52.1 is shipped with
 Authors@R: c(person("Jaak", "Simm", role = c("aut", "cre"), email = "jaak.simm@gmail.com"), person("Galina", "Besstremyannaya", role = c("aut", "cre") ))
 Depends: slam (>= 0.1-9)
 Suggests: testthat
-SystemRequirements: GLPK library package; sources are included for other OSes.
+SystemRequirements:
 License: GPL-2
-URL: http://change.this.url.com
-Packaged: 2014-05-18 11:16:12 UTC; wucloud
+URL: https://github.com/jaak-s/rDEA
+Packaged: 2014-07-29 11:16:12 UTC; wucloud
 Author: Jaak Simm [aut, cre],
-  Galina Besstremyannaya [aut, cre]
+  Galina Besstremyannaya [aut]
 Maintainer: Jaak Simm <jaak.simm@gmail.com>
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2014-06-01 16:06:15
+Date/Publication: 2014-07-29 16:06:15
