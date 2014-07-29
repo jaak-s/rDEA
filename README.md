@@ -11,7 +11,7 @@ The package will be soon published in the official R CRAN.
 Installation from git
 --------------------
 
-Using **devtools** package our package can be installed by
+Using **devtools** our package can be installed by
 ```R
 library(devtools)
 install_github("jaak-s/rDEA")
