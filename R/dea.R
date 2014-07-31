@@ -25,7 +25,8 @@ dea <- function(XREF, YREF, X, Y, W=NULL, model, RTS="variable") {
     return( dea.input(XREF=XREF, YREF=YREF, X=X, Y=Y, RTS=RTS) )
   } else if (model == "output") {
     return( dea.output(XREF=XREF, YREF=YREF, X=X, Y=Y, RTS=RTS) )
-  } else { ## costmin
+  } else { 
+    ## costmin
     return( dea.costmin(XREF=XREF, YREF=YREF, X=X, Y=Y, W=W, RTS=RTS) )
   }
   
