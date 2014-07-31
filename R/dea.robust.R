@@ -73,7 +73,9 @@ bias.correction.sw98 <- function(X, Y, RTS="variable", B=1000, alpha=0.05, deaMe
   } else if (bw %in% c("silverman", "bw.nrd0") ) {
     bw_value = bw.nrd0( as.vector(theta_hat) )
   } else if (bw %in% c("cv", "bw.ucv")) {
-    bw_value = bw.ucv( as.vector(theta_hat) )
+    suppressWarnings({
+      bw_value = bw.ucv( as.vector(theta_hat) )
+    })
   } else {
     stop( sprintf("Illegal bandwidth type '%s'.", bw) )
   }
