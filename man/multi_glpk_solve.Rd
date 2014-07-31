@@ -1,15 +1,19 @@
 \name{multi_glpk_solve_LP}
 \alias{multi_glpk_solve_LP}
-\title{Linear and Mixed Integer Programming Solver Using GLPK}
+\title{Multi Problem Solver for Linear and Mixed Integer Programming Using GLPK}
 \description{
   High level R interface to the GNU Linear Programming Kit (GLPK) for solving
-  linear as well as mixed integer linear programming (MILP) problems.
+  multiple linear as well as mixed integer linear programming (MILP) problems.
+  Solving multiple problems at the same time allows to avoid R communication
+  overhead, critical when solving many small problems.
 }
 \usage{
 multi_glpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE,
-               control = list(), mmat_i = NULL, mmat_val = NULL,
-               mrhs_i = NULL, mrhs_val = NULL,
-               \ldots)
+          control = list(),
+          mobj_i = NULL, mobj_val = NULL,
+          mmat_i = NULL, mmat_val = NULL,
+          mrhs_i = NULL, mrhs_val = NULL,
+          \ldots)
 }
 \arguments{
   \item{obj}{a numeric vector representing the objective coefficients.}
@@ -34,6 +38,11 @@ multi_glpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE
     solver output; \code{canonicalize_status}, a logical indicating
     whether to canonicalize GLPK status codes or not. Defaults:
     \code{FALSE}; \code{TRUE}.}
+  \item{mobj_i}{a vector of objective coefficient indices that will
+    get different values. Defaults: \code{NULL}.}
+  \item{mobj_val}{a matrix of objective coefficient values. Each 
+    column specifies for one optimization task the values of the objective 
+    coefficients (specified by mobj_i).}
   \item{mmat_i}{a matrix of coordinates of \code{mat} matrix. Each row
     specifies a constraint cell (its row and column). That cell will 
     be assigned different values from the same row of matrix mmat_val.
@@ -56,11 +65,12 @@ multi_glpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE
   additional environmental variables.
 }
 \value{
-  A list containing the optimal solution, with the following components.
-  \item{solution}{the vector of optimal coefficients}
-  \item{objval}{the value of the objective function at the optimum}
-  \item{status}{an integer with status information about the solution
-    returned. If the control parameter \code{canonicalize_status} is set
+  A list containing the optimal solutions for each problem,
+  with the following components.
+  \item{solution}{the matrix of optimal coefficients, each column is one problem}
+  \item{objval}{the vector of values of the objective function at the optimum, for each problem}
+  \item{status}{a vector of integers with status information about the solution
+    returned, for each problem. If the control parameter \code{canonicalize_status} is set
     (the default) then it will return 0 for the optimal solution being
     found, and non-zero otherwise. If the control parameter is set to
     \code{FALSE} it will return the GLPK status codes.}
@@ -69,13 +79,10 @@ multi_glpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE
   GNU Linear Programming Kit
   (\url{http://www.gnu.org/software/glpk/glpk.html}).
 }
-\author{Jaak Simm and Galina Besstremyannaya}
+\author{Jaak Simm}
 \seealso{
   \pkg{glpk} and \pkg{glpkAPI} for C API bindings;
-  \code{\link[lpSolve]{lp}} in package \pkg{lpSolve};
-  \code{\link[ROI]{ROI_solve}} in package \pkg{ROI};
-  \code{\link[Rsymphony]{Rsymphony_solve_LP}} in package
-  \pkg{Rsymphony}.
+  \code{\link[Rglpk]{Rglpk_solve}} in package \pkg{Rglpk}.
 }
 \examples{
 ## Simple linear program.
