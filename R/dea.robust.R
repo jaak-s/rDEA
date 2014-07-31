@@ -32,7 +32,7 @@ dea.robust <- function(X, Y, W=NULL, model, RTS="variable", B=1000, alpha=0.05) 
                                  deaMethod=dea.output.rescaling) )
   } else { 
     ## costmin (Fare's costmin)
-    if ( ! is.null(W)) { stop("W (input prices) has to be numeric matrix or data.frame.") }
+    if ( is.null(W)) { stop("W (input prices) has to be numeric matrix or data.frame.") }
     if ( ! is.matrix(W)) { W = as.matrix(W) }
     if ( ! is.numeric(W)) { stop("W (input prices) has to be numeric matrix or data.frame.") }
     if (nrow(X) != nrow(W)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in W (%d)", nrow(X), nrow(W)) ) }
