@@ -1,10 +1,10 @@
 Package: rDEA
 Version: 0.1-2
 Title: Robust Data Evelopment Analysis (DEA) for R
-Description: Data Evelopment Analysis for R (GLPK version 4.52.1 is shipped with the source package).
+Description: Data Evelopment Analysis for R, providing robust DEA without and with environmental variables and returns-to-scal tests.
   Uses GLPK for optimization.
 Authors@R: c(person("Jaak", "Simm", role = c("aut", "cre"), email = "jaak.simm@gmail.com"), person("Galina", "Besstremyannaya", role = c("aut", "cre") ))
-Depends: slam (>= 0.1-9)
+Depends: slam (>= 0.1-9), truncreg(>= 0.2-1), truncnorm(>= 1.0-7)
 Suggests: testthat
 SystemRequirements:
 License: GPL-2

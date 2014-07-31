@@ -1,7 +1,10 @@
 useDynLib("rDEA")
 import("slam")
+import("truncreg")
+import("truncnorm")
 
 export("multi_glpk_solve_LP")
 export("dea")
 export("dea.robust")
+export("dea.env.robust")
 

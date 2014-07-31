@@ -21,7 +21,6 @@ dea.robust <- function(X, Y, W=NULL, model, RTS="variable", B=1000, alpha=0.05) 
   if ( ! is.matrix(Y)) { Y = as.matrix(Y) }
   if ( ! is.numeric(X)) { stop("X has to be numeric matrix or data.frame.") }
   if ( ! is.numeric(Y)) { stop("Y has to be numeric matrix or data.frame.") }
-
   if (nrow(X) != nrow(Y)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in Y (%d)", nrow(X), nrow(Y)) ) }
   
   if (model == "input") {
