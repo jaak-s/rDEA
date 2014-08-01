@@ -33,6 +33,9 @@ dea.env.robust <- function(X, Y, W=NULL, Z, model, RTS="variable", L1=2000, L2=2
   if ( ! is.numeric(X)) { stop("X has to be numeric matrix or data.frame.") }
   if ( ! is.numeric(Y)) { stop("Y has to be numeric matrix or data.frame.") }
   if ( ! is.numeric(Z)) { stop("Z has to be numeric matrix or data.frame.") }
+  if ( any(is.na(X)) ) stop("X contains NA. Missing values are not supported.")
+  if ( any(is.na(Y)) ) stop("Y contains NA. Missing values are not supported.")
+  if ( any(is.na(Z)) ) stop("Z contains NA. Missing values are not supported.")
   if (nrow(X) != nrow(Y)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in Y (%d)", nrow(X), nrow(Y)) ) }
   if (nrow(X) != nrow(Z)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in Z (%d)", nrow(X), nrow(Z)) ) }
   
@@ -47,6 +50,7 @@ dea.env.robust <- function(X, Y, W=NULL, Z, model, RTS="variable", L1=2000, L2=2
     if ( is.null(W)) { stop("W (input prices) has to be numeric matrix or data.frame.") }
     if ( ! is.matrix(W)) { W = as.matrix(W) }
     if ( ! is.numeric(W)) { stop("W (input prices) has to be numeric matrix or data.frame.") }
+    if ( any(is.na(W)) ) stop("W (input prices) contains NA. Missing values are not supported.")
     if (nrow(X) != nrow(W)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in W (%d)", nrow(X), nrow(W)) ) }
     if (ncol(X) != ncol(W)) { stop( sprintf("Number of columns in X (%d) does not equal the number of columns in W (%d)", ncol(X), ncol(W)) ) }
 
