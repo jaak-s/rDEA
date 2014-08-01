@@ -23,7 +23,7 @@ costmin.tone.bias.correction.sw07 <- function(Xbar, Y, Z, RTS="variable", L1=100
 ### RTS       - returns to scale: "variable" (default), "non-increasing", "constant"
 ### L1/L2     - number of bootstraps
 ### alpha     - confidence interval, i.e., 0.05
-dea.env.robust <- function(X, Y, W=NULL, Z, model, RTS="variable", L1=2000, L2=100, alpha=0.05) {
+dea.env.robust <- function(X, Y, W=NULL, Z, model, RTS="variable", L1=2000, L2=2000, alpha=0.05) {
   if (missing(model) || ! model %in% c("input", "output", "costmin", "costmin-tone") ) {
     stop("Parameter 'model' has to be either 'input', 'output', 'costmin' or 'costmin-tone'.")
   }
@@ -86,9 +86,9 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   
   # 1. Compute the original DEA (input oriented)
   # now we get delta_hat
-  #dea = input.dea.rglpk(XREF=X, YREF=Y, X=X, Y=Y, RTS=RTS)
-  #delta_hat = 1.0 / dea$thetaOpt
   delta_hat = 1.0 / deaMethod(XREF=X, YREF=Y, X=X, Y=Y, RTS=RTS)
+  # removing numerical errors
+  delta_hat[ 1 - 1e-5 < delta_hat & delta_hat < 1 ] = 1
   out$delta_hat = delta_hat
   
   # 2. Maximum likelihood for estimating beta and sigma_{\epsilon}
@@ -159,7 +159,7 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   mlYZ = truncreg::truncreg(ty~tx, point=1.0, direction="left")
   beta_hat_hat     = mlYZ$coefficients[ 1:(length(mlYZ$coefficients)-1) ]
   sigma_hat_hat    = mlYZ$coefficients[ length(mlYZ$coefficients) ]
-  out$beta_hat_hat = data.frame(beta_hat_hat)
+  out$beta_hat_hat = beta_hat_hat
   out$sigma_hat_hat= sigma_hat_hat
   
   # 6. Bootstrap loop for L2 (2000) steps.
