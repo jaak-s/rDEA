@@ -1,4 +1,8 @@
+2014-08-01  Jaak Simm  <jaak.simm@gmail.com>
+  * ADDED: dea, dea.robust, dea.env.robust, rts.test. 
+           Also tests using testthat package.
+           rts.test for costmin is unfinished.
+
 2014-06-01  Jaak Simm  <jaak.simm@gmail.com>
 	* UPDATED: initial commit
 	* FIXED: dea.input with non-increasing RTS
-	* RELEASE: rDEA 0.1-1 on CRAN
