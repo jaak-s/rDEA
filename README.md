@@ -25,3 +25,12 @@ R CMD build rDEA/
 R CMD INSTALL rDEA_*.tar.gz
 ```
 
+Testing installed rDEA package
+-------------------------
+After installing rDEA package you can run tests by
+```R
+library(testthat)
+library(maxLik)
+test_package("rDEA")
+```
+
