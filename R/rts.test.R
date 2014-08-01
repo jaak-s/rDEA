@@ -81,7 +81,7 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
   
   if (model == "input")   dea = dea.input.rescaling
   if (model == "output")  dea = dea.output.rescaling
-  if (model == "costmin") dea = function(...) dea.costmin.scaling(W=W, ...)
+  if (model == "costmin") dea = function(...) dea.costmin.rescaling(W=W, ...)
 
   # (1) calculating input-oriented DEA with CRS and VRS:
   D_crs_hat = fixaround1( as.vector( dea(XREF=X, YREF=Y, X=X, Y=Y, RTS=H0) ) )

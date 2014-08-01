@@ -12,7 +12,7 @@ dea.output.rescaling <- function(XREF, YREF, X, Y, RTS, rescaling=1) {
   return(result$thetaOpt)
 }
 
-dea.costmin.scaling <- function(XREF, YREF, W, X, Y, RTS, rescaling=1) {
+dea.costmin.rescaling <- function(XREF, YREF, W, X, Y, RTS, rescaling=1) {
   XREF.rescaled = XREF * rescaling
   result = dea.costmin(XREF=XREF.rescaled, YREF=YREF, W=W, X=X, Y=Y, RTS=RTS)
   return( result$gammaOpt )

@@ -57,7 +57,7 @@ dea.env.robust <- function(X, Y, W=NULL, Z, model, RTS="variable", L1=2000, L2=2
     ## TODO: add if for costmine-tone here
     
     dm <- function(XREF, YREF, X, Y, RTS, rescaling=1) {
-      dea.costmin.scaling(XREF=XREF, YREF=YREF, W=W, X=X, Y=Y, RTS=RTS, rescaling=rescaling)
+      dea.costmin.rescaling(XREF=XREF, YREF=YREF, W=W, X=X, Y=Y, RTS=RTS, rescaling=rescaling)
     }
     ## calling the general bias correction method:
     return( bias.correction.sw07(X=X, Y=Y, Z=Z, RTS=RTS, L1=L1, L2=L2, alpha=alpha, deaMethod=dm) )
