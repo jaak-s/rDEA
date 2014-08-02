@@ -53,7 +53,7 @@ void multi_glp_solve (int *lp_direction, int *lp_number_of_constraints,
           ) {
 
   glp_prob *lp;
-  int i, kl, ku, p;
+  int i, p;
   // create problem object 
   lp = glp_create_prob();
 
@@ -79,7 +79,7 @@ void multi_glp_solve (int *lp_direction, int *lp_number_of_constraints,
   
   // add columns to the problem object
   glp_add_cols(lp, *lp_number_of_objective_vars);
-  kl = ku = 0;
+
   for(i = 0; i < *lp_number_of_objective_vars; i++) {
     glp_set_col_bnds(lp, i+1, lp_bounds_type[i], lp_bounds_lower[i], lp_bounds_upper[i]);
     // set objective coefficients and integer if necessary
