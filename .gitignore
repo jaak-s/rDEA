@@ -5,3 +5,4 @@
 *.so
 src/*.ts
 src/Makevars
+src/tags
