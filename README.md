@@ -47,7 +47,7 @@ Y = H12[firms, c('y1', 'y2')]
 di = dea.robust(X=X, Y=Y, model="input", RTS="variable", B=1000)
 
 ## robust estimates of technical efficiency for each hospital
-di$tehta_hat_hat
+di$theta_hat_hat
 ```
 
 Testing installed rDEA package
