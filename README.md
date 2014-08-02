@@ -43,7 +43,7 @@ firms = 1:50
 X = H12[firms, c('x1', 'x2', 'x3', 'x5')]
 Y = H12[firms, c('y1', 'y2')]
 
-## Robust DEA with 200 bootstrap iterations and variable returns-to-scale
+## Robust DEA with 1000 bootstrap iterations and variable returns-to-scale
 di = dea.robust(X=X, Y=Y, model="input", RTS="variable", B=1000)
 
 ## robust estimates of technical efficiency for each hospital
