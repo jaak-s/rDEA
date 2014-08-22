@@ -8,7 +8,7 @@
 ### RTS       - returns to scale: "variable" (default), "non-increasing", "constant"
 ### L1/L2     - number of bootstraps
 ### alpha     - confidence interval, i.e., 0.05
-costmin.tone.bias.correction.sw07 <- function(Xbar, Y, Z, RTS="variable", L1=100, L2=100, alpha=0.05) {
+costmin.tone.bias.correction.sw07 <- function(Xbar, Y, Z, RTS="variable", L1=100, L2=1000, alpha=0.05) {
   ## calling the general bias correction method:
   bias.correction.sw07(X=Xbar, Y=Y, Z=Z, RTS=RTS, L1=L1, L2=L2, alpha=alpha, 
                        deaMethod=costmin.aggr.rglpk.scaling)
@@ -24,7 +24,7 @@ costmin.tone.bias.correction.sw07 <- function(Xbar, Y, Z, RTS="variable", L1=100
 ### L1/L2     - number of bootstraps
 ### alpha     - confidence interval, i.e., 0.05
 dea.env.robust <- function(X, Y, W=NULL, Z, model, RTS="variable", 
-                           L1=2000, L2=2000, alpha=0.05) {
+                           L1=100, L2=2000, alpha=0.05) {
   if (missing(model) || ! model %in% c("input", "output", "costmin", "costmin-tone") ) {
     stop("Parameter 'model' has to be either 'input', 'output', 'costmin' or 'costmin-tone'.")
   }
