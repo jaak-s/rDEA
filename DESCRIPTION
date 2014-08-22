@@ -1,5 +1,5 @@
 Package: rDEA
-Version: 0.2-1
+Version: 0.3-1
 Title: Robust Data Envelopment Analysis (DEA) for R
 Description: Data Envelopment Analysis for R, estimating robust DEA scores without and with environmental variables and doing returns-to-scale tests.
 Authors@R: c(person("Jaak", "Simm", role = c("aut", "cre"), email = "jaak.simm@gmail.com"), person("Galina", "Besstremyannaya", role = c("aut", "cre") ))
