@@ -184,15 +184,16 @@ dea.robust.costmin <- function(X, Y, W, RTS, B, alpha, bw) {
   out$gamma_ci_high = gamma_ci[2,] - 2*bias
   
   ## from Kneip et al (2008), page 1676-1677:
-  out$ratio_ci_low  = gamma_ci[1,] / out$gamma_hat - 1
-  out$ratio_ci_high = gamma_ci[2,] / out$gamma_hat - 1
+  ratio_ci_low  = gamma_ci[1,] / out$gamma_hat - 1
+  ratio_ci_high = gamma_ci[2,] / out$gamma_hat - 1
+  
+  ## ratio ci low is used for gamma ci high
+  out$gamma_ci_kneip_high = out$gamma_hat / (1 + ratio_ci_low) #sw98.fare
+  out$gamma_ci_kneip_low  = out$gamma_hat / (1 + ratio_ci_high)
   
   ## paper approach
   #out$ratio2_ci = apply( gamma_hat_star / out$gamma_hat - 1, 1, quantile, c(alpha/2, 1-alpha/2) )
   
-  ## ratio ci low is used for gamma ci high
-  out$gamma_ci_kneip_high = out$gamma_hat / (1 + out$ratio_ci_low) #sw98.fare
-  out$gamma_ci_kneip_low  = out$gamma_hat / (1 + out$ratio_ci_high)
   
   return(out)
 }

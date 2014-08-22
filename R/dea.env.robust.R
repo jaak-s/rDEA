@@ -149,9 +149,21 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   out$bias          = rowMeans(delta_hat_star) - delta_hat
   out$beta_hat      = beta_hat
   out$delta_hat_hat = delta_hat_hat
-  #out$delta_hat_star= as.data.frame( delta_hat_star )
   
-  
+  # estimate CI for delta
+  # c(alpha/2, 1-alpha/2) is c(0.025, 0.975) in case alpha = 0.05.
+  delta_ci = apply( delta_hat_star, 1, quantile, c(alpha/2, 1-alpha/2) )
+  out$delta_ci_low  = delta_ci[1,] - 2*out$bias
+  out$delta_ci_high = delta_ci[2,] - 2*out$bias
+
+  ## from Kneip et al (2008), page 1676-1677:
+  ## (there is theta, we have delta = 1 / theta)
+  ratio_ci_low  = out$delta_hat / delta_ci[1,] - 1
+  ratio_ci_high = out$delta_hat / delta_ci[2,] - 1
+
+  out$delta_ci_kneip_low  = 1 / ((1/out$delta_hat) / (1 + ratio_ci_high))
+  out$delta_ci_kneip_high = 1 / ((1/out$delta_hat) / (1 + ratio_ci_low))
+
   # 5. Maximum likelihood to estimate \doublehat{\beta} and \doublehat{\sigma}
   # - only use delta_hat>1
   # - Z should scaled by mean(Z)

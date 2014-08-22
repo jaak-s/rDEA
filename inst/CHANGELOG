@@ -1,4 +1,9 @@
+2014-08-22  Jaak Simm  <jaak.simm@gmail.com>
+  * VERSION: 0.3-1
+  * ADDED: confidence interval for delta in dea.env.robust
+
 2014-08-01  Jaak Simm  <jaak.simm@gmail.com>
+  * VERSION: 0.2-1
   * ADDED: dea, dea.robust, dea.env.robust, rts.test. 
            Also tests using testthat package.
            rts.test for costmin is unfinished.
