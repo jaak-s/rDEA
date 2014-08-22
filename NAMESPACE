@@ -1,6 +1,5 @@
 useDynLib("rDEA")
 import("slam")
-import("maxLik")
 import("truncreg")
 import("truncnorm")
 
