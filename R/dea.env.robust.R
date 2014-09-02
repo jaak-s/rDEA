@@ -184,7 +184,7 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   sigma_hat_hat_boot = matrix(0, 1, L2)
   
   Zbeta_hat_hat = Z1 %*% matrix(beta_hat_hat)
-  out$Zbeta_hat_hat = data.frame(Zbeta_hat_hat)
+  out$Zbeta_hat_hat = Zbeta_hat_hat
   
   
   for (i in 1:L2) {
@@ -229,7 +229,6 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   
   out$beta_hat_hat_star  = beta_hat_hat_star
   out$sigma_hat_hat_star = sigma_hat_hat_star
-  #out$sigma_hat_hat_star = data.frame(sigma_hat_hat_star)
   
   # 7. Calculate confidence interval for \doublehat{\beta}^* and \doublehat{\sigma}^*
   out$beta_ci  = t(apply( beta_hat_hat_boot, 1, quantile, c(alpha/2, 1-alpha/2) ))
