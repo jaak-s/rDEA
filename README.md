@@ -55,7 +55,6 @@ Testing installed rDEA package
 After installing rDEA package you can run included tests by
 ```R
 library(testthat)
-library(maxLik)
 test_package("rDEA")
 ```
 
