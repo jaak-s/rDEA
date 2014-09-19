@@ -3,7 +3,7 @@ Version: 0.3-1
 Title: Robust Data Envelopment Analysis (DEA) for R
 Description: Data Envelopment Analysis for R, estimating robust DEA scores without and with environmental variables and doing returns-to-scale tests.
 Authors@R: c(person("Jaak", "Simm", role = c("aut", "cre"), email = "jaak.simm@gmail.com"), person("Galina", "Besstremyannaya", role = c("aut") ))
-Depends: slam (>= 0.1-9), truncreg(>= 0.2-1), truncnorm(>= 1.0-7)
+Depends: slam (>= 0.1-9), truncreg(>= 0.2-1), truncnorm(>= 1.0-7), maxLik
 Suggests: testthat
 SystemRequirements:
 License: GPL-2 | GPL-3

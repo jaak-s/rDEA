@@ -1,4 +1,5 @@
 
+library("maxLik")
 data("dea_hospitals", package="rDEA")
 
 H12 = subset(dea_hospitals, year == 12)
