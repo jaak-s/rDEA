@@ -55,20 +55,21 @@ bias.correction.sw98 <- function(X, Y, RTS, B, alpha, deaMethod, bw) {
     
   # (1) calculating original theta_hat in DEA:
   theta_hat      = deaMethod(XREF=X, YREF=Y, X=X, Y=Y, RTS=RTS)
-  var_theta_hat  = var(theta_hat)
-  mean_theta_hat = mean(theta_hat)
+  delta_hat      = 1 / theta_hat
+  var_delta_hat  = var(delta_hat)
+  mean_delta_hat = mean(delta_hat)
   out$theta_hat  = theta_hat
   
   # finding the bandwidth for kernel sampling:
   if (is.function(bw)) {
-    bw_value = bw( as.vector(theta_hat) )
+    bw_value = bw( as.vector(delta_hat) )
   } else if (bw == "rule") {
     bw_value = bandwidth_rule( ncol(X), ncol(Y), nrow(X) )
   } else if (bw %in% c("silverman", "bw.nrd0") ) {
-    bw_value = bw.nrd0( as.vector(theta_hat) )
+    bw_value = bw.nrd0( as.vector(delta_hat) )
   } else if (bw %in% c("cv", "bw.ucv")) {
     suppressWarnings({
-      bw_value = bw.ucv( as.vector(theta_hat) )
+      bw_value = bw.ucv( as.vector(delta_hat) )
     })
   } else {
     stop( sprintf("Illegal bandwidth type '%s'.", bw) )
@@ -79,7 +80,7 @@ bias.correction.sw98 <- function(X, Y, RTS, B, alpha, deaMethod, bw) {
   for (b in 1:B) {
     # (2) reflection method, sampling reciprocals of distance from smooth kernel function:
     # use sampling from log normal to avoid negative values
-    theta_hat_boot = sampling_with_reflection( N, theta_hat, bw_value, var_theta_hat, mean_theta_hat )
+    theta_hat_boot = 1 / sampling_delta_with_reflection( N, delta_hat, bw_value, var_delta_hat, mean_delta_hat )
     # (3) new output based on the efficiencies:
     rescaleFactor = as.vector(theta_hat / theta_hat_boot)
     
@@ -136,18 +137,19 @@ dea.robust.costmin <- function(X, Y, W, RTS, B, alpha, bw) {
   gamma_hat     = dea.costmin.rescaling(XREF=X, YREF=Y, W=W, X=X, Y=Y, RTS=RTS, rescaling=1)
   out$theta_hat = theta_hat
   out$gamma_hat = gamma_hat
-  var_theta_hat  = var(theta_hat)
-  mean_theta_hat = mean(theta_hat)
+  delta_hat     = 1 / theta_hat
+  var_delta_hat  = var(delta_hat)
+  mean_delta_hat = mean(delta_hat)
   # finding the bandwidth for kernel sampling:
   if (is.function(bw)) {
-    bw_value = bw( as.vector(theta_hat) )
+    bw_value = bw( as.vector(delta_hat) )
   } else if (bw == "rule") {
     bw_value = bandwidth_rule( ncol(X), ncol(Y), nrow(X) )
   } else if (bw %in% c("silverman", "bw.nrd0") ) {
-    bw_value = bw.nrd0( as.vector(theta_hat) )
+    bw_value = bw.nrd0( as.vector(delta_hat) )
   } else if (bw %in% c("cv", "bw.ucv")) {
     suppressWarnings({
-      bw_value = bw.ucv( as.vector(theta_hat) )
+      bw_value = bw.ucv( as.vector(delta_hat) )
     })
   } else {
     stop( sprintf("Illegal bandwidth type '%s'.", bw) )
@@ -159,7 +161,7 @@ dea.robust.costmin <- function(X, Y, W, RTS, B, alpha, bw) {
   #w_hat_boot     = matrix(0, B, 1)
   for (b in 1:B) {
     # (2) reflection method, sampling reciprocals of distance from smooth kernel function:
-    theta_hat_boot = sampling_with_reflection( N, theta_hat, bw_value, var_theta_hat, mean_theta_hat )
+    theta_hat_boot = 1 / sampling_delta_with_reflection( N, delta_hat, bw_value, var_delta_hat, mean_delta_hat )
     # (3) new output based on the efficiencies:
     rescaleFactor = as.vector(theta_hat / theta_hat_boot)
     

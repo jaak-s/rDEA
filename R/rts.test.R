@@ -88,6 +88,10 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
   D_vrs_hat = fixaround1( as.vector( dea(XREF=X, YREF=Y, X=X, Y=Y, RTS="variable") ) )
   w_hat     = RTSStatistic46( D_crs_hat, D_vrs_hat )
   
+  delta_crs_hat = 1 / D_crs_hat
+  var_delta_crs_hat = var(delta_crs_hat)
+  mean_delta_crs_hat = mean(delta_crs_hat)
+  
   out$w_hat   = w_hat
   #out$w45_hat = RTSStatistic45( D_crs_hat, D_vrs_hat )
   out$w48_hat = RTSStatistic48( D_crs_hat, D_vrs_hat )
@@ -97,21 +101,18 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
   # finding the bandwidth for kernel sampling:
   if (is.function(bw)) {
     ## user-supplied function
-    bw_value = bw( as.vector(D_crs_hat) )
+    bw_value = bw( as.vector(delta_crs_hat) )
   } else if (bw %in% c("silverman", "bw.nrd0") ) {
     ## silverman (using iqr)
-    bw_value = bw.nrd0( as.vector(D_crs_hat) )
+    bw_value = bw.nrd0( as.vector(delta_crs_hat) )
   } else if (bw %in% c("cv", "bw.ucv")) {
     ## unbiased cross-validated bw
     suppressWarnings({
-      bw_value = bw.ucv( as.vector(D_crs_hat) )
+      bw_value = bw.ucv( as.vector(delta_crs_hat) )
     })
   } else {
     stop( sprintf("Illegal bandwidth type '%s'.", bw) )
   }
-  
-  var_D_crs_hat = var(D_crs_hat)
-  mean_D_crs_hat = mean(D_crs_hat)
   
   # bootstrap loop:
   w_hat_boot = matrix(0, B, 1)
@@ -119,7 +120,7 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
   w48_hat_boot = matrix(0, B, 1)
   for (i in 1:B) {
     # (2) reflection method, sampling reciprocals of distance from smooth kernel function:
-    D_crs_boot = sampling_with_reflection( N, D_crs_hat, bw_value, var_D_crs_hat, mean_D_crs_hat )
+    D_crs_boot = 1 / sampling_delta_with_reflection( N, delta_crs_hat, bw_value, var_delta_crs_hat, mean_delta_crs_hat )
     # (3) new output based on the efficiencies:
     #X_boot     = X * (D_crs_hat / D_crs_boot)
     rescaling = (D_crs_hat / D_crs_boot)
