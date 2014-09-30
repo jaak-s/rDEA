@@ -48,3 +48,11 @@ sampling_delta_with_reflection <- function( n, delta, bw, dvar, dmean ) {
   samples = dmean + 1/sqrt(1 + bw^2 / dvar) * (samples - dmean)
   return(samples)
 }
+
+sampling_logtheta_with_reflection <- function( n, ltheta, lbw, ltvar, ltmean ) {
+  samples = sampling_from_1d_gaussian_mixture( n, ltheta, lbw )
+  # correct for the samples that are bigger than 0:
+  samples[samples > 0.0] = - samples[samples > 0.0]
+  samples = ltmean + 1/sqrt(1 + lbw^2 / ltvar) * ( samples - ltmean )
+  return(samples)
+}
