@@ -59,27 +59,3 @@ test_that("output rts.test with H0='non-increasing'", {
   expect_true( all(r$D_crs_hat <= 1) )
   expect_true( all(r$D_vrs_hat <= 1) )
 })
-
-context("Costmin(fare) rts.test")
-
-test_that("costmin(fare) rts.test with H0='constant'", {
-  r = rts.test(X=X, Y=Y, W=W, model="costmin", H0="constant", B = B)
-  expect_equal( length(r$D_crs_hat), length(firms) )
-  expect_equal( length(r$D_vrs_hat), length(firms) )
-  expect_equal( length(r$w_hat_boot),   B )
-  expect_equal( length(r$w48_hat_boot), B )
-  
-  expect_true( all(r$D_crs_hat <= 1) )
-  expect_true( all(r$D_vrs_hat <= 1) )
-})
-
-test_that("costmin(fare) rts.test with H0='non-increasing'", {
-  r = rts.test(X=X, Y=Y, W=W, model="costmin", H0="non-increasing", B = B)
-  expect_equal( length(r$D_crs_hat), length(firms) )
-  expect_equal( length(r$D_vrs_hat), length(firms) )
-  expect_equal( length(r$w_hat_boot),   B )
-  expect_equal( length(r$w48_hat_boot), B )
-  
-  expect_true( all(r$D_crs_hat <= 1) )
-  expect_true( all(r$D_vrs_hat <= 1) )
-})

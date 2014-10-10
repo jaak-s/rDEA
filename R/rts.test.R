@@ -27,7 +27,7 @@ fixaround1 <- function(x) {
 ### X[firm, xfeat] - production inputs
 ### Y[firm, yfeat] - production output
 ### W[firm, xfeat] - input prices,  only necessary when model="costmin"
-### model - either "input" (default), "output" or "costmin"
+### model - either "input" (default) or "output"
 ### H0    - which RTS test to perform: "constant" vs variable (default), "non-increasing" vs variable.
 ### bw - theta bandwidth calculation method.
 ###      Either user supplied function or:
@@ -64,8 +64,8 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
     if ( any(is.na(W)) ) stop("W contains NA. Missing values are not supported.")
   }
   
-  if (missing(model) || ! model %in% c("input", "output", "costmin") ) {
-    stop("model has to be either 'input', 'output' or 'costmin'.")
+  if (missing(model) || ! model %in% c("input", "output") ) {
+    stop("model has to be either 'input' or 'output'.")
   }
   
   if (! H0 %in% c("constant", "non-increasing")) {
@@ -81,7 +81,6 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
   
   if (model == "input")   dea = dea.input.rescaling
   if (model == "output")  dea = dea.output.rescaling
-  if (model == "costmin") dea = function(...) dea.costmin.rescaling(W=W, ...)
 
   # (1) calculating input-oriented DEA with CRS and VRS:
   D_crs_hat = fixaround1( as.vector( dea(XREF=X, YREF=Y, X=X, Y=Y, RTS=H0) ) )
