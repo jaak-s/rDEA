@@ -38,23 +38,26 @@ multi_glpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE
     solver output; \code{canonicalize_status}, a logical indicating
     whether to canonicalize GLPK status codes or not. Defaults:
     \code{FALSE}; \code{TRUE}.}
-  \item{mobj_i}{a vector of objective coefficient indices that will
-    get different values. Defaults: \code{NULL}.}
+  \item{mobj_i}{a vector of objective coefficient indices which will 
+    get different values in each optimization problem. Defaults: \code{NULL}.}
   \item{mobj_val}{a matrix of objective coefficient values. Each 
-    column specifies for one optimization task the values of the objective 
-    coefficients (specified by mobj_i).}
+    column specifies for one optimization problem the values of the objective 
+    coefficients specified by in mobj_i.}
   \item{mmat_i}{a matrix of coordinates of \code{mat} matrix. Each row
-    specifies a constraint cell (its row and column). That cell will 
-    be assigned different values from the same row of matrix mmat_val.
+    specifies one constraint cell (its row and column). The cell specified in row i
+    will be assigned values from row i of matrix \code{mmat_val}. Cells not
+    specified in \code{mat} will be left unchanged.
     Defaults: \code{NULL}.}
-  \item{mmat_val}{a matrix of values for multiple optimization. Each
-    column specifies for one optimization task the constraints values
-    for cells specified by mmat_i.
+  \item{mmat_val}{a matrix of values, each column specifies values for one optimization 
+    task. Cell specified in row i in \code{mmat_i} gets values from 
+    row i of \code{mmat_val}.
     Defaults: \code{NULL}.}
-  \item{mrhs_i}{a vector of RHS constraint numbers that will get different values.
+  \item{mrhs_i}{a vector of RHS constraint rows that will get different values
+    in each optimization problem.
     Defaults: \code{NULL}.}
-  \item{mrhs_val}{a matrix of RHS values. Each column specifies for one
-    optimization task its RHS values for mrhs_i rows.}
+  \item{mrhs_val}{a matrix of RHS values. Element \code{mrhs_val[i,j]} specifies
+    RHS value for row \code{mrhs_i[i]} in optimization problem j.
+    Defaults: \code{NULL}.}
   \item{\ldots}{a list of control parameters (overruling those specified in
           \code{control}).}
 }
