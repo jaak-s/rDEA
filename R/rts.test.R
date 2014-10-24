@@ -81,6 +81,11 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
   
   if (model == "input")   dea = dea.input.rescaling
   if (model == "output")  dea = dea.output.rescaling
+  ## TODO:
+  ## 1) add costmin model here
+  ## 2) costmin uses D_crs_hat and D_vrs_hat from input oriented model
+  ## 3) step (2) inside bootstrap uses input-oriented results for rescaling
+  ## 4) step (4) inside bootstrap uses costmin dea to find results
 
   # (1) calculating input-oriented DEA with CRS and VRS:
   D_crs_hat = fixaround1( as.vector( dea(XREF=X, YREF=Y, X=X, Y=Y, RTS=H0) ) )
