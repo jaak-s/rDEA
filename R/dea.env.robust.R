@@ -8,11 +8,11 @@
 ### RTS       - returns to scale: "variable" (default), "non-increasing", "constant"
 ### L1/L2     - number of bootstraps
 ### alpha     - confidence interval, i.e., 0.05
-costmin.tone.bias.correction.sw07 <- function(Xbar, Y, Z, RTS="variable", L1=100, L2=1000, alpha=0.05) {
-  ## calling the general bias correction method:
-  bias.correction.sw07(X=Xbar, Y=Y, Z=Z, RTS=RTS, L1=L1, L2=L2, alpha=alpha, 
-                       deaMethod=costmin.aggr.rglpk.scaling)
-}
+#costmin.tone.bias.correction.sw07 <- function(Xbar, Y, Z, RTS="variable", L1=100, L2=1000, alpha=0.05) {
+#  ## calling the general bias correction method:
+#  bias.correction.sw07(X=Xbar, Y=Y, Z=Z, RTS=RTS, L1=L1, L2=L2, alpha=alpha, 
+#                       deaMethod=costmin.aggr.rglpk.scaling)
+#}
 
 
 ### Inputs to the method ###
