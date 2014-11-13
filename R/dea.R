@@ -304,8 +304,8 @@ dea.costmin <- function(XREF, YREF, X, Y, W, RTS="variable") {
                               mrhs_val = t(Y))
   # output
   out = list()
-  out$Xopt     = t(outlp$solution[(N+1):(N+Dinput), ])
-  out$gammaOpt = unname( rowSums(out$Xopt*W) / rowSums(X*W) )
+  out$XOpt     = t(outlp$solution[(N+1):(N+Dinput), ])
+  out$gammaOpt = unname( rowSums(out$XOpt*W) / rowSums(X*W) )
   out$feasible = outlp$status==0
   out$lambda   = t(outlp$solution[1:N, ])
   
