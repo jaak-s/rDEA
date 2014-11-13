@@ -25,18 +25,18 @@ rts.test(X, Y, W=NULL, model, H0, bw, B, alpha)
   \item{w_hat}{the vector for the values of the test statistics 4.5}
   \item{w48_hat}{the vector for the values of the test statistics 48 or statistics 4.6}
   \item{theta_H0_hat}{the vector for the values of naive DEA scores under the null hypothesis (H0)}
-  \item{theta_vrs_hat}{a vector for the values of naive DEA scores under the alternative hypothesis}
-  \item{w_hat_boot}{a vector for bootstrap values of the test statistics 4.5}
-  \item{w48_hat_boot}{a vector for bootstrap values of the test statistics 48 or statistics 46}
-  \item{pvalue}{a scalar for p-value in rejecting the hull hypothesis, according to test statistics 4.5}
-  \item{pvalue48}{a scalar for p-value in rejecting the hull hypothesis, according to test statistics 4.6 and 48}
+  \item{theta_vrs_hat}{the vector for the values of naive DEA scores under the alternative hypothesis}
+  \item{w_hat_boot}{the vector for bootstrap values of the test statistics 4.5}
+  \item{w48_hat_boot}{the vector for bootstrap values of the test statistics 48 or statistics 46}
+  \item{pvalue}{the p-value for rejecting the hull hypothesis, according to test statistics 4.5}
+  \item{pvalue48}{the p-value for rejecting the hull hypothesis, according to test statistics 4.6 and 48}
   \item{H0reject}{FALSE if H0 is not rejected according to pvalue45 and confidence level alpha, TRUE otherwise}
   \item{H0reject48}{FALSE if H0 is not rejected according to pvalue48 confidence level alpha, TRUE otherwise}
   \item{H0level}{the cut off value of w45_hat_boot for confidence level alpha}
   \item{H0level48}{the cut off value of w48_hat_boot for confidence level alpha}  
-  \item{H0}{Null hypothesis tested}
-  \item{bw}{type of bandwidth employed}
-  \item{bw_value}{value for the bandwidth}
+  \item{H0}{the Null hypothesis tested}
+  \item{bw}{the type of bandwidth employed}
+  \item{bw_value}{the value for the bandwidth}
 }
 
 \references{
