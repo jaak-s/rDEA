@@ -50,16 +50,16 @@ Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on ho
 }
 \examples{
 ## load data on Japanese hospitals for FY 1999(Besstremyannaya 2013)
-data("HospitalData", package="rDEA")
+data("hospitals", package="rDEA")
 
 ## inputs and outputs for analysis
 ## annual numbers of inpatients and outpatients in each hospital 
-Y = HospitalData[c('inpatients', 'outpatients')]
+Y = hospitals[c('inpatients', 'outpatients')]
 ## labour is total employees, capital is total number of beds
-X = HospitalData[c('labor', 'capital')]
+X = hospitals[c('labor', 'capital')]
 ## labor price is per capita annual salary (th.yen) 
 ## capital price is the sum of depreciation and interest per bed (th.yen)
-W = HospitalData[c('labor_price', 'capital_price')]
+W = hospitals[c('labor_price', 'capital_price')]
 
 ## Naive input-oriented DEA score for the first 50 firms under variable returns-to-scale 
 firms=1:50

@@ -62,13 +62,13 @@ Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on ho
 }
 \examples{
 ## loading data on Japanese hospitals in FY 1999 (Besstremyannaya 2013)
-data("HospitalData", package="rDEA")
+data("hospitals", package="rDEA")
 
 ## inputs and outputs for analysis
 ## annual numbers of inpatients and outpatients in each hospital 
-Y = HospitalData[c('inpatients', 'outpatients')]
+Y = hospitals[c('inpatients', 'outpatients')]
 ## labour is total employees, capital is total number of beds
-X = HospitalData[c('labor', 'capital')]
+X = hospitals[c('labor', 'capital')]
 
 ## Returns-to-scale test in the input-oriented DEA model,
 ## Testing the null hypothesis of constant returns-to-scale vs. an alternative of variable returns-to-scale

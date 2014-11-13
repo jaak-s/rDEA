@@ -4,14 +4,12 @@
 \description{
   Bias-corrected scores in input- and output-oriented models
 }
-
-## Later, Note to Jaak: let's include Kneip ci here, too.
 \usage{
 dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
 }
 \arguments{
-    \item{X}{a numeric vector or matrix of inputs for observations used for estimating DEA scores.}
-     \item{Y}{a numeric vector or  matrix of outputs for observations used for esimating DEA scores.}
+  \item{X}{a numeric vector or matrix of inputs for observations used for estimating DEA scores.}
+  \item{Y}{a numeric vector or  matrix of outputs for observations used for esimating DEA scores.}
   \item{model}{a string variable denoting the type of DEA model to be estimated, "input" for input-oriented model, "output" for output-oriented model, "costmin" for cost-minimization model}
   \item{RTS}{a string variable denoting returns-to-scale under which DEA scores are estimated, "constant" for constant returns-to-scale, "variable" for variable returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale}  
   \item{B}{a scalar showing the number of bootstrap replications, the default is B=1000}  
@@ -23,11 +21,11 @@ dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
 }
 \value{
   A list containing bias-corrected scores for each producer, with the following components.
+  % ## Later, Note to Jaak: let's include Kneip ci here, too.
   \item{theta_hat_hat}{a vector of bias-corrected DEA score for each firm, theta_hat_hat is in the range of zero to one}
   \item{bias}{a vector of bias for naive DEA scores, bias is non-negative}
   \item{theta_ci_low}{a vector for lower bound of confidence interval for bias-corrected DEA score}
   \item{theta_ci_high}{a vector for upper bound of confidence interval for bias-corrected DEA score}
-  
 }
 
 \references{
