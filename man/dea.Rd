@@ -27,8 +27,8 @@ dea(XREF, YREF, X, Y, W=NULL, model, RTS="variable")
   
   %##note to Jaak: in the current version it is Xopt, lower case o, needs to be renamed
   
-  \item{XOpt}{a vector or matrix of optimal values of inputs in cost-minimization model}
-  \item{feasible}{a vector of logical values, equals "TRUE"" if DEA scores have been estimated}
+  \item{XOpt}{a matrix of optimal values of inputs, only returned for cost-minimization model}
+  %\item{feasible}{a vector of logical values, equals \code{TRUE} if DEA scores have been estimated}
   \item{lambda}{a matrix of values for constraint coefficients in corresponding linear optimization problem, lambda >=0}
   \item{lambda_sum}{a vector for sum of constraint coefficients in corresponding linear optimization problem, lamdba_sum=1 in case of variable returns-to-scale, lambda_sum <=1 for non-increasing returns-to-scale}
 }

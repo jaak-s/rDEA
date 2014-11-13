@@ -10,6 +10,7 @@ dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
 \arguments{
   \item{X}{a numeric vector or matrix of inputs for observations used for estimating DEA scores.}
   \item{Y}{a numeric vector or  matrix of outputs for observations used for esimating DEA scores.}
+  \item{W}{a matrix of input prices, not used.}
   \item{model}{a string variable denoting the type of DEA model to be estimated, "input" for input-oriented model, "output" for output-oriented model, "costmin" for cost-minimization model}
   \item{RTS}{a string variable denoting returns-to-scale under which DEA scores are estimated, "constant" for constant returns-to-scale, "variable" for variable returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale}  
   \item{B}{a scalar showing the number of bootstrap replications, the default is B=1000}  
@@ -20,7 +21,7 @@ dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
   Implements Simar and Wilson's (1998) bias-correction of technical efficiency scores  in input- and output-oriented DEA models. 
 }
 \value{
-  A list containing bias-corrected scores for each producer, with the following components.
+  A list containing bias-corrected scores for each firm, with the following components.
   % ## Later, Note to Jaak: let's include Kneip ci here, too.
   \item{theta_hat_hat}{a vector of bias-corrected DEA score for each firm, theta_hat_hat is in the range of zero to one}
   \item{bias}{a vector of bias for naive DEA scores, bias is non-negative}
@@ -49,13 +50,13 @@ Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on ho
 }
 \examples{
 ## loading data on Japanese hospitals in FY 1999 (Besstremyannaya 2013)
-data("HospitalData", package="rDEA")
+data("hospitals", package="rDEA")
 
 ## inputs and outputs for analysis
 ## annual numbers of inpatients and outpatients in each hospital 
-Y = HospitalData[c('inpatients', 'outpatients')]
+Y = hospitals[c('inpatients', 'outpatients')]
 ## labour is total employees, capital is total number of beds
-X = HospitalData[c('labor', 'capital')]
+X = hospitals[c('labor', 'capital')]
 
 ## Naive input-oriented DEA score for the first 50 firms under variable returns-to-scale 
 firms=1:50
