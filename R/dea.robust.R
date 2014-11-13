@@ -18,6 +18,7 @@ dea.robust <- function(X, Y, W=NULL, model, RTS="variable", B=1000, alpha=0.05,
   if (missing(model) || ! model %in% c("input", "output", "costmin") ) {
     stop("Parameter 'model' has to be either 'input', 'output' or 'costmin'.")
   }
+  if (1/alpha > B) stop(sprintf("The number of bootstraps B (%d) has to be bigger than 1/alpha (%1.0f) to allow for confidence interval estimation.", B, 1/alpha))
   if ( ! is.matrix(X)) { X = as.matrix(X) }
   if ( ! is.matrix(Y)) { Y = as.matrix(Y) }
   if ( ! is.numeric(X)) { stop("X has to be numeric matrix or data.frame.") }

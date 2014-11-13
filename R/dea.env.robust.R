@@ -28,6 +28,8 @@ dea.env.robust <- function(X, Y, W=NULL, Z, model, RTS="variable",
   if (missing(model) || ! model %in% c("input", "output", "costmin", "costmin-tone") ) {
     stop("Parameter 'model' has to be either 'input', 'output', 'costmin' or 'costmin-tone'.")
   }
+  if (1/alpha > L2) stop(sprintf("The number of bootstraps L2 (%d) has to be bigger than 1/alpha (%1.0f) to allow for confidence interval estimation.", L2, 1/alpha))
+  
   if ( ! is.matrix(X)) { X = as.matrix(X) }
   if ( ! is.matrix(Y)) { Y = as.matrix(Y) }
   if ( ! is.matrix(Z)) { Z = as.matrix(Z) }

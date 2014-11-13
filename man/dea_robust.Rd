@@ -1,21 +1,21 @@
 \name{dea.robust}
 \alias{dea.robust}
-\title{Bias-corrected data envelopment analysis scores}
+\title{Bias-corrected data envelopment analysis}
 \description{
-  Bias-corrected scores in input- and output-oriented models
+  Estimates bias-corrected scores for input- and output-oriented models
 }
 \usage{
 dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
 }
 \arguments{
-  \item{X}{a numeric vector or matrix of inputs for observations used for estimating DEA scores.}
-  \item{Y}{a numeric vector or  matrix of outputs for observations used for esimating DEA scores.}
+  \item{X}{a matrix of inputs for observations used for estimating DEA scores.}
+  \item{Y}{a matrix of outputs for observations used for esimating DEA scores.}
   \item{W}{a matrix of input prices, not used.}
-  \item{model}{a string variable denoting the type of DEA model to be estimated, "input" for input-oriented model, "output" for output-oriented model, "costmin" for cost-minimization model}
-  \item{RTS}{a string variable denoting returns-to-scale under which DEA scores are estimated, "constant" for constant returns-to-scale, "variable" for variable returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale}  
-  \item{B}{a scalar showing the number of bootstrap replications, the default is B=1000}  
-  \item{bw}{a string variable for the type of bandwidth used as smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule} 
-  \item{alpha}{a scalar for the size of confidence interval for bias-corrected DEA score} 
+  \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented model, "output" for output-oriented model, "costmin" for cost-minimization model}
+  \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, "constant" for constant returns-to-scale, "variable" for variable returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale}  
+  \item{B}{an integer showing the number of bootstrap replications, the default is B=1000}  
+  \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule} 
+  \item{alpha}{a number for the size of confidence interval for bias-corrected DEA score} 
 }
 \details{
   Implements Simar and Wilson's (1998) bias-correction of technical efficiency scores  in input- and output-oriented DEA models. 
@@ -23,10 +23,10 @@ dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
 \value{
   A list containing bias-corrected scores for each firm, with the following components.
   % ## Later, Note to Jaak: let's include Kneip ci here, too.
-  \item{theta_hat_hat}{a vector of bias-corrected DEA score for each firm, theta_hat_hat is in the range of zero to one}
-  \item{bias}{a vector of bias for naive DEA scores, bias is non-negative}
-  \item{theta_ci_low}{a vector for lower bound of confidence interval for bias-corrected DEA score}
-  \item{theta_ci_high}{a vector for upper bound of confidence interval for bias-corrected DEA score}
+  \item{theta_hat_hat}{the vector of bias-corrected DEA score for each firm, theta_hat_hat is in the range of zero to one}
+  \item{bias}{the vector of bias for naive DEA scores, bias is non-negative}
+  \item{theta_ci_low}{the vector for lower bound of confidence interval for bias-corrected DEA score}
+  \item{theta_ci_high}{the vector for upper bound of confidence interval for bias-corrected DEA score}
 }
 
 \references{

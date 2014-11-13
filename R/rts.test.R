@@ -39,8 +39,8 @@ fixaround1 <- function(x) {
 ### alpha - confidence level, i.e., 0.05 (default)
 
 ###### [ Outputs from the method ] ######
-### out$D_crs_hat  - theta, estimated reciprocal of DEA distance under CRS
-### out$D_vrs_hat  - theta, estimated reciprocal of DEA distance under VRS
+### out$theta_H0_hat - theta, estimated reciprocal of DEA distance under CRS
+### out$theta_vrs_hat - theta, estimated reciprocal of DEA distance under VRS
 ### out$w_hat      - estimated test statistic (4.6)
 ### out$w45_hat    - estimated test statistic (4.5), not used in the function, just calculated
 ### out$w_hat_boot - bootstrapped values for test statistic (4.6)
@@ -56,6 +56,8 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
   if (! is.numeric(Y)) stop("Y has to be numeric.")
   if ( any(is.na(X)) ) stop("X contains NA. Missing values are not supported.")
   if ( any(is.na(Y)) ) stop("Y contains NA. Missing values are not supported.")
+  
+  if (1/alpha > B) stop(sprintf("The number of bootstraps B (%d) has to be bigger than 1/alpha (%1.0f) to allow for confidence interval estimation.", B, 1/alpha))
   
   if (model == "costmin") {
     if ( is.null(W) )    stop("For costmin input prices (W) are necessary.")
@@ -83,24 +85,24 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
   if (model == "output")  dea = dea.output.rescaling
   ## TODO:
   ## 1) add costmin model here
-  ## 2) costmin uses D_crs_hat and D_vrs_hat from input oriented model
+  ## 2) costmin uses theta_H0_hat and theta_vrs_hat from input oriented model
   ## 3) step (2) inside bootstrap uses input-oriented results for rescaling
   ## 4) step (4) inside bootstrap uses costmin dea to find results
 
   # (1) calculating input-oriented DEA with CRS and VRS:
-  D_crs_hat = fixaround1( as.vector( dea(XREF=X, YREF=Y, X=X, Y=Y, RTS=H0) ) )
-  D_vrs_hat = fixaround1( as.vector( dea(XREF=X, YREF=Y, X=X, Y=Y, RTS="variable") ) )
-  w_hat     = RTSStatistic46( D_crs_hat, D_vrs_hat )
+  theta_H0_hat = fixaround1( as.vector( dea(XREF=X, YREF=Y, X=X, Y=Y, RTS=H0) ) )
+  theta_vrs_hat = fixaround1( as.vector( dea(XREF=X, YREF=Y, X=X, Y=Y, RTS="variable") ) )
+  w_hat     = RTSStatistic46( theta_H0_hat, theta_vrs_hat )
   
-  delta_crs_hat = 1 / D_crs_hat
+  delta_crs_hat = 1 / theta_H0_hat
   var_delta_crs_hat = var(delta_crs_hat)
   mean_delta_crs_hat = mean(delta_crs_hat)
   
   out$w_hat   = w_hat
-  #out$w45_hat = RTSStatistic45( D_crs_hat, D_vrs_hat )
-  out$w48_hat = RTSStatistic48( D_crs_hat, D_vrs_hat )
-  out$D_crs_hat = D_crs_hat
-  out$D_vrs_hat = D_vrs_hat
+  #out$w45_hat = RTSStatistic45( theta_H0_hat, theta_vrs_hat )
+  out$w48_hat = RTSStatistic48( theta_H0_hat, theta_vrs_hat )
+  out$theta_H0_hat = theta_H0_hat
+  out$theta_vrs_hat = theta_vrs_hat
 
   # finding the bandwidth for kernel sampling:
   if (is.function(bw)) {
@@ -126,18 +128,18 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
     # (2) reflection method, sampling reciprocals of distance from smooth kernel function:
     D_crs_boot = 1 / sampling_delta_with_reflection( N, delta_crs_hat, bw_value, var_delta_crs_hat, mean_delta_crs_hat )
     # (3) new output based on the efficiencies:
-    #X_boot     = X * (D_crs_hat / D_crs_boot)
-    rescaling = (D_crs_hat / D_crs_boot)
+    #X_boot     = X * (theta_H0_hat / D_crs_boot)
+    rescaling = (theta_H0_hat / D_crs_boot)
     # (4) DEA efficiencies for scores:
-    D_crs_hat_boot  = dea(XREF=X, YREF=Y, X=X, Y=Y, rescaling=rescaling, RTS=H0)
-    D_vrs_hat_boot  = dea(XREF=X, YREF=Y, X=X, Y=Y, rescaling=rescaling, RTS="variable")
-    w_hat_boot[i]   = RTSStatistic46( D_crs_hat_boot, D_vrs_hat_boot )
-    w45_hat_boot[i] = RTSStatistic45( D_crs_hat_boot, D_vrs_hat_boot )
-    w48_hat_boot[i] = RTSStatistic48( D_crs_hat_boot, D_vrs_hat_boot )
+    theta_H0_hat_boot  = dea(XREF=X, YREF=Y, X=X, Y=Y, rescaling=rescaling, RTS=H0)
+    theta_vrs_hat_boot  = dea(XREF=X, YREF=Y, X=X, Y=Y, rescaling=rescaling, RTS="variable")
+    w_hat_boot[i]   = RTSStatistic46( theta_H0_hat_boot, theta_vrs_hat_boot )
+    w45_hat_boot[i] = RTSStatistic45( theta_H0_hat_boot, theta_vrs_hat_boot )
+    w48_hat_boot[i] = RTSStatistic48( theta_H0_hat_boot, theta_vrs_hat_boot )
     #if (w_hat_boot[i] == 0) {
     #  ## TODO remove this if
-    #  out$debug_d_crs_hat_boot = D_crs_hat_boot
-    #  out$debug_d_vrs_hat_boot = D_vrs_hat_boot
+    #  out$debug_theta_H0_hat_boot = theta_H0_hat_boot
+    #  out$debug_theta_vrs_hat_boot = theta_vrs_hat_boot
     #  out$debug_d_crs_boot     = D_crs_boot
     #  out$debug_rescaling = rescaling
     #}

@@ -13,7 +13,7 @@ W = H12[firms, c('w1', 'w2', 'w3', 'w5')]
 Z = H12[firms, c('z2', 'z3', 'z4')]
 
 L1 = 20
-L2 = 10
+L2 = 20
 Nbeta = ncol(Z) + 1
 
 context("Input DEA Environment robust")
