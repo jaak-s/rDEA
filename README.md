@@ -17,8 +17,7 @@ library(devtools)
 install_github("jaak-s/rDEA")
 ```
 
-In Linux another option is to use command line (make sure you have **slam** package
-installed)
+In Linux and Mac another option is to use command line (make sure you have **slam**, **truncreg** and **truncnorm** R packages installed)
 ```bash
 git clone https://github.com/jaak-s/rDEA.git
 R CMD build rDEA/
