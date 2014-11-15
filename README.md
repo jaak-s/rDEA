@@ -32,16 +32,12 @@ hospital data
 ```R
 library(rDEA)
 ## loading Japan hospital data
-data("dea_hospitals", package="rDEA")
-
-## filtering out year 12 data
-H12 = subset(dea_hospitals, year == 12)
-H12[is.na(H12)] = 0
+data("hospitals", package="rDEA")
 
 ## choosing inputs and outputs for analysis
 firms = 1:50
-X = H12[firms, c('x1', 'x2', 'x3', 'x5')]
-Y = H12[firms, c('y1', 'y2')]
+Y = hospitals[firms, c('inpatients', 'outpatients')]
+X = hospitals[firms, c('labor', 'capital')]
 
 ## Robust DEA with 1000 bootstrap iterations and variable returns-to-scale
 di = dea.robust(X=X, Y=Y, model="input", RTS="variable", B=1000)
