@@ -8,17 +8,17 @@
 dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
 }
 \arguments{
-  \item{X}{a matrix of inputs for observations used for estimating DEA scores.}
-  \item{Y}{a matrix of outputs for observations used for esimating DEA scores.}
-  \item{W}{a matrix of input prices, not used.}
+  \item{X}{a matrix of inputs for observations used for estimating DEA scores}
+  \item{Y}{a matrix of outputs for observations used for esimating DEA scores}
+  \item{W}{a matrix of input prices, not used here}
   \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented model, "output" for output-oriented model, "costmin" for cost-minimization model}
-  \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, "constant" for constant returns-to-scale, "variable" for variable returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale}  
-  \item{B}{an integer showing the number of bootstrap replications, the default is B=1000}  
-  \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule} 
-  \item{alpha}{a number for the size of confidence interval for bias-corrected DEA score} 
+  \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, "constant" for constant returns-to-scale, "variable" for variable returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale}
+  \item{B}{an integer showing the number of bootstrap replications, the default is B=1000}
+  \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule}
+  \item{alpha}{a number for the size of confidence interval for bias-corrected DEA score}
 }
 \details{
-  Implements Simar and Wilson's (1998) bias-correction of technical efficiency scores  in input- and output-oriented DEA models. 
+  Implements Simar and Wilson's (1998) bias-correction of technical efficiency scores  in input- and output-oriented DEA models.
 }
 \value{
   A list containing bias-corrected scores for each firm, with the following components.
@@ -42,29 +42,29 @@ Kneip, A. and Simar, L. and Wilson, P.W. 2008. Asymptotics and consistent bootst
 
 Kneip, A. and Simar, L. and Wilson, P.W. 2011. A computationally efficient, consistent bootstrap for inference with non-parametric DEA estimators. Computational Economics. Vol.38, pp.483--515.
 
+Besstremyannaya, G. 2011. Managerial performance and cost efficiency of Japanese local public hospitals. Health Economics. Vol.20(S1), pp.19--34.
+
 Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on hospital efficiency. Japanese Economic Review. Vol.64, No.3, pp.337--362.
 }
 \author{Jaak Simm, Galina Besstremyannaya}
 \seealso{
-  \code{\link[rDEA]{dea}} and \code{\link[rDEA]{dea.env.robust}}.
+  \code{\link[rDEA]{dea}}, \code{\link[rDEA]{dea.env.robust}} and \code{\link[rDEA]{hospitals}}.
 }
 \examples{
-## loading data on Japanese hospitals in FY 1999 (Besstremyannaya 2013)
+## load data on Japanese hospitals in FY 1999 (Besstremyannaya 2013, 2011)
 data("hospitals", package="rDEA")
-
-## inputs and outputs for analysis
-## annual numbers of inpatients and outpatients in each hospital 
 Y = hospitals[c('inpatients', 'outpatients')]
-## labour is total employees, capital is total number of beds
 X = hospitals[c('labor', 'capital')]
 
-## Naive input-oriented DEA score for the first 50 firms under variable returns-to-scale 
+## Naive input-oriented DEA score for the first 50 firms under variable returns-to-scale
 firms=1:50
-di_naive = dea(XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="input", RTS="variable")
+di_naive = dea(XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,],
+               model="input", RTS="variable")
 di_naive$thetaOpt
 
 ## Bias-corrected DEA score in input-oriented model under variable returns-to-scale
-di_robust = dea.robust(X=X[firms,], Y=Y[firms,], model="input", RTS="variable", B, alpha=0.05, bw="cv")
+di_robust = dea.robust(X=X[firms,], Y=Y[firms,], model="input",
+                       RTS="variable", B, alpha=0.05, bw="cv")
 di_robust$theta_hat_hat
 di_robust$bias
 

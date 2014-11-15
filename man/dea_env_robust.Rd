@@ -5,19 +5,19 @@
   Estimates bias-corrected efficiency scores in input- and output-oriented DEA models with environmental (exogenous) variables
 }
 \usage{
-dea.env.robust (X, Y, W=NULL, Z, model, RTS="variable", 
-                           L1=100, L2=2000, alpha=0.05)
+dea.env.robust (X, Y, W=NULL, Z, model, RTS="variable",
+                L1=100, L2=2000, alpha=0.05)
 }
 \arguments{
-  \item{X}{a matrix of inputs for observations used for estimating DEA scores.}
-  \item{Y}{a matrix of outputs for observations used for esimating DEA scores.}
-  \item{W}{a matrix of input prices, not used.}
-  \item{Z}{a matrix of environmental variables for observations used for estimating DEA scores, constant should NOT be included.}
-  \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented model, "output" for output-oriented model, "costmin" for cost-minimization model.}
-  \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, "constant" for constant returns-to-scale, "variable" for variable returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale.}
-  \item{L1}{an integer showing the number of bootstrap replications in the first loop of Simar and Wilson's (2007) algorithm, default is 100.}  
-  \item{L2}{an integer showing the number of bootstrap replications in the second loop of Simar and Wilson's (2007) algorithm, default is 2000.}
-  \item{alpha}{a number between 0 to 1 denoting the size of confidence interval for bias-corrected DEA score, default is 0.05.} 
+  \item{X}{a matrix of inputs for observations used for estimating DEA scores}
+  \item{Y}{a matrix of outputs for observations used for esimating DEA scores}
+  \item{W}{a matrix of input prices, not used here}
+  \item{Z}{a matrix of environmental variables for observations used for estimating DEA scores, constant should NOT be included}
+  \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented model, "output" for output-oriented model, "costmin" for cost-minimization model}
+  \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, "constant" for constant returns-to-scale, "variable" for variable returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale}
+  \item{L1}{an integer showing the number of bootstrap replications in the first loop of Simar and Wilson's (2007) algorithm, default is 100}
+  \item{L2}{an integer showing the number of bootstrap replications in the second loop of Simar and Wilson's (2007) algorithm, default is 2000}
+  \item{alpha}{a number between 0 to 1 denoting the size of confidence interval for bias-corrected DEA score, default is 0.05}
 }
 \details{
   Implements Simar and Wilson's (2007) second algorithm bias-correction of technical efficiency scores in input- and output-oriented DEA models. Computations are done in terms of distance function, i.e. the reciprocal of efficiency score, with the range from one to infinity.
@@ -41,41 +41,42 @@ dea.env.robust (X, Y, W=NULL, Z, model, RTS="variable",
 
 \references{
 Simar, L. and Wilson, P.W. 2007.Estimation and inference in two-stage, semi-parametric models of production processes. Journal of Econometrics. Vol.136, pp.31--64.
- 
+
 The Measurement of Productive Efficiency and Productivity Growth. 2008. O'Fried, H. and Lovell, C.A.K. and Schmidt, S.S., eds. Oxford University Press.
 
 Simar, L. and Wilson, P. 2011. Two-stage DEA: caveat emptor. Journal of Productivity Analysis. Vol.36, pp.205--218.
+
+Besstremyannaya, G. 2011. Managerial performance and cost efficiency of Japanese local public hospitals. Health Economics. Vol.20(S1), pp.19--34.
 
 Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on hospital efficiency. Japanese Economic Review. Vol.64, No.3, pp.337--362.
 }
 \author{Jaak Simm, Galina Besstremyannaya}
 \seealso{
-  \code{\link[rDEA]{dea}} and \code{\link[rDEA]{dea.robust}}.
+  \code{\link[rDEA]{dea}}, \code{\link[rDEA]{dea.robust}} and \code{\link[rDEA]{hospitals}}.
 }
 \examples{
-## loading data on Japanese hospitals in FY 1999 (Besstremyannaya 2013)
+## load data on Japanese hospitals in FY 1999 (Besstremyannaya 2013, 2011)
 data("hospitals", package="rDEA")
-
-## inputs and outputs for analysis
-## annual numbers of inpatients and outpatients in each hospital 
 Y = hospitals[c('inpatients', 'outpatients')]
-## labour is total employees, capital is total number of beds
 X = hospitals[c('labor', 'capital')]
-## z1 is the number of examinations per 100 patients
-Z= hospitals[c('z1')]
+Z = hospitals[c('z1')]
 
-## Naive input-oriented DEA score for the first 50 firms under variable returns-to-scale 
+## Naive input-oriented DEA score for the first 50 firms
+## under variable returns-to-scale
 firms=1:50
-di_naive = dea(XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="input", RTS="variable")
+di_naive = dea(XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,],
+               model="input", RTS="variable")
 di_naive$thetaOpt
 
-## added only for the testing of the manual
+## added only for testing of the manual
 library(maxLik)
 
-## Bias-corrected DEA score in input-oriented model with environmental variables under variable returns-to-scale
-di_env.robust = dea.env.robust(X=X[firms,], Y=Y[firms,], Z=Z[firms,], model="input", RTS="variable", L1, L2=100, alpha=0.05)
-di_env.robust$delta_hat_hat
-di_env.robust
+## Bias-corrected DEA score in input-oriented model
+## with environmental variables, variable returns-to-scale
+di_env = dea.env.robust(
+             X=X[firms,], Y=Y[firms,], Z=Z[firms,], model="input",
+             RTS="variable", L1, L2=100, alpha=0.05)
+di_env$delta_hat_hat
 
 }
 \keyword{DEA, non-parametric efficiency, technical efficiency, cost efficiency}
