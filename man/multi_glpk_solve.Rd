@@ -72,7 +72,7 @@ multi_glpk_solve_LP(obj, mat, dir, rhs, bounds = NULL, types = NULL, max = FALSE
   with the following components.
   \item{solution}{the matrix of optimal coefficients, each column is one problem}
   \item{objval}{the vector of values of the objective function at the optimum, for each problem}
-  \item{status}{a vector of integers with status information about the solution
+  \item{status}{the vector of integers with status information about the solution
     returned, for each problem. If the control parameter \code{canonicalize_status} is set
     (the default) then it will return 0 for the optimal solution being
     found, and non-zero otherwise. If the control parameter is set to
