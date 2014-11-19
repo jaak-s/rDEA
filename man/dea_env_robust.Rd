@@ -55,7 +55,7 @@ Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on ho
   \code{\link[rDEA]{dea}}, \code{\link[rDEA]{dea.robust}} and \code{\link[rDEA]{hospitals}}.
 }
 \examples{
-## load data on Japanese hospitals in FY 1999 (Besstremyannaya 2013, 2011)
+## load data on Japanese hospitals (Besstremyannaya 2013, 2011)
 data("hospitals", package="rDEA")
 Y = hospitals[c('inpatients', 'outpatients')]
 X = hospitals[c('labor', 'capital')]
