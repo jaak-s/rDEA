@@ -8,14 +8,14 @@
 dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
 }
 \arguments{
-  \item{X}{a matrix of inputs for observations used for estimating DEA scores}
-  \item{Y}{a matrix of outputs for observations used for esimating DEA scores}
-  \item{W}{a matrix of input prices, not used here}
-  \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented model, "output" for output-oriented model, "costmin" for cost-minimization model}
-  \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, "constant" for constant returns-to-scale, "variable" for variable returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale}
-  \item{B}{an integer showing the number of bootstrap replications, the default is B=1000}
-  \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule}
-  \item{alpha}{a number for the size of confidence interval for bias-corrected DEA score}
+  \item{X}{a matrix of inputs for observations used for estimating DEA scores.}
+  \item{Y}{a matrix of outputs for observations used for esimating DEA scores.}
+  \item{W}{a matrix of input prices, not used here.}
+  \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented, "costmin" for cost-minimization model.}
+  \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, RTS can be "constant", "variable" or "non-increasing".}
+  \item{B}{an integer showing the number of bootstrap replications, the default is B=1000.}
+  \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule.}
+  \item{alpha}{a number between 0 and 1 for the size of confidence interval for bias-corrected DEA score.}
 }
 \details{
   Implements Simar and Wilson's (1998) bias-correction of technical efficiency scores  in input- and output-oriented DEA models.
@@ -23,10 +23,10 @@ dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
 \value{
   A list containing bias-corrected scores for each firm, with the following components.
   % ## Later, Note to Jaak: let's include Kneip ci here, too.
-  \item{theta_hat_hat}{the vector of bias-corrected DEA score for each firm, theta_hat_hat is in the range of zero to one}
-  \item{bias}{the vector of bias for naive DEA scores, bias is non-negative}
-  \item{theta_ci_low}{the vector for lower bound of confidence interval for bias-corrected DEA score}
-  \item{theta_ci_high}{the vector for upper bound of confidence interval for bias-corrected DEA score}
+  \item{theta_hat_hat}{the vector of bias-corrected DEA score for each firm, theta_hat_hat is in the range of zero to one.}
+  \item{bias}{the vector of bias for naive DEA scores, bias is non-negative.}
+  \item{theta_ci_low}{the vector for lower bound of confidence interval for bias-corrected DEA score.}
+  \item{theta_ci_high}{the vector for upper bound of confidence interval for bias-corrected DEA score.}
 }
 
 \references{
@@ -36,7 +36,7 @@ Simar, L. and Wilson, P.W. 1998. Sensitivity analysis of efficiency scores: how 
 
 Simar, L. and Wilson, P. 2000. A general methodology for bootstrapping in non-parametric frontier models. Journal of Applied Statistics. Vol.27, No.6, pp.779--802.
 
-Badin, L. and Simar, L. 2003. Confidence intervals for DEA-type efficiency scores: how to avoid the computational burden of the bootstrap. IAP Statistics Network, Technical report 0322, http://sites.uclouvain.be/IAP-Stat-Phase-V-VI/PhaseV/publications\_2003/TR/TR0322.pdf
+Badin, L. and Simar, L. 2003. Confidence intervals for DEA-type efficiency scores: how to avoid the computational burden of the bootstrap. IAP Statistics Network, Technical report 0322, http://sites.uclouvain.be/IAP-Stat-Phase-V-VI/PhaseV/publications_2003/TR/TR0322.pdf
 
 Kneip, A. and Simar, L. and Wilson, P.W. 2008. Asymptotics and consistent bootstraps for DEA estimators in nonparametric frontier models. Econometric Theory. Vol.24, pp.1663--1697.
 
@@ -51,7 +51,7 @@ Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on ho
   \code{\link[rDEA]{dea}}, \code{\link[rDEA]{dea.env.robust}} and \code{\link[rDEA]{hospitals}}.
 }
 \examples{
-## load data on Japanese hospitals in FY 1999 (Besstremyannaya 2013, 2011)
+## load data on Japanese hospitals (Besstremyannaya 2013, 2011)
 data("hospitals", package="rDEA")
 Y = hospitals[c('inpatients', 'outpatients')]
 X = hospitals[c('labor', 'capital')]
