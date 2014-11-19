@@ -11,32 +11,32 @@ rts.test(X, Y, W=NULL, model, H0, bw, B, alpha)
   \item{X}{a matrix of inputs for observations used for estimating DEA scores.}
   \item{Y}{a matrix of outputs for observations used for esimating DEA scores.}
   \item{W}{a matrix of input prices, not used.}
-  \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented model, "output" for output-oriented model}
-  \item{H0}{a string for the NULL hypothesis to be tested. "constant" for constant returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale}
+  \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented model.}
+  \item{H0}{a string for the NULL hypothesis to be tested. "constant" for constant returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale.}
   \item{B}{an integer showing the number of bootstrap replications in constracting the test staticstics. Recommended is 100.}
   \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule.}
-  \item{alpha}{a number for the size of confidence interval for the test statistics}
+  \item{alpha}{a number from 0 to 1 for the size of confidence interval for the test statistics.}
 }
 \details{
-  Implements Simar and Wilson's (2002, 2011) returns-to-scale tests for input- and output-oriented DEA models, using ratio of means, mean of ratios or mean of ratios less unity for efficiency scores under the null and the alternative hypotheses as test statistics (denoted respectively, statistics 4.5 and 4.6 in Simar and Wilson (2002) and statistics 48 in Simar and Wilson (2011)).  Tests the null hypothesis of constant returns to scale vs. the alternative hypothesis of variable returns to scale, and the null hypothesis of non-increasing returns to scale vs. the alternative hypothesis of variable returns to scale.
+  Implements Simar and Wilson's (2002, 2011) returns-to-scale tests for input- and output-oriented DEA models, using ratio of means, mean of ratios or mean of ratios less unity of DEA scores under the null and the alternative hypotheses as test statistics (denoted respectively, statistics 4.5 and 4.6 in Simar and Wilson (2002) and statistics 48 in Simar and Wilson (2011)).  Tests the null hypothesis of constant returns to scale vs. the alternative hypothesis of variable returns to scale, and the null hypothesis of non-increasing returns to scale vs. the alternative hypothesis of variable returns to scale.
 }
 \value{
   A list containing the results of returns-to-scale test, with the following components.
-  \item{w_hat}{the vector for the values of the test statistics 4.5}
-  \item{w48_hat}{the vector for the values of the test statistics 48 or statistics 4.6}
-  \item{theta_H0_hat}{the vector for the values of naive DEA scores under the null hypothesis (H0)}
-  \item{theta_vrs_hat}{the vector for the values of naive DEA scores under the alternative hypothesis}
-  \item{w_hat_boot}{the vector for bootstrap values of the test statistics 4.5}
-  \item{w48_hat_boot}{the vector for bootstrap values of the test statistics 48 or statistics 46}
-  \item{pvalue}{the p-value for rejecting the hull hypothesis, according to test statistics 4.5}
-  \item{pvalue48}{the p-value for rejecting the hull hypothesis, according to test statistics 4.6 and 48}
-  \item{H0reject}{FALSE if H0 is not rejected according to pvalue45 and confidence level alpha, TRUE otherwise}
-  \item{H0reject48}{FALSE if H0 is not rejected according to pvalue48 confidence level alpha, TRUE otherwise}
-  \item{H0level}{the cut-off value of w45_hat_boot for confidence level alpha}
-  \item{H0level48}{the cut-off value of w48_hat_boot for confidence level alpha}
-  \item{H0}{the Null hypothesis tested}
-  \item{bw}{the type of bandwidth employed}
-  \item{bw_value}{the value for the bandwidth}
+  \item{w_hat}{the vector for the values of the test statistics 4.5.}
+  \item{w48_hat}{the vector for the values of the test statistics 48 or statistics 4.6.}
+  \item{theta_H0_hat}{the vector for the values of naive DEA scores under the Null hypothesis (H0).}
+  \item{theta_vrs_hat}{the vector for the values of naive DEA scores under the alternative hypothesis.}
+  \item{w_hat_boot}{the vector for bootstrap values of the test statistics 4.5.}
+  \item{w48_hat_boot}{the vector for bootstrap values of the test statistics 48 or statistics 46.}
+  \item{pvalue}{the p-value for rejecting the Null hypothesis, according to test statistics 4.5.}
+  \item{pvalue48}{the p-value for rejecting the Null hypothesis, according to test statistics 4.6 and 48.}
+  \item{H0reject}{FALSE if H0 is not rejected according to pvalue45 and confidence level alpha, TRUE otherwise.}
+  \item{H0reject48}{FALSE if H0 is not rejected according to pvalue48 and confidence level alpha, TRUE otherwise.}
+  \item{H0level}{the cut-off value of w45_hat_boot for confidence level alpha.}
+  \item{H0level48}{the cut-off value of w48_hat_boot for confidence level alpha.}
+  \item{H0}{the Null hypothesis tested.}
+  \item{bw}{the type of bandwidth employed.}
+  \item{bw_value}{the value for the bandwidth.}
 }
 
 \references{
@@ -57,7 +57,7 @@ Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on ho
   \code{\link[rDEA]{dea}}, \code{\link[rDEA]{dea.robust}}, \code{\link[rDEA]{dea.env.robust}}and \code{\link[rDEA]{hospitals}}.
 }
 \examples{
-## load data on Japanese hospitals in FY 1999 (Besstremyannaya 2013, 2011)
+## load data on Japanese hospitals (Besstremyannaya 2013, 2011)
 data("hospitals", package="rDEA")
 Y = hospitals[c('inpatients', 'outpatients')]
 X = hospitals[c('labor', 'capital')]
