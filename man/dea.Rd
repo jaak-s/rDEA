@@ -14,7 +14,7 @@ dea(XREF, YREF, X, Y, W=NULL, model, RTS="variable")
   \item{W}{a matrix of input prices for observations used for estimating DEA scores in cost-minimization model, W=NULL for input- and output-oriented models.}
   \item{Y}{a matrix of outputs for observations used for esimating DEA scores.}
   \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented, "costmin" for cost-minimization model.}
-  \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, RTS can be "constant", "variable" or"non-increasing".}
+  \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, RTS can be "constant", "variable" or "non-increasing".}
 }
 \details{
   Estimates technical efficiency scores (input- and output-oriented DEA models) and cost efficiency score (cost-minimization DEA).
@@ -22,18 +22,17 @@ dea(XREF, YREF, X, Y, W=NULL, model, RTS="variable")
 \value{
   A list containing the optimal solutions for linear optimization problem for each firm,
   with the following components.
-  \item{thetaOpt}{a vector of DEA scores in input- or output-oriented model, thetaOpt is in the range of zero to one}
-  \item{gammaOpt}{a vector of DEA scores in cost-minimization model}
-
-  \item{XOpt}{the matrix of optimal values of inputs, only returned for cost-minimization model}
-  %\item{feasible}{a vector of logical values, equals \code{TRUE} if DEA scores have been estimated}
-  \item{lambda}{the matrix of values for constraint coefficients in corresponding linear optimization problem, lambda >=0}
-  \item{lambda_sum}{the vector for sum of constraint coefficients in corresponding linear optimization problem, lamdba_sum=1 in case of variable returns-to-scale, lambda_sum <=1 for non-increasing returns-to-scale}
+  \item{thetaOpt}{a vector of DEA scores in input- or output-oriented model, thetaOpt is in the range of zero to one.}
+  \item{gammaOpt}{a vector of DEA scores in cost-minimization model.}
+  \item{XOpt}{the matrix of optimal values of inputs, only returned for cost-minimization model.}
+  %\item{feasible}{a vector of logical values, equals \code{TRUE} if DEA scores have been estimated.}
+  \item{lambda}{the matrix of values for constraint coefficients in the corresponding linear optimization problem, lambda >=0.}
+  \item{lambda_sum}{the vector for sum of constraint coefficients in the corresponding linear optimization problem, lamdba_sum=1 for variable returns-to-scale, lambda_sum <=1 for non-increasing returns-to-scale.}
 }
 \references{
 Charnes, A. and Cooper, W. and Rhodes, E. 1978. Measuring the efficiency of decision making units. European Journal of Operational Research. Vol.2, pp.429--444.
 
-Fare, R. and Grosskopf, S. and Lovell, C.A. 1985.The Measurement of Efficiency in Production. Kluwer Academic Publishers.
+Fare, R. and Grosskopf, S. and Lovell, C.A. 1985. The Measurement of Efficiency in Production. Kluwer Academic Publishers.
 
 Coelli, T.J. and Rao, D.S.P. and Battese, G.E. 1994. An Introduction to Efficiency and Productivity Analysis. Kluwer Academic Publishers.
 
@@ -49,7 +48,7 @@ Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on ho
   \code{\link[rDEA]{dea.robust}}, \code{\link[rDEA]{dea.env.robust}} and \code{\link[rDEA]{hospitals}}.
 }
 \examples{
-## load data on Japanese hospitals for FY 1999(Besstremyannaya 2013, 2011)
+## load data on Japanese hospitals (Besstremyannaya 2013, 2011)
 data("hospitals", package="rDEA")
 
 ## inputs and outputs for analysis
@@ -63,7 +62,7 @@ di_naive = dea(XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="input", RTS="var
 di_naive$thetaOpt
 
 ## Naive DEA score in cost-minimization model for the first 50 firms under variable returns-to-scale
-ci_naive = dea(XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,],W=W[firms,],
+ci_naive = dea(XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], W=W[firms,],
                model="costmin", RTS="variable")
 ci_naive$XOpt
 ci_naive$gammaOpt
