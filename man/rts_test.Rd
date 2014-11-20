@@ -13,8 +13,8 @@ rts.test(X, Y, W=NULL, model, H0, bw, B, alpha)
   \item{W}{a matrix of input prices, not used.}
   \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented model.}
   \item{H0}{a string for the NULL hypothesis to be tested, "constant" for constant returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale.}
-  \item{B}{an integer showing the number of bootstrap replications in constracting the test staticstics. Recommended is 100.}
   \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule.}
+  \item{B}{an integer showing the number of bootstrap replications in constracting the test staticstics. Recommended is 100.}
   \item{alpha}{a number in (0,1) for the size of confidence interval for the test statistics.}
 }
 \details{
