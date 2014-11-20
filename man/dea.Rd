@@ -10,9 +10,9 @@ dea(XREF, YREF, X, Y, W=NULL, model, RTS="variable")
 \arguments{
   \item{XREF}{a matrix of inputs for observations used for constructing the frontier.}
   \item{YREF}{a matrix of outputs for observations used for constructing the frontier.}
-  \item{X}{a matrix of inputs for observations used for estimating DEA scores.}
-  \item{W}{a matrix of input prices for observations used for estimating DEA scores in cost-minimization model, W=NULL for input- and output-oriented models.}
-  \item{Y}{a matrix of outputs for observations used for esimating DEA scores.}
+  \item{X}{a matrix of inputs for observations, for which DEA scores are estimated.}
+  \item{Y}{a matrix of outputs for observations, for which DEA scores are estimated.}
+  \item{W}{a matrix of input prices for observations, for which DEA scores are estimated in cost-minimization model, W=NULL for input- and output-oriented models.}
   \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented, "costmin" for cost-minimization model.}
   \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, RTS can be "constant", "variable" or "non-increasing".}
 }
@@ -22,7 +22,7 @@ dea(XREF, YREF, X, Y, W=NULL, model, RTS="variable")
 \value{
   A list containing the optimal solutions for linear optimization problem for each firm,
   with the following components.
-  \item{thetaOpt}{a vector of DEA scores in input- or output-oriented model, thetaOpt is in the range of zero to one.}
+  \item{thetaOpt}{a vector of DEA scores in input- or output-oriented model, thetaOpt is in (0,1).}
   \item{gammaOpt}{a vector of DEA scores in cost-minimization model.}
   \item{XOpt}{the matrix of optimal values of inputs, only returned for cost-minimization model.}
   %\item{feasible}{a vector of logical values, equals \code{TRUE} if DEA scores have been estimated.}
