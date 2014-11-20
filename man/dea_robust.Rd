@@ -8,14 +8,14 @@
 dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
 }
 \arguments{
-  \item{X}{a matrix of inputs for observations used for estimating DEA scores.}
-  \item{Y}{a matrix of outputs for observations used for esimating DEA scores.}
+  \item{X}{a matrix of inputs for observations, for which DEA scores are estimated.}
+  \item{Y}{a matrix of outputs for observations, for which DEA scores are estimated.}
   \item{W}{a matrix of input prices, not used here.}
   \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented, "costmin" for cost-minimization model.}
   \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, RTS can be "constant", "variable" or "non-increasing".}
   \item{B}{an integer showing the number of bootstrap replications, the default is B=1000.}
   \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule.}
-  \item{alpha}{a number between 0 and 1 for the size of confidence interval for bias-corrected DEA score.}
+  \item{alpha}{a number in (0,1) for the size of confidence interval for the bias-corrected DEA score.}
 }
 \details{
   Implements Simar and Wilson's (1998) bias-correction of technical efficiency scores  in input- and output-oriented DEA models.
@@ -25,8 +25,8 @@ dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
   % ## Later, Note to Jaak: let's include Kneip ci here, too.
   \item{theta_hat_hat}{the vector of bias-corrected DEA score for each firm, theta_hat_hat is in the range of zero to one.}
   \item{bias}{the vector of bias for naive DEA scores, bias is non-negative.}
-  \item{theta_ci_low}{the vector for lower bound of confidence interval for bias-corrected DEA score.}
-  \item{theta_ci_high}{the vector for upper bound of confidence interval for bias-corrected DEA score.}
+  \item{theta_ci_low}{the vector for the lower bounds of confidence interval for bias-corrected DEA score.}
+  \item{theta_ci_high}{the vector for the upper bounds of confidence interval for bias-corrected DEA score.}
 }
 
 \references{
