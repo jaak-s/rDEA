@@ -9,15 +9,15 @@ dea.env.robust (X, Y, W=NULL, Z, model, RTS="variable",
                 L1=100, L2=2000, alpha=0.05)
 }
 \arguments{
-  \item{X}{a matrix of inputs for observations used for estimating DEA scores.}
-  \item{Y}{a matrix of outputs for observations used for esimating DEA scores.}
+  \item{X}{a matrix of inputs for observations, for which DEA scores are estimated.}
+  \item{Y}{a matrix of outputs for observations, for which DEA scores are estimated.}
   \item{W}{a matrix of input prices, not used here.}
-  \item{Z}{a matrix of environmental variables for observations used for estimating DEA scores, constant should NOT be included.}
+  \item{Z}{a matrix of environmental variables for observations, for which DEA scores are estimated. Constant is automatically included in Z.}
   \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented, "costmin" for cost-minimization model.}
   \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, RTS can be "constant", "variable" or "non-increasing".}
   \item{L1}{an integer showing the number of bootstrap replications in the first loop of Simar and Wilson's (2007) algorithm, default is 100.}
   \item{L2}{an integer showing the number of bootstrap replications in the second loop of Simar and Wilson's (2007) algorithm, default is 2000.}
-  \item{alpha}{a number between 0 to 1 denoting the size of confidence interval for the bias-corrected DEA score, default is 0.05.}
+  \item{alpha}{a number in (0,1) denoting the size of confidence interval for the bias-corrected DEA score, default is 0.05.}
 }
 \details{
   Implements Simar and Wilson's (2007) second algorithm for bias-correction of technical efficiency scores in input- and output-oriented DEA models. Computations are done in terms of distance function, i.e. the reciprocal of efficiency score, with the range from one to infinity.
