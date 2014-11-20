@@ -17,7 +17,7 @@ W = hospitals[c('labor_price', 'capital_price')]
 Z= hospitals[c('z1')]
 
 ## DEA score in input-oriented model
-firms=1:50
+firms=1:20
 di_naive = dea(XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="input", RTS="variable")
 di_naive$thetaOpt
 

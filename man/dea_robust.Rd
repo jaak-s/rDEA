@@ -56,8 +56,8 @@ data("hospitals", package="rDEA")
 Y = hospitals[c('inpatients', 'outpatients')]
 X = hospitals[c('labor', 'capital')]
 
-## Naive input-oriented DEA score for the first 50 firms under variable returns-to-scale
-firms=1:50
+## Naive input-oriented DEA score for the first 20 firms under variable returns-to-scale
+firms=1:20
 di_naive = dea(XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,],
                model="input", RTS="variable")
 di_naive$thetaOpt
