@@ -8,14 +8,14 @@
 rts.test(X, Y, W=NULL, model, H0, bw, B, alpha)
 }
 \arguments{
-  \item{X}{a matrix of inputs for observations used for estimating DEA scores.}
-  \item{Y}{a matrix of outputs for observations used for esimating DEA scores.}
+  \item{X}{a matrix of inputs for observations, for which DEA scores are estimated.}
+  \item{Y}{a matrix of outputs for observations, for which DEA scores are estimated.}
   \item{W}{a matrix of input prices, not used.}
   \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented model.}
-  \item{H0}{a string for the NULL hypothesis to be tested. "constant" for constant returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale.}
+  \item{H0}{a string for the NULL hypothesis to be tested, "constant" for constant returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale.}
   \item{B}{an integer showing the number of bootstrap replications in constracting the test staticstics. Recommended is 100.}
   \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule.}
-  \item{alpha}{a number from 0 to 1 for the size of confidence interval for the test statistics.}
+  \item{alpha}{a number in (0,1) for the size of confidence interval for the test statistics.}
 }
 \details{
   Implements Simar and Wilson's (2002, 2011) returns-to-scale tests for input- and output-oriented DEA models, using ratio of means, mean of ratios or mean of ratios less unity of DEA scores under the null and the alternative hypotheses as test statistics (denoted respectively, statistics 4.5 and 4.6 in Simar and Wilson (2002) and statistics 48 in Simar and Wilson (2011)).  Tests the null hypothesis of constant returns to scale vs. the alternative hypothesis of variable returns to scale, and the null hypothesis of non-increasing returns to scale vs. the alternative hypothesis of variable returns to scale.
