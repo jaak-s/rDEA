@@ -54,7 +54,7 @@ Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on ho
 }
 \author{Jaak Simm, Galina Besstremyannaya}
 \seealso{
-  \code{\link[rDEA]{dea}}, \code{\link[rDEA]{dea.robust}}, \code{\link[rDEA]{dea.env.robust}}and \code{\link[rDEA]{hospitals}}.
+  \code{\link[rDEA]{dea}}, \code{\link[rDEA]{dea.robust}}, \code{\link[rDEA]{dea.env.robust}} and \code{\link[rDEA]{hospitals}}.
 }
 \examples{
 ## load data on Japanese hospitals (Besstremyannaya 2013, 2011)
