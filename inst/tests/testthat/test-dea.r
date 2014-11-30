@@ -1,13 +1,10 @@
 
-data("dea_hospitals", package="rDEA")
-
-H12 = subset(dea_hospitals, year == 12)
-H12[is.na(H12)] = 0
+data("hospitals", package="rDEA")
 
 ## choosing inputs and outputs for analysis
-X = H12[,c('x1', 'x2', 'x3', 'x5')]
-Y = H12[,c('y1', 'y2')]
-W = H12[,c('w1', 'w2', 'w3', 'w5')]
+X = hospitals[,c('labor', 'capital')]
+Y = hospitals[,c('inpatients', 'outpatients')]
+W = hospitals[,c('labor_price', 'capital_price')]
 firms = 1:10
 
 context("Input DEA")
@@ -15,7 +12,7 @@ context("Input DEA")
 test_that("input DEA with variable RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="input", RTS="variable" )
   expect_equal( length(dea$thetaOpt), length(firms) )
-  correct_thetaOpt =  c(0.8318892, 0.4166437, 1.0000000, 0.9838584, 0.7870153, 0.8918320, 0.7517825, 0.6274347, 0.6044336, 0.4562620)
+  correct_thetaOpt =  c(0.8832473, 0.7915816, 0.9444157, 0.8648906, 0.7307074, 0.7657450, 0.6904628, 0.6453444, 0.8474180, 0.7395350)
   expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, rep.int(1, length(firms)) )
 })
@@ -23,8 +20,8 @@ test_that("input DEA with variable RTS works", {
 test_that("input DEA with constant RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="input", RTS="constant" )
   expect_equal( length(dea$thetaOpt), length(firms) )
-  correct_thetaOpt   = c(0.7984635, 0.4115119, 0.7819155, 0.8509834, 0.7589849, 0.8830402, 0.7391885, 0.6272689, 0.5663417, 0.4539587)
-  correct_lambda_sum = c(1.7552852, 0.6940001, 4.2301076, 3.1562303, 1.4035927, 0.9229464, 1.0757771, 1.0615420, 0.5565966, 1.4986582)
+  correct_thetaOpt   = c(0.8762136, 0.7860619, 0.9400625, 0.7466703, 0.2705233, 0.7560322, 0.6860306, 0.6304803, 0.8434420, 0.5824253)
+  correct_lambda_sum = c(2.3656910, 2.6184443, 1.7116862, 0.1823766, 0.2130936, 4.5457910, 1.8709218, 0.2056953, 2.6507813, 0.4621705)
   expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
 })
@@ -32,8 +29,8 @@ test_that("input DEA with constant RTS works", {
 test_that("input DEA with non-increasing RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="input", RTS="non-increasing" )
   expect_equal( length(dea$thetaOpt), length(firms) )
-  correct_thetaOpt   = c(0.8318892, 0.4115119, 1.0000000, 0.9838584, 0.7870153, 0.8830402, 0.7517825, 0.6274347, 0.5663417, 0.4562620)
-  correct_lambda_sum = c(1.0000000, 0.6940001, 1.0000000, 1.0000000, 1.0000000, 0.9229464, 1.0000000, 1.0000000, 0.5565966, 1.0000000)
+  correct_thetaOpt   = c(0.8832473, 0.7915816, 0.9444157, 0.7466703, 0.2705233, 0.7657450, 0.6904628, 0.6304803, 0.8474180, 0.5824253)
+  correct_lambda_sum = c(1.0000000, 1.0000000, 1.0000000, 0.1823766, 0.2130936, 1.0000000, 1.0000000, 0.2056953, 1.0000000, 0.4621705)
   expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
 })
@@ -45,7 +42,7 @@ context("Output DEA")
 test_that("output DEA with variable RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="output", RTS="variable" )
   expect_equal( length(dea$thetaOpt), length(firms) )
-  correct_thetaOpt = c(0.8566956, 0.4361563, 1.0000000, 0.9891156, 0.8286440, 0.8861781, 0.8187128, 0.6896913, 0.5670282, 0.5973477)
+  correct_thetaOpt = c(0.8838455, 0.8005349, 0.9447536, 0.8191386, 0.2893051, 0.7663874, 0.6920300, 0.6376946, 0.8477847, 0.6122914)
   expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, rep.int(1, length(firms)) )
 })
@@ -53,8 +50,8 @@ test_that("output DEA with variable RTS works", {
 test_that("output DEA with constant RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="output", RTS="constant" )
   expect_equal( length(dea$thetaOpt), length(firms) )
-  correct_thetaOpt   = c(0.79846352180596, 0.41151186321040, 0.78191547262234, 0.8509833968360, 0.75898489453937, 0.88304017442415, 0.73918850524128, 0.62726889495695, 0.56634171983981, 0.453958669575282)
-  correct_lambda_sum = c(2.19832863850184, 1.68646435238622, 5.40992955742233, 3.7089211795534, 1.84930261291768, 1.04519180267609, 1.45534877696086, 1.69232373208077, 0.982792779422565, 3.30130988353909)
+  correct_thetaOpt   = c(0.8762136, 0.7860619, 0.9400625, 0.7466703, 0.2705233, 0.7560322, 0.6860306, 0.6304803, 0.8434420, 0.5824253)
+  correct_lambda_sum = c(2.6999022, 3.3310918, 1.8208216, 0.2442531, 0.7877087, 6.0126946, 2.7271697, 0.3262517, 3.1428140, 0.7935276)
   expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
 })
@@ -62,8 +59,8 @@ test_that("output DEA with constant RTS works", {
 test_that("output DEA with non-increasing RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], model="output", RTS="non-increasing" )
   expect_equal( length(dea$thetaOpt), length(firms) )
-  correct_thetaOpt   = c(0.856695552478634, 0.436156271306031, 1, 0.989115625730642, 0.828644020200666, 0.886178140787594, 0.818712783530984, 0.689691319915979, 0.56634171983981, 0.597347713436698)
-  correct_lambda_sum = c(1, 1, 1, 1, 1, 1, 1, 1, 0.982792779422565, 1)
+  correct_thetaOpt   = c(0.883845535216761, 0.800534940677135, 0.944753605800893, 0.746670299529581, 0.270523322940735, 0.766387433133089, 0.692030034384703, 0.630480263517832, 0.847784674423146, 0.582425261489661)
+  correct_lambda_sum = c(1, 1, 1, 0.244253138500423, 0.787708703374778, 1, 1, 0.326251709829963, 1, 0.793527597023825)
   expect_equal( dea$thetaOpt, correct_thetaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
 })
@@ -76,37 +73,37 @@ context("Costmin DEA")
 test_that("costmin DEA with variable RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], W=W[firms,], model="costmin", RTS="variable" )
   expect_equal( length(dea$gammaOpt), length(firms) )
-  correct_gammaOpt = c(0.721704757187399, 0.375392168049305, 0.917664981395069, 0.918876231481052, 0.76653075695613, 0.859271996008044, 0.731855668245487, 0.612411985153844, 0.552216094552311, 0.38960407018854)
-  correct_XOpt1 = c(7.34931598903593, 44.5179518848677, 18.0279496271356, 115.568236618212)
-  correct_XOpt2 = c(3.78660783865678, 21.1744706520614, 13.9346267163477, 85.3274073300269)
+  correct_gammaOpt = c(0.075789159498322, 0.0763752531357781, 0.0456014736519581, 0.34132473305433, 0.0960008610681884, 0.311276863261801, 0.0379973995136666, 0.0821201808600898, 0.584907590215816, 0.212884606360443)
+  correct_XOpt1 = c(1.63819095477387, 7.57829839704069, 1.52763819095477, 3, 1, 100.225134716623, 1.85951928144261, 2.58982035928144, 307.825474036726, 3)
+  correct_XOpt2 = c(227.638190954774, 307.901356350185, 205.527638190955, 51, 100, 380.143005344121, 183.625094516876, 91.6077844311377, 464.860759020028, 51)
   expect_equal( dea$gammaOpt, correct_gammaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, rep.int(1, length(firms)) )
-  expect_equal( dea$XOpt[1,], correct_XOpt1, tolerance=1e-5 )
-  expect_equal( dea$XOpt[2,], correct_XOpt2, tolerance=1e-5 )
+  expect_equal( dea$XOpt[,1], correct_XOpt1, tolerance=1e-5 )
+  expect_equal( dea$XOpt[,2], correct_XOpt2, tolerance=1e-5 )
 })
 
 test_that("costmin DEA with constant RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], W=W[firms,], model="costmin", RTS="constant" )
   expect_equal( length(dea$gammaOpt), length(firms) )
-  correct_gammaOpt = c(0.704688692315888, 0.37133012890203, 0.712930547459483, 0.712474143478145, 0.710422261138226, 0.856585018358924, 0.726133014763142, 0.605491151127793, 0.534736076414802, 0.29150574738414)
-  correct_XOpt1 = c(5.5004261785087, 39.8306491434033, 25.7097483194497, 148.326589130894)
-  correct_XOpt2 = c(3.84886621337591, 21.8723831972231, 12.7463743064303, 83.0588953728056)
-  correct_lambda_sum = c(1.85402180270745, 0.786311797430082, 3.96050986309536, 3.99456612546613, 1.62884453911103, 1.05427916884122, 1.20398674643091, 1.37325261852835, 0.723959624673555, 8.77162267008427)
+  correct_gammaOpt = c(0.074594384391326, 0.0405556342136567, 0.0434047401964453, 0.148724677698832, 0.0157404430859198, 0.0735575478385203, 0.0342464786836621, 0.0603398580980251, 0.11643628270966, 0.0994976197003038)
+  correct_XOpt1 = c(1.51020408163265, 2.04081632653061, 1.36054421768707, 0.417204301075269, 0.131764705882353, 2.44897959183673, 1.20705882352941, 0.630588235294118, 6.45591397849462, 0.296470588235294)
+  correct_XOpt2 = c(226.530612244898, 306.122448979592, 204.081632653061, 31.2903225806452, 19.7647058823529, 367.34693877551, 181.058823529412, 94.5882352941177, 484.193548387097, 44.4705882352941)
+  correct_lambda_sum = c(0.755102040816327, 1.02040816326531, 0.680272108843537, 0.208602150537634, 0.0658823529411765, 1.22448979591837, 0.603529411764706, 0.315294117647059, 3.22795698924731, 0.148235294117647)
   expect_equal( dea$gammaOpt, correct_gammaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
-  expect_equal( dea$XOpt[1,], correct_XOpt1, tolerance=1e-5 )
-  expect_equal( dea$XOpt[2,], correct_XOpt2, tolerance=1e-5 )
+  expect_equal( dea$XOpt[,1], correct_XOpt1, tolerance=1e-5 )
+  expect_equal( dea$XOpt[,2], correct_XOpt2, tolerance=1e-5 )
 })
 
 test_that("costmin DEA with non-increasing RTS works", {
   dea = dea( XREF=X, YREF=Y, X=X[firms,], Y=Y[firms,], W=W[firms,], model="costmin", RTS="non-increasing" )
   expect_equal( length(dea$gammaOpt), length(firms) )
-  correct_gammaOpt = c(0.721704757187399, 0.37133012890203, 0.917664981395069, 0.918876231481052, 0.76653075695613, 0.859271996008044, 0.731855668245487, 0.612411985153844, 0.534736076414802, 0.38960407018854)
-  correct_XOpt1 = c(7.34931598903593, 44.5179518848677, 18.0279496271356, 115.568236618212)
-  correct_XOpt2 = c(3.84886621337591, 21.8723831972231, 12.7463743064303, 83.0588953728056)
-  correct_lambda_sum = c(1, 0.786311797430082, 1, 1, 1, 1, 1, 1, 0.723959624673555, 1)
+  correct_gammaOpt = c(0.074594384391326, 0.0763752531357779, 0.0434047401964453, 0.148724677698832, 0.0157404430859198, 0.311276863261801, 0.0342464786836621, 0.0603398580980251, 0.584907590215816, 0.0994976197003038)
+  correct_XOpt1 = c(1.51020408163265, 7.57829839704067, 1.36054421768707, 0.417204301075269, 0.131764705882353, 100.225134716623, 1.20705882352941, 0.630588235294118, 307.825474036726, 0.296470588235294)
+  correct_XOpt2 = c(226.530612244898, 307.901356350185, 204.081632653061, 31.2903225806452, 19.7647058823529, 380.143005344121, 181.058823529412, 94.5882352941177, 464.860759020028, 44.4705882352941)
+  correct_lambda_sum = c(0.755102040816327, 1, 0.680272108843537, 0.208602150537634, 0.0658823529411765, 1, 0.603529411764706, 0.315294117647059, 1, 0.148235294117647)
   expect_equal( dea$gammaOpt, correct_gammaOpt, tolerance=1e-5 )
   expect_equal( dea$lambda_sum, correct_lambda_sum, tolerance=1e-5 )
-  expect_equal( dea$XOpt[1,], correct_XOpt1, tolerance=1e-5 )
-  expect_equal( dea$XOpt[2,], correct_XOpt2, tolerance=1e-5 )
+  expect_equal( dea$XOpt[,1], correct_XOpt1, tolerance=1e-5 )
+  expect_equal( dea$XOpt[,2], correct_XOpt2, tolerance=1e-5 )
 })

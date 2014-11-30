@@ -1,16 +1,13 @@
 
 library("maxLik")
-data("dea_hospitals", package="rDEA")
-
-H12 = subset(dea_hospitals, year == 12)
-H12[is.na(H12)] = 0
+data("hospitals", package="rDEA")
 
 ## choosing inputs and outputs for analysis
 firms = 1:40
-X = H12[firms, c('x1', 'x2', 'x3', 'x5')]
-Y = H12[firms, c('y1', 'y2')]
-W = H12[firms, c('w1', 'w2', 'w3', 'w5')]
-Z = H12[firms, c('z2', 'z3', 'z4')]
+X = hospitals[firms, c('labor', 'capital')]
+Y = hospitals[firms, c('inpatients', 'outpatients')]
+W = hospitals[firms, c('labor_price', 'capital_price')]
+Z = hospitals[firms, c('z1'), drop = FALSE]
 
 L1 = 20
 L2 = 20
