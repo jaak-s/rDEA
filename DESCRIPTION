@@ -1,11 +1,11 @@
 Package: rDEA
-Version: 1.0-1
+Version: 1.0-2
 Title: Robust Data Envelopment Analysis (DEA) for R
 Description: Data Envelopment Analysis for R, estimating robust DEA scores without and with environmental variables and doing returns-to-scale tests.
 Authors@R: c(person("Jaak", "Simm", role = c("aut", "cre"), email = "jaak.simm@gmail.com"), person("Galina", "Besstremyannaya", role = c("aut") ))
 Imports: slam (>= 0.1-9), truncreg(>= 0.2-1), truncnorm(>= 1.0-7), maxLik
 Suggests: testthat
-SystemRequirements:
+SystemRequirements: GLPK (>= 4.52)
 License: GPL-2 | GPL-3
 URL: https://github.com/jaak-s/rDEA
 Packaged: 2014-11-30 11:16:12 UTC; wucloud
