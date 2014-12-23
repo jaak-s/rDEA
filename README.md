@@ -6,7 +6,10 @@ without and with environmental variables and doing returns-to-scale tests.
 
 Installation from CRAN
 ---------------------
-The package will be soon published in the official R CRAN.
+The package can be installed from the official R CRAN by
+```R
+install.packages("rDEA")
+```
 
 Installation from git
 --------------------
