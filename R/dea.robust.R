@@ -14,7 +14,7 @@
 ### out$bias           - bias
 ### out$theta_hat_hat  - bias corrected efficiency scores 
 dea.robust <- function(X, Y, W=NULL, model, RTS="variable", B=1000, alpha=0.05,
-                       bw = "bw.ucv") {
+                       bw = "bw.ucv", bw_mult = 1) {
   if (missing(model) || ! model %in% c("input", "output", "costmin") ) {
     stop("Parameter 'model' has to be either 'input', 'output' or 'costmin'.")
   }
@@ -25,17 +25,18 @@ dea.robust <- function(X, Y, W=NULL, model, RTS="variable", B=1000, alpha=0.05,
   if ( ! is.numeric(Y)) { stop("Y has to be numeric matrix or data.frame.") }
   if ( any(is.na(X)) ) stop("X contains NA. Missing values are not supported.")
   if ( any(is.na(Y)) ) stop("Y contains NA. Missing values are not supported.")
-  
+  if ( bw_mult <= 0 )  stop("bw_mult has to be a positive value.")
+    
   if (nrow(X) != nrow(Y)) { stop( sprintf("Number of rows in X (%d) does not equal the number of rows in Y (%d)", nrow(X), nrow(Y)) ) }
   
   if (model == "input") {
-    return( bias.correction.sw98(X=X, Y=Y, RTS=RTS, B=B, alpha=alpha, bw=bw,
+    return( bias.correction.sw98(X=X, Y=Y, RTS=RTS, B=B, alpha=alpha, bw=bw, bw_mult=bw_mult,
                                  deaMethod=dea.input.rescaling) )
   } else if (model == "output") {
-    return( bias.correction.sw98(X=X, Y=Y, RTS=RTS, B=B, alpha=alpha, bw=bw,
+    return( bias.correction.sw98(X=X, Y=Y, RTS=RTS, B=B, alpha=alpha, bw=bw, bw_mult=bw_mult,
                                  deaMethod=dea.output.rescaling) )
   } else { 
-    return( dea.robust.costmin(X=X, Y=Y, W=W, RTS=RTS, B=B, alpha=alpha, bw=bw) )
+    return( dea.robust.costmin(X=X, Y=Y, W=W, RTS=RTS, B=B, alpha=alpha, bw=bw, bw_mult=bw_mult) )
   }
 }
 
@@ -44,7 +45,7 @@ dea.robust <- function(X, Y, W=NULL, model, RTS="variable", B=1000, alpha=0.05,
 ###      1) "silverman", "bw.nrd0" for Silverman rule
 ###      2) "rule" for rule of thumb
 ###      3) "cv", "bw.ucv" for unbiased cross-validation
-bias.correction.sw98 <- function(X, Y, RTS, B, alpha, deaMethod, bw) {
+bias.correction.sw98 <- function(X, Y, RTS, B, alpha, deaMethod, bw, bw_mult) {
   if (!is.matrix(X)) X = as.matrix(X)
   if (!is.matrix(Y)) Y = as.matrix(Y)
   out = list()
@@ -66,6 +67,8 @@ bias.correction.sw98 <- function(X, Y, RTS, B, alpha, deaMethod, bw) {
     bw_value = bw( as.vector(delta_hat) )
   } else if (bw == "rule") {
     bw_value = bandwidth_rule( ncol(X), ncol(Y), nrow(X) )
+  } else if (bw == "rulesq") {
+    bw_value = bandwidth_rule( ncol(X), ncol(Y), nrow(X) ) ^ 2
   } else if (bw %in% c("silverman", "bw.nrd0") ) {
     bw_value = bw.nrd0( as.vector(delta_hat) )
   } else if (bw %in% c("cv", "bw.ucv")) {
@@ -75,6 +78,7 @@ bias.correction.sw98 <- function(X, Y, RTS, B, alpha, deaMethod, bw) {
   } else {
     stop( sprintf("Illegal bandwidth type '%s'.", bw) )
   }
+  bw_value = bw_value * bw_mult
   
   # bootstrap loop (order of the loops is like in SW98 paper):
   theta_hat_star = matrix(0, N, B)
@@ -91,6 +95,7 @@ bias.correction.sw98 <- function(X, Y, RTS, B, alpha, deaMethod, bw) {
                                    rescaling=rescaleFactor)
   }
   out$theta_hat_star = theta_hat_star
+  out$bw = bw_value
   
   # (5) bias
   bias = rowMeans(theta_hat_star) - theta_hat
@@ -118,7 +123,8 @@ bias.correction.sw98 <- function(X, Y, RTS, B, alpha, deaMethod, bw) {
 ### B         - number of bootstraps
 ### alpha     - confidence interval, i.e., 0.05
 ### bw        - "cv", "silverman", "rule"
-dea.robust.costmin <- function(X, Y, W, RTS, B, alpha, bw) {
+### bw_mult   - bw multiplier, 1 means no effect
+dea.robust.costmin <- function(X, Y, W, RTS, B, alpha, bw, bw_mult) {
   if (!is.matrix(X)) X = as.matrix(X)
   if (!is.matrix(Y)) Y = as.matrix(Y)
   if (!is.matrix(W)) W = as.matrix(W)
@@ -146,6 +152,8 @@ dea.robust.costmin <- function(X, Y, W, RTS, B, alpha, bw) {
     bw_value = bw( as.vector(delta_hat) )
   } else if (bw == "rule") {
     bw_value = bandwidth_rule( ncol(X), ncol(Y), nrow(X) )
+  } else if (bw == "rulesq") {
+    bw_value = bandwidth_rule( ncol(X), ncol(Y), nrow(X) ) ^ 2
   } else if (bw %in% c("silverman", "bw.nrd0") ) {
     bw_value = bw.nrd0( as.vector(delta_hat) )
   } else if (bw %in% c("cv", "bw.ucv")) {
@@ -155,6 +163,7 @@ dea.robust.costmin <- function(X, Y, W, RTS, B, alpha, bw) {
   } else {
     stop( sprintf("Illegal bandwidth type '%s'.", bw) )
   }
+  bw_value = bw_value * bw_mult
   
   out$bw = bw_value
   # bootstrap loop (order of the loops is like in SW98 paper):

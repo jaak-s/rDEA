@@ -5,7 +5,7 @@
   Estimates bias-corrected scores for input- and output-oriented models
 }
 \usage{
-dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
+dea.robust (X, Y, W=NULL, model, RTS="variable", B=1000, alpha=0.05, bw="bw.ucv", bw_mult=1)
 }
 \arguments{
   \item{X}{a matrix of inputs for observations, for which DEA scores are estimated.}
@@ -16,6 +16,7 @@ dea.robust (X, Y, W=NULL, model, RTS, B, alpha, bw)
   \item{B}{an integer showing the number of bootstrap replications, the default is B=1000.}
   \item{alpha}{a number in (0,1) for the size of confidence interval for the bias-corrected DEA score.}
   \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule.}
+  \item{bw_mult}{bandwidth multiplier, default is 1 that means no change.}
 }
 \details{
   Implements Simar and Wilson's (1998) bias-correction of technical efficiency scores  in input- and output-oriented DEA models.

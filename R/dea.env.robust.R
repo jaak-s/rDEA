@@ -58,6 +58,7 @@ dea.env.robust <- function(X, Y, W=NULL, Z, model, RTS="variable",
     if (ncol(X) != ncol(W)) { stop( sprintf("Number of columns in X (%d) does not equal the number of columns in W (%d)", ncol(X), ncol(W)) ) }
 
     ## TODO: add if for costmine-tone here
+    if (model == "costmin-tone") stop( "costmin-tone is not available yet." )
     
     dm <- function(XREF, YREF, X, Y, RTS, rescaling=1) {
       dea.costmin.rescaling(XREF=XREF, YREF=YREF, W=W, X=X, Y=Y, RTS=RTS, rescaling=rescaling)
