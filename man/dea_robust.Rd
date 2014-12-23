@@ -5,7 +5,8 @@
   Estimates bias-corrected scores for input- and output-oriented models
 }
 \usage{
-dea.robust (X, Y, W=NULL, model, RTS="variable", B=1000, alpha=0.05, bw="bw.ucv", bw_mult=1)
+dea.robust (X, Y, W=NULL, model, RTS="variable", B=1000, alpha=0.05, 
+            bw="bw.ucv", bw_mult=1)
 }
 \arguments{
   \item{X}{a matrix of inputs for observations, for which DEA scores are estimated.}
