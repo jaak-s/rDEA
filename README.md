@@ -10,11 +10,16 @@ The package can be installed from the official R CRAN by
 ```R
 install.packages("rDEA")
 ```
+Under Linux make sure you have GLPK installed before, e.g., in Ubuntu you need
+```bash
+sudo apt-get install libglpk-dev
+```
 
 Installation from git
 --------------------
 
-Using **devtools** our package can be installed by
+Using **devtools** our package can be installed by (make sure you have
+**libglpk-dev** installed)
 ```R
 library(devtools)
 install_github("jaak-s/rDEA")
