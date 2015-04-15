@@ -75,7 +75,7 @@ library(maxLik)
 ## with environmental variables, variable returns-to-scale
 di_env = dea.env.robust(
              X=X[firms,], Y=Y[firms,], Z=Z[firms,], model="input",
-             RTS="variable", L1, L2=100, alpha=0.05)
+             RTS="variable", L2=100, alpha=0.05)
 di_env$delta_hat_hat
 
 }

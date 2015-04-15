@@ -90,7 +90,6 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   
   # number of firms
   N    = nrow( as.matrix(X) )
-  Zdim = ncol(Z)
   
   # 1. Compute the original DEA (input oriented)
   # now we get delta_hat
