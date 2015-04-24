@@ -104,7 +104,20 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   
   ind_not1 = out$delta_hat>1
   ty   = out$delta_hat[ind_not1]
-  tx   = Z[ind_not1,]
+  tx   = Z[ind_not1,,drop=F]
+  if (sum(ind_not1) <= ncol(tx) + 1) {
+    ## too few non-frontier samples
+    stop(paste0(
+      "Too few firms to build the model for environmental variables.\n",
+      sprintf("The number of firms not on the frontier is %d ", sum(ind_not1)),
+      sprintf("and the number of environmental variables is %d + 1 constant term.", ncol(tx)),
+      "\n\n",
+      "To solve this issue either:",
+      "\n1) Increase the number of firms (which should increase the number of non-frontier firms).",
+      "\n2) Decrease the number of environmental variables.",
+      "\n3) Decrease the number of output variables, which should move some firms off the frontier."
+    ))
+  }
   mlYZ = truncreg::truncreg(ty~tx, point=1.0, direction="left")
   beta_hat      = mlYZ$coefficients[1:(length(mlYZ$coefficients)-1)]
   sigma_hat     = mlYZ$coefficients[length(mlYZ$coefficients)]
