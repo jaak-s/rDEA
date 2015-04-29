@@ -63,17 +63,27 @@ bias.correction.sw98 <- function(X, Y, RTS, B, alpha, deaMethod, bw, bw_mult) {
   out$theta_hat  = theta_hat
   
   # finding the bandwidth for kernel sampling:
+  delta_hat_m  = as.vector(delta_hat[delta_hat > 1])
+  delta_hat_2m = c(delta_hat_m, 2 - delta_hat_m)
   if (is.function(bw)) {
-    bw_value = bw( as.vector(delta_hat) )
+    bw_value = bw( delta_hat_2m )
   } else if (bw == "rule") {
     bw_value = bandwidth_rule( ncol(X), ncol(Y), nrow(X) )
   } else if (bw == "rulesq") {
     bw_value = bandwidth_rule( ncol(X), ncol(Y), nrow(X) ) ^ 2
   } else if (bw %in% c("silverman", "bw.nrd0") ) {
-    bw_value = bw.nrd0( as.vector(delta_hat) )
+    bw_value = bw.nrd0( delta_hat_2m )
   } else if (bw %in% c("cv", "bw.ucv")) {
     suppressWarnings({
-      bw_value = bw.ucv( as.vector(delta_hat) )
+      bw_value = bw.ucv( delta_hat_2m )
+    })
+  } else if (bw %in% c("cv.adjusted")) {
+    ## Formula (4.86) from "The measurement of Productive Efficiency" (2008)
+    suppressWarnings({
+      bw_value = bw.ucv(delta_hat_2m)
+      m        = length(delta_hat_m)
+      n        = length(delta_hat)
+      bw_value = bw_value * 2^(1/5) * (m / n)^(1/5) * sd(delta_hat) / sd(delta_hat_2m)
     })
   } else {
     stop( sprintf("Illegal bandwidth type '%s'.", bw) )
@@ -148,17 +158,27 @@ dea.robust.costmin <- function(X, Y, W, RTS, B, alpha, bw, bw_mult) {
   var_delta_hat  = var(delta_hat)
   mean_delta_hat = mean(delta_hat)
   # finding the bandwidth for kernel sampling:
+  delta_hat_m  = as.vector(delta_hat[delta_hat > 1])
+  delta_hat_2m = c(delta_hat_m, 2 - delta_hat_m)
   if (is.function(bw)) {
-    bw_value = bw( as.vector(delta_hat) )
+    bw_value = bw( delta_hat_2m )
   } else if (bw == "rule") {
     bw_value = bandwidth_rule( ncol(X), ncol(Y), nrow(X) )
   } else if (bw == "rulesq") {
     bw_value = bandwidth_rule( ncol(X), ncol(Y), nrow(X) ) ^ 2
   } else if (bw %in% c("silverman", "bw.nrd0") ) {
-    bw_value = bw.nrd0( as.vector(delta_hat) )
+    bw_value = bw.nrd0( delta_hat_2m )
   } else if (bw %in% c("cv", "bw.ucv")) {
     suppressWarnings({
-      bw_value = bw.ucv( as.vector(delta_hat) )
+      bw_value = bw.ucv( delta_hat_2m )
+    })
+  } else if (bw %in% c("cv.adjusted")) {
+    ## Formula (4.86) from "The measurement of Productive Efficiency" (2008)
+    suppressWarnings({
+      bw_value = bw.ucv(delta_hat_2m)
+      m        = length(delta_hat_m)
+      n        = length(delta_hat)
+      bw_value = bw_value * 2^(1/5) * (m / n)^(1/5) * sd(delta_hat) / sd(delta_hat_2m)
     })
   } else {
     stop( sprintf("Illegal bandwidth type '%s'.", bw) )
