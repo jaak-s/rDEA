@@ -14,7 +14,11 @@ Under Linux make sure you have GLPK installed before, e.g., in Ubuntu you need
 ```bash
 sudo apt-get install libglpk-dev
 ```
-Or if you need to compile GLPK set environmental variable `CPATH=/to/path/include/gplk` for installing.
+Or if you need to compile GLPK set following environmental variables before installing rDEA
+```bash
+export CPATH=/path/to/include/glpk
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/lib/glpk
+```
 
 Installation from git
 --------------------
