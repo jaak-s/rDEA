@@ -66,8 +66,8 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
     if ( any(is.na(W)) ) stop("W contains NA. Missing values are not supported.")
   }
   
-  if (missing(model) || ! model %in% c("input", "output") ) {
-    stop("model has to be either 'input' or 'output'.")
+  if (missing(model) || ! model %in% c("input", "output", "costmin") ) {
+    stop("model has to be either 'input', 'output' or 'costmin'.")
   }
   
   if (! H0 %in% c("constant", "non-increasing")) {
@@ -83,6 +83,7 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
   
   if (model == "input")   dea = dea.input.rescaling
   if (model == "output")  dea = dea.output.rescaling
+  if (model == "costmin") dea = dea.input.rescaling
   ## TODO:
   ## 1) add costmin model here
   ## 2) costmin uses theta_H0_hat and theta_vrs_hat from input oriented model
@@ -126,23 +127,21 @@ rts.test <- function(X, Y, W=NULL, model, H0="constant", bw="cv", B=2000, alpha=
   w48_hat_boot = matrix(0, B, 1)
   for (i in 1:B) {
     # (2) reflection method, sampling reciprocals of distance from smooth kernel function:
-    D_crs_boot = 1 / sampling_delta_with_reflection( N, delta_crs_hat, bw_value, var_delta_crs_hat, mean_delta_crs_hat )
+    theta_crs_boot = 1 / sampling_delta_with_reflection( N, delta_crs_hat, bw_value, var_delta_crs_hat, mean_delta_crs_hat )
     # (3) new output based on the efficiencies:
-    #X_boot     = X * (theta_H0_hat / D_crs_boot)
-    rescaling = (theta_H0_hat / D_crs_boot)
+    #X_boot     = X * (theta_H0_hat / theta_crs_boot)
+    rescaling = (theta_H0_hat / theta_crs_boot)
     # (4) DEA efficiencies for scores:
-    theta_H0_hat_boot  = dea(XREF=X, YREF=Y, X=X, Y=Y, rescaling=rescaling, RTS=H0)
-    theta_vrs_hat_boot  = dea(XREF=X, YREF=Y, X=X, Y=Y, rescaling=rescaling, RTS="variable")
+    if (model == "costmin") {
+      theta_H0_hat_boot  = dea.costmin.rescaling(XREF=X, YREF=Y, X=X, Y=Y, W=W, rescaling=rescaling, RTS=H0)
+      theta_vrs_hat_boot = dea.costmin.rescaling(XREF=X, YREF=Y, X=X, Y=Y, W=W, rescaling=rescaling, RTS="variable")
+    } else {
+      theta_H0_hat_boot  = dea(XREF=X, YREF=Y, X=X, Y=Y, rescaling=rescaling, RTS=H0)
+      theta_vrs_hat_boot = dea(XREF=X, YREF=Y, X=X, Y=Y, rescaling=rescaling, RTS="variable")
+    }
     w_hat_boot[i]   = RTSStatistic46( theta_H0_hat_boot, theta_vrs_hat_boot )
     w45_hat_boot[i] = RTSStatistic45( theta_H0_hat_boot, theta_vrs_hat_boot )
     w48_hat_boot[i] = RTSStatistic48( theta_H0_hat_boot, theta_vrs_hat_boot )
-    #if (w_hat_boot[i] == 0) {
-    #  ## TODO remove this if
-    #  out$debug_theta_H0_hat_boot = theta_H0_hat_boot
-    #  out$debug_theta_vrs_hat_boot = theta_vrs_hat_boot
-    #  out$debug_d_crs_boot     = D_crs_boot
-    #  out$debug_rescaling = rescaling
-    #}
   }
   out$w_hat_boot   = w_hat_boot
   #out$w45_hat_boot = w45_hat_boot
