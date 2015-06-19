@@ -41,6 +41,8 @@ The Measurement of Productive Efficiency and Productivity Growth. 2008. O'Fried,
 Besstremyannaya, G. 2011. Managerial performance and cost efficiency of Japanese local public hospitals. Health Economics. Vol.20(S1), pp.19--34.
 
 Besstremyannaya, G. 2013. The impact of Japanese hospital financing reform on hospital efficiency. Japanese Economic Review. Vol.64, No.3, pp.337--362.
+
+Besstremyannaya G., Simm J., Golovan S. 2014. Robust non-parametric estimation of cost efficiency with an application to banking industry. Working paper.
 }
 
 \author{Jaak Simm, Galina Besstremyannaya}
