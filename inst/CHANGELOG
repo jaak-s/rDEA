@@ -1,3 +1,8 @@
+2015-06-20  Jaak Simm  <jaak.simm@gmail.com>
+  * VERSION: 1.2-1
+  * ADDED: support for costmin rts.test
+  * FIXED: small correction to bandwidth estimation in dea.robust
+
 2015-03-26  Jaak Simm  <jaak.simm@gmail.com>
   * VERSION: 1.1-1
   * ADDED: support for bandwidth multiplier for dea.robust

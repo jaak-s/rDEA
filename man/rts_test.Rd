@@ -11,7 +11,7 @@ rts.test(X, Y, W=NULL, model, H0, bw, B, alpha)
   \item{X}{a matrix of inputs for observations, for which DEA scores are estimated.}
   \item{Y}{a matrix of outputs for observations, for which DEA scores are estimated.}
   \item{W}{a matrix of input prices, not used.}
-  \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented model.}
+  \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented model, "costmin" for cost-minimization model.}
   \item{H0}{a string for the NULL hypothesis to be tested, "constant" for constant returns-to-scale, "non-increasing" for non-inscreasing returns-to-scale.}
   \item{bw}{a string for the type of bandwidth used as a smoothing parameter in sampling with reflection, "cv" or "bw.ucv" for cross-validation bandwidth, "silverman" or "bw.nrd0" for Silverman's (1986) rule.}
   \item{B}{an integer showing the number of bootstrap replications in constracting the test staticstics. Recommended is 100.}
