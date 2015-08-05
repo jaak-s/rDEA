@@ -1,3 +1,7 @@
+2015-08-04  Jaak Simm  <jaak.simm@gmail.com>
+  * VERSION: 1.2-2
+  * FIXED: updated documentation for input prices argument (W)
+
 2015-06-20  Jaak Simm  <jaak.simm@gmail.com>
   * VERSION: 1.2-1
   * ADDED: support for costmin rts.test

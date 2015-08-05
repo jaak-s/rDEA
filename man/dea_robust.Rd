@@ -11,7 +11,7 @@ dea.robust (X, Y, W=NULL, model, RTS="variable", B=1000, alpha=0.05,
 \arguments{
   \item{X}{a matrix of inputs for observations, for which DEA scores are estimated.}
   \item{Y}{a matrix of outputs for observations, for which DEA scores are estimated.}
-  \item{W}{a matrix of input prices, not used here.}
+  \item{W}{a matrix of input prices, only used if model="costmin".}
   \item{model}{a string for the type of DEA model to be estimated, "input" for input-oriented, "output" for output-oriented, "costmin" for cost-minimization model.}
   \item{RTS}{a string for returns-to-scale under which DEA scores are estimated, RTS can be "constant", "variable" or "non-increasing".}
   \item{B}{an integer showing the number of bootstrap replications, the default is B=1000.}
