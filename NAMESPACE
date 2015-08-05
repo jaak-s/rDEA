@@ -3,6 +3,7 @@ import("slam")
 import("maxLik")
 import("truncreg")
 import("truncnorm")
+importFrom("stats", "bw.nrd0", "bw.ucv", "quantile", "rnorm", "sd", "var")
 
 export("multi_glpk_solve_LP")
 export("dea")
