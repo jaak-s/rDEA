@@ -33,8 +33,8 @@ dea.env.robust (X, Y, W=NULL, Z, model, RTS="variable",
   \item{sigma_hat_hat}{the robust standard deviation of the errors in the truncated regression of reciprocal of DEA score on environmental variables (after the second loop).}
   \item{delta_hat_hat}{the vector of robust reciprocal of DEA score (after the second loop).}
   \item{bias}{the vector of bias of the reciprocal of DEA score, bias is non-positive.}
-  \item{delta_ci_low}{the vector of the lower bounds of confidence interval for bias-corrected reciprocal of DEA score.}
-  \item{delta_ci_high}{the vector of the upper bounds of confidence interval for bias-corrected reciprocal of DEA score.}
+  \item{delta_ci_low}{the vector of the lower bounds of confidence interval for delta_hat_hat (bias-corrected reciprocal of DEA score).}
+  \item{delta_ci_high}{the vector of the upper bounds of confidence interval for delta_hat_hat (bias-corrected reciprocal of DEA score).}
   \item{beta_ci}{the matrix of lower and upper bounds for beta using \code{alpha} confidence intervals (beta is robust coefficients in the truncated regression of the reciprocal of DEA score on environmental variables).}
   \item{sigma_ci}{the matrix of lower and upper bounds for sigma using \code{alpha} confidence intervals (sigma is the robust standard deviation in the truncated regression of the reciprocal of DEA score on environmental variables).}
 }
