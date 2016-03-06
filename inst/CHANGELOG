@@ -1,3 +1,7 @@
+2016-03-06  Jaak Simm  <jaak.simm@gmail.com>
+  * VERSION: 1.2-3
+  * FIXED: tests for new version of 'testthat' package
+
 2015-08-04  Jaak Simm  <jaak.simm@gmail.com>
   * VERSION: 1.2-2
   * FIXED: updated documentation for input prices argument (W)

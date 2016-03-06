@@ -118,7 +118,8 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
       "\n3) Decrease the number of output variables, which should move some firms off the frontier."
     ))
   }
-  mlYZ = truncreg::truncreg(ty~tx, point=1.0, direction="left")
+  dataf = data.frame(ty = ty, tx)
+  suppressWarnings({ mlYZ = truncreg::truncreg(ty ~ ., data=dataf, point=1.0, direction="left") })
   beta_hat      = mlYZ$coefficients[1:(length(mlYZ$coefficients)-1)]
   sigma_hat     = mlYZ$coefficients[length(mlYZ$coefficients)]
   out$beta_hat  = beta_hat
@@ -186,9 +187,10 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   ind_not1 = delta_hat_hat>1
   out$delta_hat_hat_used = mean(ind_not1)
   
-  ty       = delta_hat_hat[ind_not1]
-  tx       = Z[ind_not1,]
-  mlYZ = truncreg::truncreg(ty~tx, point=1.0, direction="left")
+  ty   = delta_hat_hat[ind_not1]
+  tx   = Z[ind_not1,]
+  dataf= data.frame(ty = ty, tx)
+  suppressWarnings({ mlYZ = truncreg::truncreg(ty ~ ., data=dataf, point=1.0, direction="left") })
   beta_hat_hat     = mlYZ$coefficients[ 1:(length(mlYZ$coefficients)-1) ]
   sigma_hat_hat    = mlYZ$coefficients[ length(mlYZ$coefficients) ]
   out$beta_hat_hat = beta_hat_hat
@@ -200,7 +202,6 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   
   Zbeta_hat_hat = Z1 %*% matrix(beta_hat_hat)
   out$Zbeta_hat_hat = Zbeta_hat_hat
-  
   
   for (i in 1:L2) {
     # 6.1 Draw \epsilon_i for each observation from trunc. normal
@@ -233,7 +234,8 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
       #out$ty = data.frame(ty)
       #return(out)
     }
-    mlYZ = truncreg::truncreg(ty~tx, point=1.0, direction="left")
+    dataf= data.frame(ty = ty, tx)
+    suppressWarnings({ mlYZ = truncreg::truncreg(ty ~ ., data=dataf, point=1.0, direction="left") })
     beta_hat_hat_boot[,i]   = mlYZ$coefficients[1:(length(mlYZ$coefficients)-1)]
     sigma_hat_hat_boot[1,i] = mlYZ$coefficients[length(mlYZ$coefficients)]
     
