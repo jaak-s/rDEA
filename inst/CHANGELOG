@@ -1,3 +1,7 @@
+2016-05-08  Jaak Simm  <jaak.simm@gmail.com>
+  * VERSION: 1.2-4
+  * FIXED: bug in costmin dea if 1-dimensional input
+
 2016-03-06  Jaak Simm  <jaak.simm@gmail.com>
   * VERSION: 1.2-3
   * FIXED: tests for new version of 'testthat' package

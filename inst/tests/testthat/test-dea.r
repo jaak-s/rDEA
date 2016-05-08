@@ -107,3 +107,11 @@ test_that("costmin DEA with non-increasing RTS works", {
   expect_equal( dea$XOpt[,1], correct_XOpt1, tolerance=1e-5 )
   expect_equal( dea$XOpt[,2], correct_XOpt2, tolerance=1e-5 )
 })
+
+test_that("costmin DEA with 1 dimensional inputs", {
+  Y1 = hospitals[c('inpatients', 'outpatients')]
+  X1 = hospitals[c('labor')]
+  W1 = hospitals[c('labor_price')]
+  firms = 1:10
+  dea = dea( XREF=X1, YREF=Y1, X=X1[firms,], Y=Y1[firms,], W=W1[firms,], model="costmin", RTS="non-increasing" )
+})
