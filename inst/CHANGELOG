@@ -1,3 +1,7 @@
+2016-11-25  Jaak Simm  <jaak.simm@gmail.com>
+  * VERSION: 1.2-5
+  * FIXED: GLPK basis initialization bug
+
 2016-05-08  Jaak Simm  <jaak.simm@gmail.com>
   * VERSION: 1.2-4
   * FIXED: bug in costmin dea if 1-dimensional input

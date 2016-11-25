@@ -102,6 +102,7 @@ void multi_glp_solve (int *lp_direction, int *lp_number_of_constraints,
         &lp_constraint_matrix_i[-1],
                     &lp_constraint_matrix_j[-1], &lp_constraint_matrix_values[-1]);
 
+    glp_std_basis(lp);
     // run simplex method to solve linear problem
     glp_simplex(lp, NULL);
     
@@ -139,6 +140,7 @@ void multi_glp_solve (int *lp_direction, int *lp_number_of_constraints,
           &lp_constraint_matrix_i[-1],
           &lp_constraint_matrix_j[-1], &lp_constraint_matrix_values[-1]);
 
+			glp_std_basis(lp);
       // run simplex method to solve linear problem
       glp_simplex(lp, NULL);
 
