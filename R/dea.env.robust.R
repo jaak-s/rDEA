@@ -247,15 +247,12 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   out$beta_hat_hat_star  = beta_hat_hat_star
   out$sigma_hat_hat_star = sigma_hat_hat_star
   
-  # 7. Calculate confidence interval for \doublehat{\beta}^* and \doublehat{\sigma}^*
-  out$beta_ci  = t(apply( beta_hat_hat_boot, 1, quantile, c(alpha/2, 1-alpha/2) ))
-  out$sigma_ci = t(apply( sigma_hat_hat_boot, 1, quantile, c(alpha/2, 1-alpha/2) ))
-  
-  ## centering CI to the original estimates \doublehat{\beta}^* and \doublehat{\sigma}^*
-  out$beta_ci  = out$beta_ci  + as.matrix(beta_hat_hat - beta_hat_hat_star)[,]
-  out$sigma_ci = out$sigma_ci + (sigma_hat_hat - sigma_hat_hat_star)
-  
-  rownames(out$beta_ci)  = rownames(out$beta_hat_hat)
+  # 7. Calculate confidence interval for \beta and \sigma
+  out$beta_ci  = beta_hat_hat + t(apply(beta_hat_hat - beta_hat_hat_boot, 1, quantile, c(alpha/2, 1-alpha/2) ))
+  out$sigma_ci = sigma_hat_hat + t(apply(sigma_hat_hat - sigma_hat_hat_boot, 1, quantile, c(alpha/2, 1-alpha/2) ))
+
+  rownames(out$beta_ci)  = names(out$beta_hat_hat)
+  rownames(out$sigma_ci) = names(out$sigma_hat_hat)
   
   return(out)
 }

@@ -27,6 +27,7 @@ test_that("input DEA robust with variable RTS", {
   expect_equal( length(der$beta_hat),          Nbeta )
   expect_equal( length(der$beta_hat_hat),      Nbeta )
   expect_equal( length(der$beta_hat_hat_star), Nbeta )
+  expect_equal( dim(der$beta_ci),              c(Nbeta, 2) )
   
   expect_true( all(der$bias <= 0) )
   expect_true( all(der$delta_hat >= 1) )
@@ -42,6 +43,7 @@ test_that("output DEA robust with variable RTS", {
   expect_equal( length(der$beta_hat),          Nbeta )
   expect_equal( length(der$beta_hat_hat),      Nbeta )
   expect_equal( length(der$beta_hat_hat_star), Nbeta )
+  expect_equal( dim(der$beta_ci),              c(Nbeta, 2) )
   
   expect_true( all(der$bias <= 0) )
   expect_true( all(der$delta_hat >= 1) )
@@ -57,6 +59,7 @@ test_that("costmin(fare) DEA robust with variable RTS", {
   expect_equal( length(der$beta_hat),          Nbeta )
   expect_equal( length(der$beta_hat_hat),      Nbeta )
   expect_equal( length(der$beta_hat_hat_star), Nbeta )
+  expect_equal( dim(der$beta_ci),              c(Nbeta, 2) )
   
   expect_true( all(der$bias <= 0) )
   expect_true( all(der$delta_hat >= 1) )

@@ -1,3 +1,7 @@
+2020-02-04  Jaak Simm  <jaak.simm@gmail.com>
+  * VERSION: 1.2-6
+  * FIXED: dea.env.robust confidence intervals for \beta and \sigma 
+
 2016-11-25  Jaak Simm  <jaak.simm@gmail.com>
   * VERSION: 1.2-5
   * FIXED: GLPK basis initialization bug
