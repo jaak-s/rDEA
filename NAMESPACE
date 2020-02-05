@@ -1,4 +1,4 @@
-useDynLib("rDEA")
+useDynLib("rDEA", .registration=TRUE)
 import("slam")
 import("maxLik")
 import("truncreg")
