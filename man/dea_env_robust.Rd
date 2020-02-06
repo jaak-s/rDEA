@@ -79,4 +79,7 @@ di_env = dea.env.robust(
 di_env$delta_hat_hat
 
 }
-\keyword{DEA, non-parametric efficiency, technical efficiency, cost efficiency}
+\keyword{DEA}
+\keyword{non-parametric efficiency}
+\keyword{technical efficiency}
+\keyword{cost efficiency}

@@ -71,4 +71,7 @@ di_robust$theta_hat_hat
 di_robust$bias
 
 }
-\keyword{DEA, non-parametric efficiency, technical efficiency, cost efficiency}
+\keyword{DEA}
+\keyword{non-parametric efficiency}
+\keyword{technical efficiency}
+\keyword{cost efficiency}

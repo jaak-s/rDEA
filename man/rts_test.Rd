@@ -88,4 +88,7 @@ rts_cost$pvalue
 rts_cost$H0reject
 rts_cost$H0level
 }
-\keyword{DEA, non-parametric efficiency, technical efficiency, cost efficiency}
+\keyword{DEA}
+\keyword{non-parametric efficiency}
+\keyword{technical efficiency}
+\keyword{cost efficiency}
