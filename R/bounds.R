@@ -29,15 +29,15 @@ as.glp_bounds <- function(x, ...)
   UseMethod("as.glp_bounds")
 
 ## No default representation.
-as.glp_bounds.default <- function(x)
+as.glp_bounds.default <- function(x, ...)
  stop("There is no default method for bounds representations.")
 
 ## returns identity
-as.glp_bounds.bound_table <- function(x, n)
+as.glp_bounds.bound_table <- function(x, n, ...)
   x
 
 ## list -> GLPK bounds representation
-as.glp_bounds.list <- function(x, n)
+as.glp_bounds.list <- function(x, n, ...)
   glp_bounds(x, n)
   
 glp_bounds <- function(x, n)
