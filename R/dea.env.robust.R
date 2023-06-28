@@ -95,7 +95,7 @@ bias.correction.sw07 <- function(X, Y, Z, RTS, L1, L2, alpha, deaMethod) {
   # now we get delta_hat
   delta_hat = 1.0 / deaMethod(XREF=X, YREF=Y, X=X, Y=Y, RTS=RTS)
   # removing numerical errors
-  delta_hat[ 1 - 1e-5 < delta_hat & delta_hat < 1 ] = 1
+  delta_hat[ 1 - 1e-5 < delta_hat & delta_hat < 1 + 1e-5 ] = 1
   out$delta_hat = delta_hat
   
   # 2. Maximum likelihood for estimating beta and sigma_{\epsilon}
